@@ -1,4 +1,36 @@
+# Dependências Node.js e Python
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
 
-# Bin�rios locais de desktop maiores que 100 MB
+# Binários locais de desktop maiores que 100 MB (usados apenas em testes locais)
 vendor/ffmpeg/*.exe
 
+# Artefatos de build Android / Gradle / Capacitor
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Certificados, chaves de assinatura e segredos
+*.keystore
+*.jks
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+
+# Cache, cobertura e arquivos de sistema/IDE
+dist/
+.cache/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

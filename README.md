@@ -1,4 +1,48 @@
-# Olho da Cena
+# Olho da Cena (Edição Android & Multiplataforma)
+
+Estúdio acessível de criação e edição de vídeos, áudios, fotografias e posts para redes sociais projetado para pessoas cegas e com baixa visão (criado por **Joyce Guerra**).
+
+Esta edição porta integralmente o **Olho da Cena 3.0.4** para **Android** mantendo 100% da lógica pura de domínio (`src/`) e da interface acessível (`ui/`), adicionando suporte completo em **Modo Duplo (TalkBack por Toque + Teclado Físico Bluetooth/USB)**, armazenamento duplo em `Documentos/Olho da Cena` com indexação automática na Galeria (`MediaStore`), proteção de gravação contra chamadas telefônicas e ponte nativa Kotlin (`android/`).
+
+## Tecnologias Utilizadas
+- **Núcleo e Interface Acessível:** JavaScript (ES2022 / CommonJS) + HTML5 Semântico ARIA (`role="tree"`, `aria-live`, controle de foco determinístico para TalkBack e NVDA).
+- **Camada Nativa Android:** Kotlin (`MainActivity`, `OlhoBridgeService`, `OlhoAssetLoaderAdapter`), `WebView` com protocolo `app://olho/`, `MediaStore`, `ClipboardManager`, `AudioManager` e `Intent` (`Share Target`).
+- **Processamento de Mídia e Visão:** FFmpeg / FFprobe, MediaPipe Tasks Vision (detecção facial, pose, mãos, cabelo, objetos e segmentação de pessoa), Whisper (`whisper.cpp`) e modelo visual (`llama.cpp` / `mtmd`).
+- **Governança e Testes:** Engenharia em Loop Fechado (`AGENTS.md`, `docs/ARCHITECTURE.md`, `specs/` e instrumento de voo único `tools/dev.py`).
+
+## Pré-requisitos e Instalação
+- **Node.js** 18 ou superior
+- **Python** 3.10 ou superior (para o verificador único `tools/dev.py`)
+- **FFmpeg** e **FFprobe** no `PATH` (ou em `vendor/ffmpeg/`)
+- **Android SDK / Gradle** (para empacotamento do `.apk` em `android/`)
+
+```bash
+npm install
+```
+
+## Como Executar e Verificar
+- **Instrumento de Voo Único (Governança + Paridade Kotlin/JS + 217 Testes):**
+  ```bash
+  python tools/dev.py check
+  ```
+- **Diagnóstico de Ambiente:**
+  ```bash
+  python tools/dev.py doctor
+  ```
+- **Suíte de Testes Unitários Node:**
+  ```bash
+  npm test
+  ```
+
+## Variáveis de Ambiente
+Consulte o arquivo `.env.example` na raiz do projeto para variáveis opcionais de desenvolvimento e fallback de IA em nuvem (`OLHO_CHAVE_NUVEM_IA`, `OLHO_FFMPEG_DIR`).
+
+## Licença
+© 2026 Joyce Guerra (`joycepsi.com.br`). Licença Creative Commons BY-NC-ND 4.0 — consulte o arquivo `LICENSE` para detalhes.
+
+---
+
+# Documentação Original (Olho da Cena Desktop)
 
 Junta o Gerador de Vídeo 2.0.3 e o Gravador de Vídeo (teste) 0.3 num programa só.
 Tela inicial: Gravar (Alt R), Montar (Alt G), Editar (Alt C), Juntar (Alt J) e Dividir (Alt D).
