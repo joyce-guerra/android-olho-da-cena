@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' app:; script-src 'self' app: 'wasm-unsafe-eval'; style-src 'self' app:; img-src 'self' app: data: blob:; media-src 'self' app: blob: mediastream:; connect-src 'self' app: blob: data:; worker-src 'self' app: blob:">
+  <title>Gravador de Vídeo (teste)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Gravador de Vídeo (teste)</h1>
+
+    <section id="tela-gravar" aria-labelledby="titulo-gravar">
+      <h2 id="titulo-gravar" class="so-leitor">Gravar</h2>
+      <fieldset id="grupo-formato" class="escolha"><legend>Proporção do vídeo (obrigatório)</legend></fieldset>
+      <fieldset id="grupo-qualidade" class="escolha" aria-describedby="nota-qualidade"><legend>Qualidade (obrigatório)</legend>
+        <p id="nota-qualidade" class="nota">Em todas, o som é gravado em AAC, 48 kHz.</p>
+      </fieldset>
+      <label for="camera">Câmera</label>
+      <select id="camera"></select>
+      <label for="microfone">Microfone</label>
+      <select id="microfone"></select>
+      <div class="check">
+        <input type="checkbox" id="espelhada" aria-describedby="espelhada-desc">
+        <label for="espelhada">Minha câmera espelha a imagem</label>
+        <p id="espelhada-desc" class="desc"></p>
+      </div>
+      <div class="controles">
+        <button type="button" id="testar-espelho">Testar o espelho (levante a mão direita)</button>
+      </div>
+
+      <h2>Leitura sombreada</h2>
+      <label for="texto">Texto (opcional): cole aqui ou abra um arquivo</label>
+      <textarea id="texto" rows="4"></textarea>
+      <div class="controles">
+        <button type="button" id="abrir-texto">Abrir arquivo de texto</button>
+      </div>
+      <fieldset id="grupo-uso" class="escolha"><legend>Como usar o texto</legend></fieldset>
+      <div id="frase" role="application" tabindex="0" aria-roledescription="frase" aria-labelledby="frase-texto" hidden>
+        <p id="frase-texto"></p>
+      </div>
+
+      <div class="controles">
+        <button type="button" id="gravar" aria-keyshortcuts="Alt+R">Gravar (Alt R)</button>
+        <button type="button" id="pausar" aria-keyshortcuts="Alt+T" disabled>Pausar (Alt T)</button>
+        <button type="button" id="enquadrar" aria-keyshortcuts="Alt+E">Enquadramento (Alt E)</button>
+      </div>
+      <p id="estado" class="estado"></p>
+      <canvas id="previa" aria-hidden="true"></canvas>
+    </section>
+
+    <section id="tela-decidir" aria-labelledby="titulo-decidir" hidden>
+      <h2 id="titulo-decidir">Gravação pronta</h2>
+      <p id="decidir-info"></p>
+      <div class="controles">
+        <button type="button" id="finalizar">Salvar e finalizar</button>
+        <button type="button" id="melhorar">Melhorar</button>
+      </div>
+    </section>
+
+    <section id="tela-melhorar" aria-labelledby="titulo-melhorar" hidden>
+      <h2 id="titulo-melhorar">Melhorar o vídeo</h2>
+      <p id="melhorar-info" class="nota">O vídeo original continua guardado. O vídeo melhorado é salvo ao lado dele, com outro nome.</p>
+      <fieldset id="grupo-efeito" class="escolha"><legend>Efeito</legend></fieldset>
+      <fieldset id="grupo-fundo" class="escolha" hidden><legend>Fundo novo</legend></fieldset>
+      <fieldset id="grupo-audio" class="audio" aria-describedby="audio-ajuda"><legend>Melhorar áudio</legend>
+        <p id="audio-ajuda" class="nota">Opcional, junto com o efeito ou sozinho. Control com seta para a direita ou para a esquerda muda o volume; Control com seta para cima ou para baixo muda a velocidade. A velocidade muda o vídeo junto: imagem e som continuam juntos.</p>
+        <p id="audio-info" class="estado"></p>
+        <label for="eq-predefinicao">Predefinição</label>
+        <select id="eq-predefinicao"></select>
+        <label for="eq-volume">Volume</label>
+        <input type="range" id="eq-volume" min="10" max="300" step="10" value="100">
+        <label for="eq-graves">Graves</label>
+        <input type="range" id="eq-graves" min="-12" max="12" step="1" value="0">
+        <label for="eq-medios">Médios</label>
+        <input type="range" id="eq-medios" min="-12" max="12" step="1" value="0">
+        <label for="eq-agudos">Agudos</label>
+        <input type="range" id="eq-agudos" min="-12" max="12" step="1" value="0">
+        <label for="eq-velocidade">Velocidade</label>
+        <input type="range" id="eq-velocidade" min="50" max="250" step="5" value="100">
+        <div class="controles">
+          <button type="button" id="eq-ouvir">Ouvir 5 segundos com o ajuste</button>
+          <button type="button" id="eq-zerar">Voltar o áudio ao original</button>
+        </div>
+      </fieldset>
+      <div class="controles" id="melhorar-botoes">
+        <button type="button" id="amostra">Salvar amostra de 5 segundos</button>
+        <button type="button" id="todo">Salvar o vídeo todo</button>
+        <button type="button" id="melhorar-voltar">Voltar</button>
+      </div>
+      <div class="controles" id="processando" hidden>
+        <p id="processando-info" class="estado"></p>
+        <progress id="processando-barra" max="100" value="0" aria-hidden="true"></progress>
+        <button type="button" id="cancelar">Cancelar</button>
+      </div>
+    </section>
+
+    <section id="tela-pronto" aria-labelledby="titulo-pronto" hidden>
+      <h2 id="titulo-pronto">Vídeo salvo</h2>
+      <p id="pronto-info"></p>
+      <div class="controles">
+        <button type="button" id="voltar">Voltar ao início</button>
+        <button type="button" id="melhorar-de-novo" hidden>Melhorar de novo</button>
+        <button type="button" id="abrir-pasta">Abrir a pasta</button>
+      </div>
+    </section>
+
+    <video id="camera-video" muted playsinline hidden></video>
+    <p id="status" role="status" aria-live="polite" class="so-leitor"></p>
+    <p id="alerta" role="alert" class="so-leitor"></p>
+  </main>
+  <script type="module" src="renderer.js"></script>
+</body>
+</html>

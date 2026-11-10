@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' app:; script-src 'self' app: 'wasm-unsafe-eval'; style-src 'self' app:; img-src 'self' app: data: blob:; media-src 'self' app: blob: mediastream:; connect-src 'self' app: blob: data:; worker-src 'self' app: blob:">
+  <title>Olho da Cena</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Tudo que o programa tem a dizer passa por aqui. Região única, educada:
+       o NVDA anuncia a mudança sem interromper o que está sendo lido. -->
+  <p id="status" role="status" aria-live="polite">Carregando...</p>
+  <!-- Erros e avisos que não podem esperar (Gravar e Melhorar). -->
+  <p id="alerta" role="alert" class="so-leitor"></p>
+
+  <!-- Lista de atalhos da tela atual. Aparece com Alt H, fecha com Escape. -->
+  <section id="ajuda" hidden aria-labelledby="ajuda-titulo">
+    <h2 id="ajuda-titulo" tabindex="-1">Atalhos desta tela</h2>
+    <ul id="ajuda-lista"></ul>
+    <p>Escape ou Alt H fecham esta lista.</p>
+  </section>
+
+  <!-- ================= TELA INICIAL ================= -->
+  <div id="tela-inicial">
+    <h1 id="titulo-inicial">Olho da Cena, seu olhar autônomo para inclusão nas redes sociais</h1>
+    <p class="creditos">
+      Concepção e direção: Joy<br>
+      Código: Claude (Anthropic)
+    </p>
+
+    <!-- 2.0.6: aparece só quando há versão nova no site -->
+    <section id="atualizacao-bloco" aria-labelledby="atualizacao-titulo" hidden>
+      <h2 id="atualizacao-titulo" tabindex="-1">Há uma versão nova do Olho da Cena</h2>
+      <p id="atualizacao-info"></p>
+      <progress id="atualizacao-barra" max="100" value="0" hidden aria-hidden="true"></progress>
+      <div class="controles au-coluna">
+        <button type="button" id="atualizacao-instalar">Baixar e instalar a versão nova</button>
+        <button type="button" id="atualizacao-cancelar" hidden>Cancelar o download</button>
+      </div>
+    </section>
+
+    <h2 id="menu-titulo">O que você quer fazer?</h2>
+    <p id="menu-dica">Use as setas para cima e para baixo para andar pela lista, a seta para a direita para abrir um grupo, a seta para a esquerda para fechar, e Enter para escolher. Cada item diz o seu atalho. Alt H lista os atalhos de qualquer tela, menos a de gravar.</p>
+    <ul role="tree" id="menu-inicial" aria-labelledby="menu-titulo" aria-describedby="menu-dica">
+      <li role="treeitem" id="mi-video" aria-expanded="false" data-tecla="v" data-nome="Vídeo" tabindex="0">Vídeo
+        <ul role="group" hidden>
+          <li role="treeitem" id="ir-gravar" data-tecla="r" data-nome="Gravar vídeo" tabindex="-1">Gravar</li>
+          <li role="treeitem" id="ir-gerar" data-tecla="g" data-nome="Montar vídeo" tabindex="-1">Montar</li>
+          <li role="treeitem" id="ir-cortar" data-tecla="e" data-nome="Editar vídeo" tabindex="-1">Editar</li>
+          <li role="treeitem" id="ir-dividir" data-tecla="d" data-nome="Dividir vídeo" tabindex="-1">Dividir</li>
+          <li role="treeitem" id="ir-juntar" data-tecla="j" data-nome="Juntar vídeos" tabindex="-1">Juntar</li>
+          <li role="treeitem" id="ir-lote" data-tecla="l" data-nome="Converter áudios em lote em vídeo simples" tabindex="-1">Converter áudios em lote em vídeo simples</li>
+        </ul>
+      </li>
+      <li role="treeitem" id="ir-foto" data-tecla="f" data-nome="Fotos" tabindex="-1">Fotos</li>
+      <li role="treeitem" id="ir-post" data-tecla="p" data-nome="Posts" tabindex="-1">Posts</li>
+      <li role="treeitem" id="mi-audio" aria-expanded="false" data-tecla="a" data-nome="Áudio" tabindex="-1">Áudio
+        <ul role="group" hidden>
+          <li role="treeitem" id="ir-gaudio" data-tecla="m" data-nome="Gravar áudio" tabindex="-1">Gravar</li>
+          <li role="treeitem" id="ir-editar-audio" data-tecla="u" data-nome="Editar áudio" tabindex="-1">Editar</li>
+        </ul>
+      </li>
+      <li role="treeitem" id="mi-extras" aria-expanded="false" data-tecla="x" data-nome="Extras" tabindex="-1">Extras
+        <ul role="group" hidden>
+          <li role="treeitem" id="ir-transcrever" data-tecla="t" data-nome="Transcrever áudio" tabindex="-1">Transcrever áudio</li>
+          <li role="treeitem" id="ir-descrever" data-tecla="i" data-nome="Descrever imagem" tabindex="-1">Descrever imagem</li>
+        </ul>
+      </li>
+      <li role="treeitem" id="ir-config" data-tecla="c" data-nome="Configurações" tabindex="-1">Configurações</li>
+    </ul>
+    <p id="pasta-info">Tudo o que o programa salva vai para a pasta Olho da Cena, dentro de Documentos.</p>
+    <button type="button" id="ir-pasta">Abrir a pasta Olho da Cena</button>
+  </div>
+
+  <!-- ================= 1.9: EDIÇÃO DE VÍDEO E ÁUDIO ================= -->
+  <div id="tela-edicao" hidden>
+    <h1>Editar</h1>
+    <section id="ed-escolher" aria-labelledby="ed-titulo">
+      <h2 id="ed-titulo" tabindex="-1">Escolher o arquivo</h2>
+      <div class="controles au-coluna">
+        <button type="button" id="ed-adicionar">Adicionar vídeo ou áudio</button>
+      </div>
+      <p id="ed-info" tabindex="-1">Nenhum arquivo escolhido.</p>
+      <div class="controles au-coluna" id="ed-opcoes" hidden>
+        <button type="button" id="ed-audio">Editar áudio</button>
+        <button type="button" id="ed-video">Editar vídeo</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="ed-voltar">Voltar</button>
+        <button type="button" id="ed-fechar">Fechar</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= 1.9: TELA DE LEGENDA (Montar vídeo e Gravar vídeo) ================= -->
+  <div id="tela-legenda" hidden>
+    <h1>Legenda</h1>
+    <nav aria-label="Passos da legenda" id="lg-passos">
+      <button type="button" id="lg-nav-1" aria-current="page">Passo 1: De onde vem a legenda</button>
+      <button type="button" id="lg-nav-2">Passo 2: Baixar um modelo</button>
+      <button type="button" id="lg-nav-3">Passo 3: Gerar com o modelo</button>
+      <button type="button" id="lg-nav-4">Passo 4: Pra onde é esse vídeo?</button>
+    </nav>
+
+    <section id="lg-origem" aria-labelledby="lg-origem-titulo">
+      <h2 id="lg-origem-titulo" tabindex="-1">Passo 1 de 4: De onde vem a legenda</h2>
+      <p>A legenda é opcional. Para seguir sem legenda, use Salvar e continuar.</p>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-inserir-srt">Inserir SRT</button>
+        <button type="button" id="lg-com-modelo">Gerar legenda com o modelo</button>
+      </div>
+      <p id="lg-origem-info" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-origem-continuar">Salvar e continuar</button>
+        <button type="button" id="lg-origem-voltar">Voltar</button>
+        <button type="button" id="lg-origem-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="lg-baixar" aria-labelledby="lg-baixar-titulo" hidden>
+      <h2 id="lg-baixar-titulo" tabindex="-1">Passo 2 de 4: Baixar um modelo</h2>
+      <p>O Olho da Cena vem sem modelo de legenda. Se você quiser, baixa um agora: ele fica guardado no computador e serve para as próximas vezes. Precisa de internet só para baixar; depois, a legenda é feita no próprio computador.</p>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-baixar-pequeno" aria-describedby="lg-desc-pequeno">Baixar o modelo pequeno, uns 190 MB</button>
+        <p id="lg-desc-pequeno" class="nota">Já funciona bem com português falado com clareza. É o mais rápido.</p>
+        <button type="button" id="lg-baixar-grande" aria-describedby="lg-desc-grande">Baixar o modelo grande, uns 1,6 GB</button>
+        <p id="lg-desc-grande" class="nota">Mais preciso, mas mais lento, principalmente em computador sem uma boa placa de vídeo.</p>
+        <button type="button" id="lg-nao-baixar">Não baixar nada</button>
+      </div>
+      <p id="lg-baixar-estado" class="estado" tabindex="-1"></p>
+      <progress id="lg-baixar-barra" max="100" value="0" hidden aria-hidden="true"></progress>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-baixar-cancelar" hidden>Cancelar o download</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-baixar-continuar">Salvar e continuar</button>
+        <button type="button" id="lg-baixar-voltar">Voltar</button>
+        <button type="button" id="lg-baixar-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="lg-gerar" aria-labelledby="lg-gerar-titulo" hidden>
+      <h2 id="lg-gerar-titulo" tabindex="-1">Passo 3 de 4: Gerar com o modelo</h2>
+      <fieldset id="lg-grupo-modelo" class="escolha" hidden><legend>Modelo</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-transcricao">Gerar só a transcrição em texto</button>
+        <button type="button" id="lg-gerar-srt">Gerar um arquivo SRT, com os tempos das legendas</button>
+        <button type="button" id="lg-outro-modelo" hidden>Baixar o outro modelo</button>
+      </div>
+      <p id="lg-gerar-estado" class="estado" tabindex="-1"></p>
+      <progress id="lg-gerar-barra" max="100" value="0" hidden aria-hidden="true"></progress>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-gerar-cancelar" hidden>Cancelar</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-gerar-continuar">Salvar e continuar</button>
+        <button type="button" id="lg-gerar-voltar">Voltar</button>
+        <button type="button" id="lg-gerar-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.9.1: revisar o texto, sem os tempos (eles não mudam). -->
+    <section id="lg-revisar" aria-labelledby="lg-revisar-titulo" hidden>
+      <h2 id="lg-revisar-titulo" tabindex="-1">Revisar o texto da legenda</h2>
+      <p id="lg-revisar-info" tabindex="-1"></p>
+      <div class="controles au-coluna" id="lg-revisar-pergunta">
+        <button type="button" id="lg-revisar-sim">Sim, quero editar o texto</button>
+        <button type="button" id="lg-revisar-nao">Não, seguir para o estilo</button>
+      </div>
+      <div id="lg-revisar-lista" class="au-coluna" hidden></div>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-revisar-continuar">Salvar e continuar</button>
+        <button type="button" id="lg-revisar-voltar">Voltar</button>
+        <button type="button" id="lg-revisar-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="lg-estilo" aria-labelledby="lg-estilo-titulo" hidden>
+      <h2 id="lg-estilo-titulo" tabindex="-1">Passo 4 de 4: Pra onde é esse vídeo?</h2>
+      <fieldset id="lg-grupo-estilo" class="escolha"><legend>Pra onde é esse vídeo?</legend></fieldset>
+      <p id="lg-estilo-resumo" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="lg-estilo-continuar">Salvar e continuar</button>
+        <button type="button" id="lg-estilo-voltar">Voltar</button>
+        <button type="button" id="lg-estilo-fechar">Fechar</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= TELA DE GRAVAR ================= -->
+  <div id="tela-gravar" hidden>
+    <h1>Gravar vídeo</h1>
+
+    <!-- 1.9: a tela de gravar em etapas, no mesmo padrão das etapas de áudio. -->
+    <nav aria-label="Etapas da gravação" id="grav-etapas">
+      <button type="button" id="grav-nav-1" aria-current="page">Etapa 1: Proporção e qualidade</button>
+      <button type="button" id="grav-nav-2">Etapa 2: Câmera e microfone</button>
+      <button type="button" id="grav-nav-3">Etapa 3: Leitura sombreada</button>
+      <button type="button" id="grav-nav-4">Etapa 4: Gravar</button>
+    </nav>
+    <section id="grav-captura" aria-labelledby="titulo-gravar">
+      <h2 id="titulo-gravar" class="so-leitor">Gravar</h2>
+      <!-- 2.0.6: a prévia fica no alto da tela, onde cabe inteira; embaixo da página ela saía cortada pela borda da janela. -->
+      <canvas id="previa" aria-hidden="true" hidden></canvas>
+
+      <div class="grav-etapa" id="grav-e1">
+        <h2 id="grav-e1-titulo" tabindex="-1">Etapa 1 de 4: Proporção e qualidade</h2>
+        <fieldset id="grupo-formato" class="escolha"><legend>Proporção do vídeo (obrigatório)</legend></fieldset>
+        <fieldset id="grupo-qualidade" class="escolha" aria-describedby="nota-qualidade"><legend>Qualidade (obrigatório)</legend>
+          <p id="nota-qualidade" class="nota">Em todas, o som é gravado em AAC, 48 kHz.</p>
+        </fieldset>
+        <div class="controles au-coluna">
+          <button type="button" id="grav-e1-continuar">Salvar e continuar</button>
+          <button type="button" id="grav-e1-voltar">Voltar</button>
+          <button type="button" id="grav-e1-fechar">Fechar</button>
+        </div>
+      </div>
+
+      <div class="grav-etapa" id="grav-e2" hidden>
+        <h2 id="grav-e2-titulo" tabindex="-1">Etapa 2 de 4: Câmera e microfone</h2>
+        <p class="nota">Alt E fala o enquadramento: onde está o rosto, quanto do corpo aparece, mão na frente do rosto, braço cortado na lateral e o que mais aparece na imagem.</p>
+        <p id="info-camera-2" class="nota" tabindex="0"></p>
+        <label for="camera">Câmera</label>
+        <select id="camera"></select>
+        <label for="microfone">Microfone</label>
+        <select id="microfone"></select>
+        <fieldset id="grupo-fonte-audio" class="escolha"><legend>O que gravar de áudio</legend></fieldset>
+        <div class="check">
+          <input type="checkbox" id="espelhada" aria-describedby="espelhada-desc">
+          <label for="espelhada">Minha câmera espelha a imagem</label>
+          <p id="espelhada-desc" class="desc"></p>
+        </div>
+        <div class="check">
+          <input type="checkbox" id="seguir-rosto" aria-describedby="seguir-rosto-desc">
+          <label for="seguir-rosto">Seguir o rosto no vertical e no quadrado</label>
+          <p id="seguir-rosto-desc" class="desc">Indicação: Quando você não tem como conferir se está no meio da câmera, ou se mexe um pouco enquanto grava. Contraindicação: Quando tem outra pessoa ao seu lado que também precisa aparecer, porque a imagem acompanha só um rosto. Descrição: A prévia e o vídeo gravado deslizam devagar para manter o seu rosto no meio da imagem. No vídeo horizontal, não faz nada.</p>
+        </div>
+        <div class="check">
+          <input type="checkbox" id="retorno-mic" aria-describedby="retorno-mic-desc">
+          <label for="retorno-mic">Retorno do microfone</label>
+          <p id="retorno-mic-desc" class="desc">Você se ouve no fone enquanto testa e grava. O retorno não entra na gravação.</p>
+        </div>
+        <div class="controles au-coluna">
+          <button type="button" id="grav-e2-continuar">Salvar e continuar</button>
+          <button type="button" id="grav-e2-voltar">Voltar</button>
+          <button type="button" id="grav-e2-fechar">Fechar</button>
+        </div>
+      </div>
+
+      <div class="grav-etapa" id="grav-e3" hidden>
+        <h2 id="grav-e3-titulo" tabindex="-1">Etapa 3 de 4: Leitura sombreada</h2>
+        <p class="nota">Opcional. Se não quiser texto, é só usar Salvar e continuar.</p>
+        <label for="texto">Texto: cole aqui ou abra um arquivo</label>
+        <textarea id="texto" rows="4"></textarea>
+        <div class="controles au-coluna">
+          <button type="button" id="abrir-texto">Abrir arquivo de texto</button>
+        </div>
+        <fieldset id="grupo-uso" class="escolha"><legend>Como usar o texto</legend></fieldset>
+        <div class="controles au-coluna">
+          <button type="button" id="grav-e3-continuar">Salvar e continuar</button>
+          <button type="button" id="grav-e3-voltar">Voltar</button>
+          <button type="button" id="grav-e3-fechar">Fechar</button>
+        </div>
+      </div>
+
+      <div class="grav-etapa" id="grav-e4" hidden>
+        <h2 id="grav-e4-titulo" tabindex="-1">Etapa 4 de 4: Gravar</h2>
+        <p id="info-camera-4" class="nota" tabindex="0"></p>
+        <div id="frase" role="application" tabindex="0" aria-roledescription="frase" aria-labelledby="frase-nome" aria-describedby="frase-ajuda" hidden>
+          <p id="frase-texto" aria-hidden="true"></p>
+          <span id="frase-nome" class="so-leitor" aria-hidden="true"></span>
+          <p id="frase-ajuda" class="so-leitor">Setas para baixo ou para a direita: próxima frase. Setas para cima ou para a esquerda: frase anterior. Home: primeira frase. End: última frase.</p>
+        </div>
+        <div class="controles au-coluna">
+          <button type="button" id="gravar" aria-keyshortcuts="Alt+R">Gravar (Alt R)</button>
+          <button type="button" id="pausar" aria-keyshortcuts="Alt+P Alt+T" disabled>Pausar (Alt P)</button>
+          <button type="button" id="enquadrar" aria-keyshortcuts="Alt+E">Enquadramento (Alt E)</button>
+        </div>
+        <p id="estado" class="estado"></p>
+        <div class="controles au-coluna">
+          <button type="button" id="grav-e4-voltar">Voltar</button>
+          <button type="button" id="grav-e4-fechar">Fechar</button>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="grav-decidir" aria-labelledby="titulo-decidir" hidden>
+      <h2 id="titulo-decidir">Tudo pronto</h2>
+      <p id="decidir-info"></p>
+      <div class="controles empilhados">
+        <button type="button" id="descartar">Descartar vídeo</button>
+        <button type="button" id="salvar-fechar">Salvar e fechar</button>
+        <button type="button" id="melhorar">Salvar e continuar</button>
+        <button type="button" id="decidir-voltar">Voltar</button>
+      </div>
+    </section>
+
+    <section id="grav-pronto" aria-labelledby="titulo-pronto" hidden>
+      <h2 id="titulo-pronto">Vídeo salvo</h2>
+      <p id="pronto-info"></p>
+      <div class="controles">
+        <button type="button" id="voltar">Gravar outro vídeo</button>
+        <button type="button" id="abrir-pasta">Abrir a pasta</button>
+        <button type="button" id="pronto-inicio">Voltar ao início</button>
+      </div>
+    </section>
+
+    <video id="camera-video" muted playsinline hidden></video>
+  </div>
+
+  <!-- ================= TELA DE MELHORAR ================= -->
+  <div id="tela-melhorar" hidden>
+    <h1>Alterar plano de fundo</h1>
+
+    <section id="grav-melhorar" aria-labelledby="titulo-melhorar">
+      <div id="mel-efeito-bloco">
+      <p id="mel-explica-fundo">O fundo substitui tudo o que aparece atrás de você por uma imagem, como um cenário. Você continua aparecendo como foi gravada, só o que está atrás muda. O resultado parece um cenário de estúdio: convence à primeira vista, mas quem presta atenção percebe que é montagem, principalmente nas bordas do corpo. Movimentos rápidos, cabelo solto e objetos na mão podem ficar com o contorno borrado ou sumir por um instante. Funciona melhor com você parada, bem iluminada e com uma parede lisa atrás.</p>
+      <h2 id="titulo-melhorar" class="so-leitor">Escolher o efeito</h2>
+      <p id="melhorar-info" class="nota">O vídeo original continua guardado. O vídeo novo é salvo na pasta Olho da Cena, com outro nome.</p>
+      <fieldset id="grupo-efeito" class="escolha"><legend>Efeito</legend></fieldset>
+      <fieldset id="grupo-fundo" class="escolha" hidden><legend>Fundo</legend></fieldset>
+      </div>
+      <div id="mel-abertura-bloco">
+      <label for="mel-abertura-titulo">Título (opcional, até 90 letras)</label>
+      <input type="text" id="mel-abertura-titulo" maxlength="90" autocomplete="off" aria-describedby="mel-desc-abertura">
+      <p id="mel-desc-abertura" class="nota">O título e o logo aparecem grandes no meio da tela nos 3 primeiros segundos do vídeo e somem suavemente. O som não muda.</p>
+      <div class="controles">
+        <button type="button" id="mel-abertura-logo">Escolher logo</button>
+        <button type="button" id="mel-abertura-tirar-logo" hidden>Tirar o logo</button>
+      </div>
+      <p id="mel-abertura-info">Sem logo.</p>
+      </div>
+      <div class="controles" id="mel-analisar-botoes">
+        <button type="button" id="mel-analisar" aria-describedby="mel-analisar-desc">Analisar fundo, Alt F</button>
+        <span id="mel-analisar-desc" class="estado">Atalho: Alt F, nesta tela.</span>
+      </div>
+      <p id="mel-analise" class="estado" tabindex="-1"></p>
+      <div class="controles" id="melhorar-botoes">
+        <button type="button" id="mel-continuar">Salvar e continuar</button>
+        <button type="button" id="mel-fechar">Salvar e fechar</button>
+        <button type="button" id="melhorar-voltar">Voltar</button>
+      </div>
+      <div class="controles" id="processando" hidden>
+        <p id="processando-info" class="estado"></p>
+        <progress id="processando-barra" max="100" value="0" aria-hidden="true"></progress>
+        <button type="button" id="cancelar">Cancelar</button>
+      </div>
+    </section>
+
+    <!-- 1.9.2: Editar vídeo: análise automática ao entrar. -->
+    <section id="grav-editar" aria-labelledby="titulo-editar" hidden>
+      <h2 id="titulo-editar" tabindex="-1">Editar vídeo: análise</h2>
+      <p id="ed-an-info" class="estado" tabindex="-1"></p>
+      <div class="check"><input type="checkbox" id="ed-tem-pessoa"><label for="ed-tem-pessoa">Tem pessoa no vídeo</label></div>
+      <div class="check"><input type="checkbox" id="ed-tem-logo"><label for="ed-tem-logo">O vídeo já tem título ou logo</label></div>
+      <div class="check"><input type="checkbox" id="ed-tem-legenda"><label for="ed-tem-legenda">O vídeo já tem legenda</label></div>
+      <div class="controles au-coluna">
+        <button type="button" id="ed-an-continuar">Salvar e continuar</button>
+        <button type="button" id="ed-an-voltar">Voltar</button>
+        <button type="button" id="ed-an-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.9.2: Editar vídeo: orientação e qualidade, por último. -->
+    <section id="grav-orientacao" aria-labelledby="titulo-orientacao" hidden>
+      <h2 id="titulo-orientacao" tabindex="-1">Orientação e qualidade</h2>
+      <p id="ori-diag" tabindex="-1"></p>
+      <fieldset id="grupo-sai-formato" class="escolha"><legend>Orientação</legend></fieldset>
+      <fieldset id="grupo-sai-qualidade" class="escolha"><legend>Qualidade</legend></fieldset>
+      <p id="ori-efeito" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="ori-continuar">Salvar e continuar</button>
+        <button type="button" id="ori-voltar">Voltar</button>
+        <button type="button" id="ori-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.9.2: Editar áudio: a imagem do vídeo, depois das etapas de áudio. -->
+    <section id="grav-imagem" aria-labelledby="titulo-imagem" hidden>
+      <h2 id="titulo-imagem" tabindex="-1">Imagem do vídeo</h2>
+      <fieldset id="grupo-img-tipo" class="escolha"><legend>Imagem</legend></fieldset>
+      <fieldset id="grupo-img-fundo" class="escolha" hidden><legend>Fundo</legend></fieldset>
+      <div id="img-foto-bloco" hidden>
+        <div class="controles au-coluna"><button type="button" id="img-foto">Escolher a foto de quem fala</button></div>
+        <p id="img-foto-info">Nenhuma foto escolhida.</p>
+      </div>
+      <fieldset id="grupo-img-formato" class="escolha"><legend>Orientação</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="img-continuar">Salvar e continuar</button>
+        <button type="button" id="img-voltar">Voltar</button>
+        <button type="button" id="img-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="grav-analisar" aria-labelledby="titulo-analisar" hidden>
+      <h2 id="titulo-analisar" tabindex="-1">Analisar vídeo</h2>
+      <p id="an-info" class="estado" tabindex="-1"></p>
+      <div class="controles">
+        <button type="button" id="an-analisar">Analisar vídeo</button>
+        <button type="button" id="an-finalizar">Finalizar</button>
+        <button type="button" id="an-voltar">Voltar</button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ================= AJUSTES DE ÁUDIO (1.3), depois de gravar ================= -->
+  <div id="tela-audio" hidden>
+    <h1>Ajustes de áudio</h1>
+    <nav aria-label="Telas de áudio" id="au-telas">
+      <button type="button" id="au-nav-cortes" aria-current="page">Etapa 1: Cortes</button>
+      <button type="button" id="au-nav-silencios">Etapa 2: Silêncios e crossfade</button>
+      <button type="button" id="au-nav-trilhas">Etapa 3: Efeitos e trilhas</button>
+      <button type="button" id="au-nav-eq">Etapa 4: Equalização e ajustes</button>
+    </nav>
+    <video id="au-player" preload="auto" hidden></video>
+
+    <section id="au-cortes" aria-labelledby="au-cortes-titulo">
+      <h2 id="au-cortes-titulo" tabindex="-1">Etapa 1 de 4: Cortes</h2>
+      <p id="au-info"></p>
+      <div class="controles au-coluna" id="au-tocador">
+        <button type="button" id="au-tocar">Tocar ou pausar, Espaço</button>
+        <button type="button" id="au-voltar1">Voltar meio segundo, seta para a esquerda</button>
+        <button type="button" id="au-avancar1">Avançar meio segundo, seta para a direita</button>
+        <button type="button" id="au-comeco">Começo do áudio, Home</button>
+        <button type="button" id="au-final">Final do áudio, End</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="au-inicio">Início da seleção, Alt I</button>
+        <button type="button" id="au-fim">Fim da seleção, Alt F</button>
+        <button type="button" id="au-descartar">Del, descarta todas as seleções</button>
+        <button type="button" id="au-salvar-sel">Alt S, salva todas as seleções</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="au-continuar">Salvar e continuar</button>
+        <button type="button" id="au-voltar">Voltar</button>
+        <button type="button" id="au-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.4: tela 2 do áudio. Escolhe um só corte de silêncio; crossfade com qualquer um dos três cortes (1.9.1). -->
+    <section id="au-silencios" aria-labelledby="au-silencios-titulo" hidden>
+      <h2 id="au-silencios-titulo" tabindex="-1">Etapa 2 de 4: Silêncios e crossfade</h2>
+      <div class="au-coluna" id="aus-opcoes">
+        <label><input type="checkbox" id="aus-leve" data-nivel="leve"> Corte leve de silêncio</label>
+        <label><input type="checkbox" id="aus-equilibrado" data-nivel="equilibrado"> Corte equilibrado de silêncio</label>
+        <label><input type="checkbox" id="aus-agressivo" data-nivel="agressivo"> Corte agressivo de silêncio</label>
+        <label><input type="checkbox" id="aus-crossfade" disabled> Crossfade</label>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aus-verificar">Verificar silêncios</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aus-tocar">Tocar ou pausar, Espaço</button>
+        <button type="button" id="aus-voltar1">Voltar meio segundo, seta para a esquerda</button>
+        <button type="button" id="aus-avancar1">Avançar meio segundo, seta para a direita</button>
+        <button type="button" id="aus-comeco">Começo do áudio, Home</button>
+        <button type="button" id="aus-final">Final do áudio, End</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aus-continuar">Salvar e continuar</button>
+        <button type="button" id="aus-voltar">Voltar</button>
+        <button type="button" id="aus-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.5: tela 3 do áudio. Cópia da parte de trilhas do Montar vídeo (1.0.0 = Gerador 2.0.3),
+         sem o tocador próprio de 5 segundos: no lugar dele, os atalhos e botões universais do áudio. -->
+    <section id="au-trilhas" aria-labelledby="au-trilhas-titulo" hidden>
+      <h2 id="au-trilhas-titulo" tabindex="-1">Etapa 3 de 4: Efeitos e trilhas</h2>
+      <p>
+        Cada trilha entra por baixo do áudio principal, com volume próprio.
+        Em loop, ela repete quantas voltas forem precisas até o fim do
+        vídeo — serve de fundo musical contínuo. Estática, ela toca uma vez
+        só — serve pra uma paisagem sonora ou um som pontual. Qualquer dos
+        dois tipos pode começar desde o começo do vídeo ou a partir de um
+        tempo determinado. Pode adicionar quantas quiser.
+      </p>
+
+      <button type="button" id="e-btn-trilha-arquivo">Escolher arquivo de trilha</button>
+      <p id="e-trilha-arquivo-info">Nenhum arquivo escolhido.</p>
+
+      <fieldset>
+          <legend>Tipo desta trilha</legend>
+          <div class="opcao">
+            <input type="radio" id="e-trilha-tipo-loop" name="e-trilha-tipo" value="loop" checked>
+            <label for="e-trilha-tipo-loop">Em loop: repete até o fim do vídeo.</label>
+          </div>
+          <div class="opcao">
+            <input type="radio" id="e-trilha-tipo-estatico" name="e-trilha-tipo" value="estatico">
+            <label for="e-trilha-tipo-estatico">Estática: toca uma vez só.</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quando a trilha começa</legend>
+          <div class="opcao">
+            <input type="radio" id="e-trilha-inicio-comeco" name="e-trilha-inicio" value="comeco" checked>
+            <label for="e-trilha-inicio-comeco">Desde o começo do vídeo.</label>
+          </div>
+          <div class="opcao">
+            <input type="radio" id="e-trilha-inicio-tempo" name="e-trilha-inicio" value="tempo">
+            <label for="e-trilha-inicio-tempo">A partir de um tempo determinado.</label>
+          </div>
+        </fieldset>
+
+        <div id="e-trilha-bloco-tempo" hidden>
+          <p id="e-trilha-dica" class="nota" tabindex="0">Para tocar a partir de um tempo determinado, escolha o tempo em que a trilha deve começar, marcando o ponto desejado pelo player. A barra de espaço toca e pausa. Quando estiver no ponto certo, vá até o botão Marcar aqui e aperte Enter. Se preferir, digite o tempo no campo.</p>
+          <label for="e-trilha-tempo">Esta trilha começa em (hora:minuto:segundo)</label>
+          <input type="text" id="e-trilha-tempo" value="00:00:00">
+          <div class="controles au-coluna">
+            <button type="button" id="e-t-tocar">Tocar ou pausar, Espaço</button>
+            <button type="button" id="e-t-voltar1">Voltar meio segundo, seta para a esquerda</button>
+            <button type="button" id="e-t-avancar1">Avançar meio segundo, seta para a direita</button>
+          </div>
+          <button type="button" id="e-trilha-marcar">Marcar aqui</button>
+        </div>
+
+        <div id="e-trilha-bloco-fade">
+          <div class="opcao">
+            <input type="checkbox" id="e-trilha-fade-entrada" checked>
+            <label for="e-trilha-fade-entrada">
+              Entrar com fade suave (1,5 segundo). Desmarcado, a trilha
+              entra seca, como um efeito sonoro.
+            </label>
+          </div>
+          <div class="opcao">
+            <input type="checkbox" id="e-trilha-fade-saida" checked>
+            <label for="e-trilha-fade-saida">
+              Sair com fade suave (3 segundos). Desmarcado, ela corta seco
+              no fim.
+            </label>
+          </div>
+        </div>
+
+        <button type="button" id="e-trilha-previa">Ouvir prévia da mistura aqui (6 segundos)</button>
+        <audio id="e-previa-audio" preload="none"></audio>
+
+        <label for="e-trilha-volume">Volume desta trilha</label>
+      <select id="e-trilha-volume" aria-describedby="e-desc-vol"></select>
+      <p id="e-desc-vol">
+        Por baixo de fala, quanto mais baixa melhor: trilha alta engole a voz.
+      </p>
+
+      <button type="button" id="e-btn-add-trilha">Adicionar trilha</button>
+
+      <div id="e-trilha-conflito" hidden>
+        <p id="e-trilha-conflito-texto"></p>
+        <button type="button" id="e-trilha-conflito-encerrar">Encerrar a trilha anterior aqui</button>
+        <button type="button" id="e-trilha-conflito-sobrepor">Deixar as duas tocando</button>
+      </div>
+
+      <h3 id="e-t-lista-trilhas">Trilhas adicionadas</h3>
+      <ul id="e-lista-trilhas" aria-labelledby="e-t-lista-trilhas"></ul>
+
+      <div class="controles au-coluna">
+        <button type="button" id="aut-tocar">Tocar ou pausar, Espaço</button>
+        <button type="button" id="aut-voltar1">Voltar meio segundo, seta para a esquerda</button>
+        <button type="button" id="aut-avancar1">Avançar meio segundo, seta para a direita</button>
+        <button type="button" id="aut-comeco">Começo do áudio, Home</button>
+        <button type="button" id="aut-final">Final do áudio, End</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aut-continuar">Salvar e continuar</button>
+        <button type="button" id="aut-voltar">Voltar</button>
+        <button type="button" id="aut-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.6: tela 4 do áudio. Predefinições e as três bandas do Ajuste do áudio do Editar vídeo
+         (src/ajuste.js, as do Voz da Cena 1.2.1), mono da 1.0.4 (src/mono.js, 6b666c4) e limitador
+         da 1.0.2 (8fa9512), sem mudança. -->
+    <section id="au-eq" aria-labelledby="au-eq-titulo" hidden>
+      <h2 id="au-eq-titulo" tabindex="-1">Etapa 4 de 4: Equalização e ajustes</h2>
+      <div class="au-coluna" id="aue-predefinicoes" role="group" aria-labelledby="aue-t-pre">
+        <h3 id="aue-t-pre">Equalizações pré-definidas</h3>
+      </div>
+      <fieldset class="au-coluna">
+        <legend>Som</legend>
+        <div class="opcao">
+          <input type="radio" id="aue-estereo" name="aue-canais" value="estereo" checked>
+          <label for="aue-estereo">Estéreo</label>
+        </div>
+        <div class="opcao">
+          <input type="radio" id="aue-mono" name="aue-canais" value="mono">
+          <label for="aue-mono">Mono</label>
+        </div>
+      </fieldset>
+      <div class="opcao">
+        <input type="checkbox" id="aue-limitador" checked>
+        <label for="aue-limitador">Limitador de pico, para evitar estouros</label>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aue-previa">Ouvir prévia, Alt P</button>
+      </div>
+      <audio id="aue-previa-player" preload="none"></audio>
+      <div class="au-coluna" id="aue-bandas">
+        <label for="aue-graves">Graves</label>
+        <input type="range" id="aue-graves" min="-12" max="12" step="1" value="0">
+        <label for="aue-medios">Médios</label>
+        <input type="range" id="aue-medios" min="-12" max="12" step="1" value="0">
+        <label for="aue-agudos">Agudos</label>
+        <input type="range" id="aue-agudos" min="-12" max="12" step="1" value="0">
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aue-tocar">Tocar ou pausar, Espaço</button>
+        <button type="button" id="aue-voltar1">Voltar meio segundo, seta para a esquerda</button>
+        <button type="button" id="aue-avancar1">Avançar meio segundo, seta para a direita</button>
+        <button type="button" id="aue-comeco">Começo do áudio, Home</button>
+        <button type="button" id="aue-final">Final do áudio, End</button>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="aue-continuar">Salvar e continuar</button>
+        <button type="button" id="aue-voltar">Voltar</button>
+        <button type="button" id="aue-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.4: verificação de silêncios, pop-up completo -->
+    <dialog id="aus-dlg" aria-labelledby="aus-dlg-qtd">
+      <p id="aus-dlg-qtd"></p>
+      <div class="au-coluna">
+        <button type="button" id="aus-ouvir">Ouvir prévia</button>
+        <button type="button" id="aus-tentar">Tentar de novo</button>
+        <button type="button" id="aus-dlg-continuar">Salvar e continuar</button>
+      </div>
+      <audio id="aus-previa-player" preload="auto"></audio>
+    </dialog>
+
+    <section id="au-descartes" aria-labelledby="au-descartes-titulo" hidden>
+      <h2 id="au-descartes-titulo" tabindex="-1">Descartes</h2>
+      <p id="au-descartes-vazio" hidden></p>
+      <ul id="au-lista" class="au-coluna"></ul>
+      <button type="button" id="au-descartes-voltar">Voltar</button>
+    </section>
+
+    <section id="au-previa" aria-labelledby="au-previa-titulo" hidden>
+      <h2 id="au-previa-titulo" tabindex="-1">Prévia de 10 segundos</h2>
+      <audio id="au-previa-player" preload="auto"></audio>
+      <button type="button" id="au-previa-voltar">Voltar</button>
+    </section>
+
+    <section id="au-pronto" aria-labelledby="au-pronto-titulo" hidden>
+      <h2 id="au-pronto-titulo" tabindex="-1">Vídeo salvo</h2>
+      <p id="au-pronto-info"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="au-pronto-pasta">Abrir a pasta</button>
+        <button type="button" id="au-pronto-inicio">Voltar ao início</button>
+        <button type="button" id="au-pronto-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <!-- 1.8: Alt Z, volta para a última versão salva, perguntando antes. -->
+    <dialog id="au-dlg-desfazer" aria-labelledby="au-desfazer-texto">
+      <p id="au-desfazer-texto"></p>
+      <div class="au-coluna">
+        <button type="button" id="au-desfazer-sim">Sim</button>
+        <button type="button" id="au-desfazer-nao">Não</button>
+      </div>
+    </dialog>
+
+    <dialog id="au-dlg-salto" aria-labelledby="au-salto-rotulo">
+      <form method="dialog">
+        <label for="au-salto" id="au-salto-rotulo">Salto programado (minuto:segundo)</label>
+        <input type="text" id="au-salto" autocomplete="off" inputmode="numeric">
+        <button value="ok">OK</button>
+        <button value="cancelar">Cancelar</button>
+      </form>
+    </dialog>
+  </div>
+
+  <!-- ================= 1.8: CONFIGURAÇÕES ================= -->
+  <!-- ================= 2.0: EXTRAS ================= -->
+  <div id="tela-extras" hidden>
+    <h1>Extras</h1>
+    <p>Duas ferramentas que usam modelos baixados para o computador. Depois de baixados, funcionam sem internet.</p>
+
+    <section aria-labelledby="ex-t-transcrever">
+      <h2 id="ex-t-transcrever">Transcrever áudio</h2>
+      <p id="ex-tr-info" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="ex-tr-baixar-pequeno">Baixar o modelo pequeno, uns 190 MB</button>
+        <button type="button" id="ex-tr-baixar-grande">Baixar o modelo grande, uns 1,6 GB</button>
+        <button type="button" id="ex-tr-cancelar-baixar" hidden>Cancelar o download</button>
+      </div>
+      <div id="ex-tr-grupo" hidden>
+        <label for="ex-tr-modelo">Modelo</label>
+        <select id="ex-tr-modelo"></select>
+      </div>
+      <div class="controles au-coluna">
+        <button type="button" id="ex-tr-escolher" hidden>Escolher um áudio ou vídeo e transcrever</button>
+        <button type="button" id="ex-tr-cancelar" hidden>Cancelar a transcrição</button>
+      </div>
+      <progress id="ex-tr-barra" max="100" value="0" hidden aria-hidden="true"></progress>
+      <p id="ex-tr-estado" class="estado" tabindex="-1"></p>
+    </section>
+
+    <section aria-labelledby="ex-t-descrever">
+      <h2 id="ex-t-descrever">Descrever imagem</h2>
+      <p id="ex-ds-info" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="ex-ds-baixar">Baixar o descritor de imagens, experimental, uns 3,3 GB</button>
+        <button type="button" id="ex-ds-cancelar-baixar" hidden>Cancelar o download</button>
+        <button type="button" id="ex-ds-escolher" hidden>Escolher uma imagem e descrever</button>
+        <button type="button" id="ex-ds-cancelar" hidden>Cancelar a descrição</button>
+      </div>
+      <progress id="ex-ds-barra" max="100" value="0" hidden aria-hidden="true"></progress>
+      <p id="ex-ds-texto" class="estado" tabindex="-1"></p>
+    </section>
+
+    <div class="controles au-coluna">
+      <button type="button" id="ex-voltar">Voltar</button>
+      <button type="button" id="ex-fechar">Fechar</button>
+    </div>
+  </div>
+
+  <!-- ================= 2.0.7: TIRAR FOTOS ================= -->
+  <!-- ================= 3.0: GRAVAR ÁUDIO ================= -->
+  <div id="tela-gaudio" hidden>
+    <h1>Gravar áudio</h1>
+    <div class="etapa" id="ga-e1">
+      <h2 id="ga-e1-titulo" tabindex="-1">Etapa 1 de 2: Fonte e microfone</h2>
+      <label for="ga-mic">Microfone</label>
+      <select id="ga-mic"></select>
+      <fieldset id="ga-grupo-fonte" class="escolha"><legend>O que gravar de áudio</legend></fieldset>
+      <div class="check">
+        <input type="checkbox" id="ga-retorno" aria-describedby="ga-retorno-desc">
+        <label for="ga-retorno">Retorno do microfone</label>
+        <p id="ga-retorno-desc" class="desc">Você se ouve no fone enquanto grava. O retorno não entra na gravação. Use fone de ouvido, para não dar eco.</p>
+      </div>
+      <p id="ga-aviso" class="estado" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="ga-e1-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="ga-e1-fechar">Voltar ao início</button>
+      </div>
+    </div>
+    <div class="etapa" id="ga-e2" hidden>
+      <h2 id="ga-e2-titulo" tabindex="-1">Etapa 2 de 2: Gravar</h2>
+      <p class="nota" tabindex="0">Alt R começa a gravar e, apertado de novo, para e guarda. Alt P pausa e continua. Os bipes avisam cada coisa.</p>
+      <p id="ga-estado" class="estado" tabindex="-1">Pronto para gravar.</p>
+      <div id="ga-gravando-bloco">
+        <div class="controles au-coluna">
+          <button type="button" id="ga-gravar" data-atalho="R">Gravar, Alt R</button>
+          <button type="button" id="ga-pausar" data-atalho="P" disabled>Pausar, Alt P</button>
+          <button type="button" id="ga-e2-voltar" data-atalho="V">Voltar, Alt V</button>
+        </div>
+      </div>
+      <div id="ga-decidir" hidden>
+        <h3 id="ga-decidir-titulo" tabindex="-1">Áudio gravado: o que fazer com ele?</h3>
+        <p id="ga-decidir-info" class="nota" tabindex="0"></p>
+        <div class="controles au-coluna">
+          <button type="button" id="ga-salvar-fechar" data-atalho="S">Salvar e fechar o programa, Alt S</button>
+          <button type="button" id="ga-salvar-continuar" data-atalho="A">Salvar e continuar para o Editar áudio, Alt A</button>
+          <button type="button" id="ga-descartar" data-atalho="V">Voltar, descartar este áudio e gravar outro, Alt V</button>
+          <button type="button" id="ga-salvar-inicio">Salvar e voltar ao início</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tela-post" hidden>
+    <h1>Criar post</h1>
+
+    <div class="etapa" id="po-e1">
+      <h2 id="po-e1-titulo" tabindex="-1">Etapa 1 de 5: Pasta do post</h2>
+      <p class="nota" tabindex="0">Cada post tem a sua pasta, dentro de Posts, na pasta Olho da Cena. As imagens saem numeradas, e a ordem dos números é a ordem de postar. Se a pasta já existir, o programa diz quantos arquivos ela tem e qual é o próximo número.</p>
+      <label for="po-pasta">Escreva o nome da pasta de saída do post</label>
+      <input type="text" id="po-pasta" maxlength="60" autocomplete="off">
+      <div class="controles au-coluna">
+        <button type="button" id="po-e1-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="po-e1-fechar">Voltar ao início</button>
+      </div>
+    </div>
+
+    <div class="etapa" id="po-e2" hidden>
+      <h2 id="po-e2-titulo" tabindex="-1">Etapa 2 de 5: Formato e proporção</h2>
+      <fieldset id="po-grupo-formato" class="escolha"><legend>Formato do post (obrigatório)</legend></fieldset>
+      <fieldset id="po-grupo-prop" class="escolha" hidden><legend>Proporção da imagem (obrigatório)</legend></fieldset>
+      <p id="po-prop-unica" class="nota" tabindex="0" hidden></p>
+      <fieldset id="po-grupo-capa" class="escolha" hidden><legend>Quer uma foto sua de capa? A capa é a primeira imagem do post</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="po-e2-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="po-e2-voltar" data-atalho="V">Voltar, Alt V</button>
+      </div>
+    </div>
+
+    <div class="etapa" id="po-e3" hidden>
+      <h2 id="po-e3-titulo" tabindex="-1">Etapa 3 de 5: Moldura</h2>
+      <p id="po-aviso" class="nota" tabindex="0" hidden></p>
+      <p class="nota" tabindex="0">A moldura recebe o texto no lugar da foto. Em cada opção, o programa diz quanto texto cabe.</p>
+      <fieldset id="po-grupo-moldura" class="escolha"><legend>Moldura, opções em seções que abrem e fecham</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="po-e3-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="po-e3-voltar" data-atalho="V">Voltar, Alt V</button>
+      </div>
+    </div>
+
+    <div class="etapa" id="po-e4" hidden>
+      <h2 id="po-e4-titulo" tabindex="-1">Etapa 4 de 5: Figurinha, opcional</h2>
+      <p id="po-fig-info" class="nota" tabindex="0"></p>
+      <fieldset id="po-grupo-figurinha" class="escolha"><legend>Figurinha, opcional. Só aparecem as que combinam com a moldura</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="po-e4-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="po-e4-voltar" data-atalho="V">Voltar, Alt V</button>
+      </div>
+    </div>
+
+    <div class="etapa" id="po-e5" hidden>
+      <h2 id="po-e5-titulo" tabindex="-1">Etapa 5 de 5: Texto e salvar</h2>
+      <canvas id="po-final" aria-hidden="true"></canvas>
+      <p id="po-capacidade" class="nota" tabindex="0"></p>
+      <label for="po-texto" id="po-texto-rotulo">Texto do post, você pode escrever ou colar</label>
+      <textarea id="po-texto" rows="8" aria-describedby="po-marcas po-contador"></textarea>
+      <p id="po-marcas" class="desc">Marcações: # no começo da linha faz um título e ## faz um subtítulo. Uma palavra entre asteriscos, como *destaque*, fica em negrito. Listas começam com 1., com hífen ou com asterisco e espaço: ao apertar Enter o programa continua a lista, e Enter numa linha vazia termina. Uma linha em branco separa os parágrafos.</p>
+      <p id="po-contador" class="nota">0 caracteres.</p>
+      <p id="po-salvo" class="estado" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="po-salvar" data-atalho="S">Salvar o post, Alt S</button>
+        <button type="button" id="po-calcular" data-atalho="T" hidden>Calcular os slides, Alt T</button>
+        <button type="button" id="po-resumo" data-atalho="D">Resumo do post, Alt D</button>
+        <button type="button" id="po-panorama" data-atalho="G">Visão geral do conjunto, Alt G</button>
+        <button type="button" id="po-descrever" data-atalho="Q">Descrever o post com o descritor, Alt Q</button>
+        <button type="button" id="po-ordem" data-atalho="L">Ouvir a ordem de postar, Alt L</button>
+        <button type="button" id="po-dicas-abrir">Dicas de escrita do seu texto</button>
+        <button type="button" id="po-outro" data-atalho="O">Fazer outro post, em outra pasta, Alt O</button>
+        <button type="button" id="po-e5-voltar" data-atalho="V">Voltar, Alt V</button>
+        <button type="button" id="po-abrir-pasta">Abrir a pasta do post</button>
+        <button type="button" id="po-e5-fechar">Voltar ao início</button>
+      </div>
+    </div>
+
+    <dialog id="po-dicas" aria-labelledby="po-dicas-titulo">
+      <h2 id="po-dicas-titulo" tabindex="-1">Dicas de escrita do seu texto</h2>
+      <div id="po-dicas-texto"></div>
+      <div class="controles"><button type="button" id="po-dicas-fechar">Fechar</button></div>
+    </dialog>
+  </div>
+
+  <div id="tela-foto" hidden>
+    <h1>Tirar fotos</h1>
+    <canvas id="ft-previa" aria-hidden="true" hidden></canvas>
+
+    <div class="etapa" id="ft-e1">
+      <h2 id="ft-e1-titulo" tabindex="-1">Etapa 1 de 4: Proporção da foto</h2>
+      <fieldset id="ft-grupo-prop" class="escolha"><legend>Proporção da foto (obrigatório)</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="ft-e1-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="ft-e1-fechar">Voltar ao início</button>
+      </div>
+    </div>
+
+    <div class="etapa" id="ft-e2" hidden>
+      <h2 id="ft-e2-titulo" tabindex="-1">Etapa 2 de 4: Câmera e foto</h2>
+      <div id="ft-captura-bloco">
+      <p class="nota">Alt E fala o enquadramento: onde está o rosto, quanto do corpo aparece e o que mais aparece na imagem. Alt Q descreve o que a câmera mostra, com o descritor de imagens, se ele estiver instalado.</p>
+      <label for="ft-camera">Câmera</label>
+      <select id="ft-camera"></select>
+      <div class="check">
+        <input type="checkbox" id="ft-seguir" aria-describedby="ft-seguir-desc">
+        <label for="ft-seguir">Seguir o rosto na prévia e na foto</label>
+        <p id="ft-seguir-desc" class="desc">Indicação: Quando você não tem como conferir se está no meio da câmera, ou se mexe um pouco antes da foto. Contraindicação: Quando tem outra pessoa ao seu lado que também precisa aparecer, porque a imagem acompanha só um rosto. Descrição: O pedaço da câmera que vira foto desliza até o seu rosto, que sai no meio da imagem. Na foto deitada, de 16 por 9, não faz diferença.</p>
+      </div>
+      <label for="ft-timer">Temporizador</label>
+      <select id="ft-timer" aria-describedby="ft-timer-desc">
+        <option value="0">Sem temporizador, a foto sai na hora</option>
+        <option value="3">3 segundos</option>
+        <option value="5">5 segundos</option>
+        <option value="15">15 segundos</option>
+      </select>
+      <p id="ft-timer-desc" class="desc">Use as setas para cima e para baixo para escolher. Indicação: Foto de si mesma. Com 3 segundos dá tempo de apertar e se ajeitar, com 5 de sentar direito e com 15 de se levantar e arrumar o ambiente. Contraindicação: Quando outra pessoa tira a foto, deixe sem temporizador. Descrição: Bipes marcam a contagem, um por segundo nos três últimos e um a cada cinco segundos antes disso, e um bipe agudo avisa a hora da foto. Alt R de novo cancela a contagem.</p>
+      <div class="check">
+        <input type="checkbox" id="ft-falar-enq" aria-describedby="ft-falar-enq-desc">
+        <label for="ft-falar-enq">Ouvir o enquadramento da foto depois da contagem</label>
+        <p id="ft-falar-enq-desc" class="desc">Só vale com o temporizador ligado. Indicação: Quando você muda de lugar durante a contagem, por exemplo se levanta e se afasta, e precisa saber se deu certo. Contraindicação: Quando quer seguir sem esperar a fala. Descrição: Os bipes contam, a foto é tirada no bipe agudo e o programa fala o enquadramento dessa foto: onde está o seu rosto, quanto do corpo aparece e o que mais aparece. Se não gostar, descarte e tire outra.</p>
+      </div>
+      <p id="ft-estado-foto" class="estado" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="ft-tirar" data-atalho="R">Tirar a foto, Alt R</button>
+        <button type="button" id="ft-enquadre" data-atalho="E">Falar o enquadramento, Alt E</button>
+        <button type="button" id="ft-e2-voltar" data-atalho="V">Voltar, Alt V</button>
+      </div>
+      </div>
+      <div id="ft-revisao" hidden>
+        <h3 id="ft-revisao-titulo" tabindex="-1">Foto tirada: o que fazer com ela?</h3>
+        <p id="ft-revisao-info" class="nota" tabindex="0"></p>
+        <div class="controles au-coluna">
+          <button type="button" id="ft-descartar" data-atalho="D">Descartar a foto e tirar outra, Alt D</button>
+          <button type="button" id="ft-r-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+          <button type="button" id="ft-enquadre-foto" data-atalho="E">Falar o enquadramento desta foto, Alt E</button>
+          <button type="button" id="ft-r-voltar" data-atalho="V">Voltar, Alt V</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="etapa" id="ft-e3" hidden>
+      <h2 id="ft-e3-titulo" tabindex="-1">Etapa 3 de 4: Fundo e moldura</h2>
+      <canvas id="ft-resultado" aria-hidden="true"></canvas>
+      <p id="ft-cores" class="nota" tabindex="0" hidden></p>
+      <p id="ft-contraste" class="nota" tabindex="0" hidden></p>
+      <p id="ft-explica" class="nota" tabindex="0">Como escolher. No nome de cada opção, F quer dizer fundo completo e M quer dizer moldura. Um fundo completo é um cenário detalhado, como um escritório ou uma praia: ele tira o fundo real da sua foto e coloca o cenário no lugar, e o resultado é natural, como se você estivesse lá. Uma moldura é um enquadramento: a maioria também tira o fundo real, põe um fundo desenhado e enfeites em volta de você, e o resultado parece um cartão ilustrado, menos natural. As molduras Polaroide e Filme mantêm o fundo real da sua foto, e são as mais naturais. Sem mudar o fundo e Borrar o fundo também mantêm o seu fundo real. Com qualquer uma das opções você poderá escrever na foto e pôr uma figurinha na próxima etapa.</p>
+      <p id="ft-aviso-molduras" class="nota" tabindex="0" hidden></p>
+      <fieldset id="ft-grupo-visual" class="escolha"><legend>Fundo da foto, opções em seções que abrem e fecham</legend></fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="ft-e3-continuar" data-atalho="A">Salvar e continuar, Alt A</button>
+        <button type="button" id="ft-resumo-3" data-atalho="D">Resumo da foto, Alt D</button>
+        <button type="button" id="ft-e3-voltar" data-atalho="V">Voltar e tirar outra foto, Alt V</button>
+      </div>
+    </div>
+
+    <div class="etapa" id="ft-e4" hidden>
+      <h2 id="ft-e4-titulo" tabindex="-1">Etapa 4 de 4: Escrito e figurinha</h2>
+      <canvas id="ft-final" aria-hidden="true"></canvas>
+      <p class="nota" tabindex="0">O programa escolhe onde ficam o escrito e a figurinha, longe do seu rosto e das partes mais cheias da imagem, e fala o que escolheu.</p>
+      <fieldset id="ft-grupo-escrever" class="escolha"><legend>Quer escrever na foto? Vale com qualquer fundo ou moldura</legend></fieldset>
+      <div id="ft-bloco-texto" hidden>
+        <fieldset id="ft-grupo-tipo-escrito" class="escolha"><legend>Tipo de escrito</legend></fieldset>
+        <p id="ft-info-texto" class="nota" tabindex="0"></p>
+        <label for="ft-texto">Escrito na foto</label>
+        <input type="text" id="ft-texto" maxlength="40" aria-describedby="ft-contador">
+        <p id="ft-contador" class="nota">Restam 40 caracteres.</p>
+      </div>
+      <fieldset id="ft-grupo-figurinha" class="escolha"><legend>Figurinha, opcional. Vale com qualquer fundo ou moldura</legend></fieldset>
+      <div class="check" id="ft-bloco-frase" hidden>
+        <input type="checkbox" id="ft-usar-frase" aria-describedby="ft-usar-frase-desc">
+        <label for="ft-usar-frase">Usar a frase desta figurinha como escrito da foto</label>
+        <p id="ft-usar-frase-desc" class="desc">Indicação: Quando a frase é parte da graça da figurinha. Contraindicação: Quando você quer escrever outra coisa. Descrição: Escreve a frase na foto, no tipo Frase, em até três linhas e letras menores, no lugar mais livre, longe do seu rosto. Você ainda pode editar o texto depois.</p>
+      </div>
+      <p id="ft-salvo" class="estado" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="ft-salvar" data-atalho="S">Salvar a foto, Alt S</button>
+        <button type="button" id="ft-resumo-4" data-atalho="D">Resumo da foto, Alt D</button>
+        <button type="button" id="ft-descrever" data-atalho="Q">Descrever a foto, Alt Q</button>
+        <button type="button" id="ft-e4-voltar" data-atalho="V">Voltar, Alt V</button>
+        <button type="button" id="ft-abrir-pasta">Abrir a pasta Olho da Cena</button>
+        <button type="button" id="ft-e4-fechar">Voltar ao início</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 2.0.5: CONVERTER ÁUDIOS EM LOTE EM VÍDEO SIMPLES ================= -->
+  <div id="tela-lote" hidden>
+    <h1>Converter áudios em lote em vídeo simples</h1>
+    <p>Cada áudio da pasta vira um vídeo leve, com o título igual ao nome do arquivo.</p>
+    <p id="lt-dica" class="nota" tabindex="0">O título de cada vídeo é igual ao nome do arquivo de áudio. Monte a pasta com tudo que você quer que conste nos vídeos, incluindo a logo e a imagem, se quiser. A logo é a imagem com o nome logo, e qualquer outra imagem vira o fundo. Sem logo e sem imagem, o vídeo fica com fundo preto.</p>
+    <div class="controles au-coluna">
+      <button type="button" id="lt-pasta">Escolher a pasta</button>
+    </div>
+    <p id="lt-pasta-info" tabindex="-1">Nenhuma pasta escolhida.</p>
+    <fieldset id="lt-grupo-formato" class="escolha"><legend>Proporção dos vídeos</legend></fieldset>
+    <div class="controles au-coluna">
+      <button type="button" id="lt-converter" data-atalho="A">Converter, Alt A</button>
+      <button type="button" id="lt-cancelar" hidden>Cancelar a conversão</button>
+    </div>
+    <progress id="lt-barra" max="100" value="0" hidden aria-hidden="true"></progress>
+    <p id="lt-andamento" class="estado" tabindex="-1"></p>
+    <div class="controles au-coluna">
+      <button type="button" id="lt-voltar">Voltar</button>
+      <button type="button" id="lt-fechar">Fechar</button>
+    </div>
+  </div>
+
+  <dialog id="lt-dlg" aria-labelledby="lt-dlg-titulo">
+    <h2 id="lt-dlg-titulo">A imagem não combina bem com este formato</h2>
+    <div id="lt-dlg-avisos"></div>
+    <div class="controles au-coluna">
+      <button type="button" id="lt-dlg-seguir">Converter assim mesmo</button>
+      <button type="button" id="lt-dlg-trocar">Trocar a proporção</button>
+    </div>
+  </dialog>
+
+  <div id="tela-config" hidden>
+    <h1>Configurações</h1>
+    <section aria-labelledby="cf-t-pasta">
+      <h2 id="cf-t-pasta">Pasta de arquivos do Olho da Cena</h2>
+      <p id="cf-pasta"></p>
+      <button type="button" id="cf-alterar-pasta">Alterar a pasta</button>
+    </section>
+      <fieldset class="au-coluna">
+        <legend>Confirmação dos atalhos</legend>
+        <div class="opcao"><input type="radio" id="cf-confirmacao-ambos" name="cf-confirmacao" value="ambos"><label for="cf-confirmacao-ambos">Som e beep</label></div>
+        <div class="opcao"><input type="radio" id="cf-confirmacao-som" name="cf-confirmacao" value="som"><label for="cf-confirmacao-som">Só som</label></div>
+        <div class="opcao"><input type="radio" id="cf-confirmacao-beep" name="cf-confirmacao" value="beep"><label for="cf-confirmacao-beep">Só beep</label></div>
+      </fieldset>
+      <fieldset class="au-coluna">
+        <legend>Áudios gravados</legend>
+        <div class="opcao"><input type="radio" id="cf-gravados-estereo" name="cf-gravados" value="estereo"><label for="cf-gravados-estereo">Estéreo</label></div>
+        <div class="opcao"><input type="radio" id="cf-gravados-mono" name="cf-gravados" value="mono"><label for="cf-gravados-mono">Mono</label></div>
+      </fieldset>
+      <fieldset class="au-coluna">
+        <legend>Áudios importados</legend>
+        <div class="opcao"><input type="radio" id="cf-importados-estereo" name="cf-importados" value="estereo"><label for="cf-importados-estereo">Estéreo</label></div>
+        <div class="opcao"><input type="radio" id="cf-importados-mono" name="cf-importados" value="mono"><label for="cf-importados-mono">Mono</label></div>
+      </fieldset>
+      <fieldset>
+        <legend>Ao apertar Alt S</legend>
+        <div class="opcao"><input type="radio" id="cf-altSPergunta-automatico" name="cf-altSPergunta" value="automatico"><label for="cf-altSPergunta-automatico">Salvar automaticamente, no formato abaixo</label></div>
+        <div class="opcao"><input type="radio" id="cf-altSPergunta-perguntar" name="cf-altSPergunta" value="perguntar"><label for="cf-altSPergunta-perguntar">Perguntar a cada vez</label></div>
+      </fieldset>
+      <fieldset class="au-coluna">
+        <legend>O Alt S salva em</legend>
+        <div class="opcao"><input type="radio" id="cf-altS-ambos" name="cf-altS" value="ambos"><label for="cf-altS-ambos">Áudio e vídeo</label></div>
+        <div class="opcao"><input type="radio" id="cf-altS-video" name="cf-altS" value="video"><label for="cf-altS-video">Só vídeo</label></div>
+        <div class="opcao"><input type="radio" id="cf-altS-audio" name="cf-altS" value="audio"><label for="cf-altS-audio">Só áudio</label></div>
+      </fieldset>
+      <fieldset>
+        <legend>Idioma da descrição das imagens</legend>
+        <div class="opcao"><input type="radio" id="cf-idiomaDescricao-pt" name="cf-idiomaDescricao" value="pt"><label for="cf-idiomaDescricao-pt">Português do Brasil</label></div>
+        <div class="opcao"><input type="radio" id="cf-idiomaDescricao-es" name="cf-idiomaDescricao" value="es"><label for="cf-idiomaDescricao-es">Español</label></div>
+        <div class="opcao"><input type="radio" id="cf-idiomaDescricao-en" name="cf-idiomaDescricao" value="en"><label for="cf-idiomaDescricao-en">English</label></div>
+      </fieldset>
+      <fieldset class="au-coluna">
+        <legend>Vídeos descartados</legend>
+        <div class="opcao"><input type="radio" id="cf-descartados-lixeira" name="cf-descartados" value="lixeira"><label for="cf-descartados-lixeira">Vão para a Lixeira</label></div>
+        <div class="opcao"><input type="radio" id="cf-descartados-apagar" name="cf-descartados" value="apagar"><label for="cf-descartados-apagar">São apagados em definitivo</label></div>
+      </fieldset>
+      <fieldset class="au-coluna">
+        <legend>Áudios e vídeos</legend>
+        <div class="opcao"><input type="radio" id="cf-pastas-unica" name="cf-pastas" value="unica"><label for="cf-pastas-unica">Numa única pasta</label></div>
+        <div class="opcao"><input type="radio" id="cf-pastas-dedicadas" name="cf-pastas" value="dedicadas"><label for="cf-pastas-dedicadas">Em pastas dedicadas</label></div>
+      </fieldset>
+    <div class="controles">
+      <button type="button" id="cf-voltar">Voltar</button>
+    </div>
+  </div>
+
+  <!-- ================= TELA DE MONTAR ================= -->
+  <div id="tela-gerar" hidden>
+    <h1>Montar vídeo</h1>
+
+    <!-- 1.9: etapas curtas, no mesmo padrão das etapas de áudio do Gravar vídeo. -->
+    <nav aria-label="Etapas do vídeo" id="g-etapas">
+      <button type="button" id="g-nav-1" data-etapa="1" aria-current="step">Etapa 1: Áudio</button>
+      <button type="button" id="g-nav-2" data-etapa="2">Etapa 2: Orientação e título</button>
+      <button type="button" id="g-nav-3" data-etapa="3">Etapa 3: Imagens</button>
+      <button type="button" id="g-nav-4" data-etapa="4">Etapa 4: Legendas</button>
+      <button type="button" id="g-nav-5" data-etapa="5">Etapa 5: Títulos em outros momentos</button>
+      <button type="button" id="g-nav-6" data-etapa="6">Etapa 6: Logo</button>
+      <button type="button" id="g-nav-7" data-etapa="7">Etapa 7: Encerramento</button>
+      <button type="button" id="g-nav-8" data-etapa="8">Etapa 8: Atmosfera e qualidade</button>
+    </nav>
+
+    <main>
+
+    <div class="etapa" id="g-etapa-1">
+      <h2 id="g-etapa-1-titulo" tabindex="-1">Etapa 1 de 8: Áudio</h2>
+
+      <section aria-labelledby="t-audio">
+        <h3 id="t-audio">Áudio</h3>
+        <button type="button" id="btn-audio">Escolher áudio</button>
+        <p id="info-audio">Nenhum áudio escolhido.</p>
+
+        <button type="button" id="btn-add-audio">Adicionar mais um áudio (opcional)</button>
+
+        <h3 id="t-lista-audios">Áudios, na ordem em que vão tocar</h3>
+        <p>
+          Cada áudio pode ter a sua velocidade: 1,25x, 1,5x ou 2x. A voz não
+          muda de tom. "Ouvir prévia" toca 6 segundos já na velocidade
+          escolhida. Com um áudio só e velocidade normal, não precisa montar
+          nada.
+        </p>
+        <ul id="lista-audios" aria-labelledby="t-lista-audios"></ul>
+        <audio id="audio-previa-velocidade" preload="none"></audio>
+
+        <button type="button" id="btn-montar-audio" hidden>Montar o áudio final</button>
+        <p id="audio-status" role="status" aria-live="polite"></p>
+      </section>
+      <p class="nota">Depois do Salvar e continuar, o áudio passa pelas mesmas quatro etapas de áudio do Gravar vídeo: cortes, silêncios e crossfade, efeitos e trilhas, equalização e ajustes.</p>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-1">Salvar e continuar</button>
+          <button type="button" id="g-voltar-1">Voltar</button>
+          <button type="button" id="g-fechar-1">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-2" hidden>
+      <h2 id="g-etapa-2-titulo" tabindex="-1">Etapa 2 de 8: Orientação e título</h2>
+
+      <section aria-labelledby="t-orientacao">
+        <h3 id="t-orientacao">Orientação do vídeo</h3>
+        <p>
+          Escolha agora se o vídeo é horizontal, vertical ou quadrado. É a partir
+          disso que o programa avisa se uma imagem não combina, então
+          decida antes de adicionar as imagens.
+        </p>
+        <label for="formato">Formato da tela</label>
+        <select id="formato" aria-describedby="descricao-formato"></select>
+        <p id="descricao-formato"></p>
+      </section>
+
+      <section aria-labelledby="t-titulo-simples">
+        <h3 id="t-titulo-simples">Título do vídeo (opcional)</h3>
+        <p>
+          Aparece no começo do vídeo e some sozinho. Para títulos em outros
+          momentos, use a etapa Títulos em outros momentos.
+        </p>
+        <label for="titulo-simples">Texto do título do vídeo</label>
+        <input type="text" id="titulo-simples" aria-describedby="titulo-simples-contador">
+        <p id="titulo-simples-contador"></p>
+      </section>
+
+      <section aria-labelledby="t-sem-imagens">
+        <h3 id="t-sem-imagens">Sem imagens (opcional)</h3>
+        <p>
+          Pouco aconselhável, mas existe: o vídeo vira uma tela preta com o
+          título do vídeo escrito no meio, em creme, parado até o fim do
+          áudio. Serve para quem só quer subir um áudio como vídeo. Com isto
+          marcado, o título acima é obrigatório e as imagens deixam de ser
+          pedidas.
+        </p>
+        <div class="opcao">
+          <input type="checkbox" id="g-sem-imagens">
+          <label for="g-sem-imagens">Sem imagens: tela preta com o título do vídeo</label>
+        </div>
+      </section>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-2">Salvar e continuar</button>
+          <button type="button" id="g-voltar-2">Voltar</button>
+          <button type="button" id="g-fechar-2">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-3" hidden>
+      <h2 id="g-etapa-3-titulo" tabindex="-1">Etapa 3 de 8: Imagens</h2>
+
+      <p id="g-sem-imagens-aviso" hidden>Sem imagens está marcado na etapa Orientação e título: o vídeo é uma tela preta com o título. Não há imagens a escolher aqui.</p>
+
+      <section id="g-sec-modo" aria-labelledby="t-modo">
+        <h3 id="t-modo">Como as imagens ocupam o áudio</h3>
+        <fieldset>
+          <legend>Modo de distribuição</legend>
+
+          <div class="opcao">
+            <input type="radio" id="modo-looping" name="modo" value="looping" checked>
+            <label for="modo-looping">
+              Em looping: cada imagem fica um tempo fixo na tela e o ciclo se
+              repete até o áudio acabar.
+            </label>
+          </div>
+
+          <div class="opcao">
+            <input type="radio" id="modo-distribuir" name="modo" value="distribuir">
+            <label for="modo-distribuir">
+              Uma de cada vez: o tempo do áudio é dividido igualmente entre as
+              imagens, cada uma aparece uma vez só.
+            </label>
+          </div>
+
+          <div class="opcao">
+            <input type="radio" id="modo-manual" name="modo" value="manual">
+            <label for="modo-manual">
+              Manual: você ouve o áudio e marca, no momento certo, qual imagem
+              entra ali. O efeito do preset continua até a próxima marca.
+            </label>
+          </div>
+        </fieldset>
+        <p id="info-modo"></p>
+      </section>
+
+      <section id="g-sec-imagens" aria-labelledby="t-imagens">
+        <h3 id="t-imagens">Imagens</h3>
+        <button type="button" id="btn-imagens" data-atalho="i">Adicionar imagens</button>
+        <button type="button" id="btn-limpar-imagens">Remover todas</button>
+        <p id="info-imagens">Nenhuma imagem adicionada.</p>
+        <!-- 1.9.3: descritor de imagens, experimental. Na lista, Alt D descreve a imagem, Alt L muda a posição e Delete remove. -->
+        <p id="descritor-info" tabindex="-1"></p>
+
+        <h3 id="t-lista">Imagens na ordem em que vão aparecer</h3>
+        <ul id="lista-imagens" aria-labelledby="t-lista"></ul>
+      
+        <div id="bloco-manual" hidden>
+          <h3 id="t-manual">Marcar imagens ouvindo o áudio</h3>
+          <p>
+            Escolha o áudio primeiro. Toque, e no instante certo aperte
+            "Adicionar imagem aqui" — vai pedir qual imagem entra ali. Alt H
+            lista os atalhos desta parte.
+          </p>
+
+          <audio id="m-audio" preload="auto"></audio>
+
+          <div class="controles">
+            <button type="button" id="m-voltar">Voltar 5 segundos</button>
+            <button type="button" id="m-tocar" data-atalho="t">Tocar ou pausar</button>
+            <button type="button" id="m-avancar">Avançar 5 segundos</button>
+            <button type="button" id="m-onde" data-atalho="o">Onde estou</button>
+          </div>
+
+          <button type="button" id="m-adicionar" data-atalho="m">Adicionar imagem aqui</button>
+
+          <h4 id="t-lista-manual">Imagens marcadas, na ordem do áudio</h4>
+          <ul id="m-lista" aria-labelledby="t-lista-manual"></ul>
+        </div>
+</section>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-3">Salvar e continuar</button>
+          <button type="button" id="g-voltar-3">Voltar</button>
+          <button type="button" id="g-fechar-3">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-4" hidden>
+      <h2 id="g-etapa-4-titulo" tabindex="-1">Etapa 4 de 8: Legendas</h2>
+
+      <p id="g-info-legenda">Sem legenda.</p>
+      <div class="controles au-coluna">
+        <button type="button" id="g-abrir-legenda">Abrir a tela de legenda</button>
+        <button type="button" id="g-btn-tirar-legenda">Tirar a legenda</button>
+      </div>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-4">Salvar e continuar</button>
+          <button type="button" id="g-voltar-4">Voltar</button>
+          <button type="button" id="g-fechar-4">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-5" hidden>
+      <h2 id="g-etapa-5-titulo" tabindex="-1">Etapa 5 de 8: Títulos em outros momentos</h2>
+
+      <section aria-labelledby="t-titulos">
+        <h3 id="t-titulos">Títulos em outros momentos (opcional)</h3>
+        <p>
+          O título do começo do vídeo fica na etapa Orientação e título. Aqui você marca títulos em outros momentos e, se quiser, troca de preset a partir deles.
+        </p>
+        <p>
+          O texto aparece por cima da imagem, no tempo que você marcar, e some
+          sozinho. Não interfere nas imagens nem na duração do vídeo.
+        </p>
+
+        <label for="titulo-texto" id="rotulo-titulo">Texto do título 1</label>
+        <input type="text" id="titulo-texto" aria-describedby="titulo-contador">
+        <p id="titulo-contador"></p>
+
+        <label for="titulo-tempo" id="rotulo-tempo">Título 1 aparece em (hora:minuto:segundo)</label>
+        <input type="text" id="titulo-tempo" value="00:00:00"
+               aria-describedby="titulo-tempo-ajuda">
+        <p id="titulo-tempo-ajuda">
+          Pode digitar só minuto e segundo, como 3:20.
+        </p>
+
+        <label for="titulo-trocar-preset">
+          A partir deste título, trocar de preset (opcional)
+        </label>
+        <select id="titulo-trocar-preset">
+          <option value="">Não trocar — continua no preset atual</option>
+        </select>
+        <p id="titulo-trocar-preset-ajuda">
+          O vídeo inteiro usa um preset só, a não ser que você marque uma
+          troca aqui. A partir do instante deste título, a atmosfera passa a
+          ser a do preset escolhido, até o próximo título que trocar de novo.
+        </p>
+
+        <button type="button" id="btn-add-titulo">Adicionar título</button>
+
+        <h3 id="t-lista-titulos">Títulos marcados</h3>
+        <ul id="lista-titulos" aria-labelledby="t-lista-titulos"></ul>
+      </section>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-5">Salvar e continuar</button>
+          <button type="button" id="g-voltar-5">Voltar</button>
+          <button type="button" id="g-fechar-5">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-6" hidden>
+      <h2 id="g-etapa-6-titulo" tabindex="-1">Etapa 6 de 8: Logo</h2>
+
+      <section aria-labelledby="t-logos">
+        <h3 id="t-logos">Logo (opcional)</h3>
+        <p>
+          Uma imagem de marca, sem cobrir as suas imagens. Você escolhe entre
+          dois jeitos, e o programa cuida sozinho do tamanho, do fundo, da
+          sombra e das cores, combinando tudo com o preset escolhido. Pode
+          adicionar até 6 logos, misturando os dois jeitos.
+        </p>
+        <ul>
+          <li>Junto de cada título: o logo aparece logo acima do texto, a cada
+          vez que um título entra, e some com ele. Se você mudar o título, o
+          logo continua valendo.</li>
+          <li>Na faixa do topo: o programa reserva uma faixa fina no alto do
+          vídeo e encaixa as imagens no espaço que sobra, então nada é coberto.
+          O logo fica na faixa o tempo todo, ou só no trecho que você marcar.
+          A faixa existe no vídeo inteiro, e a cor dela é escolhida para o logo
+          aparecer bem.</li>
+        </ul>
+
+        <button type="button" id="l-btn-arquivo">Escolher a imagem do logo</button>
+        <p id="l-arquivo-info">Nenhum logo escolhido.</p>
+
+        <label for="l-modo">Onde o logo aparece</label>
+        <select id="l-modo">
+          <option value="titulo">Junto de cada título</option>
+          <option value="faixa">Na faixa do topo</option>
+        </select>
+
+        <div id="l-bloco-faixa" hidden>
+        <label for="l-inicio">O logo aparece a partir de (hora:minuto:segundo)</label>
+        <input type="text" id="l-inicio" value="00:00:00">
+        <label for="l-fim">O logo some em (hora:minuto:segundo). Deixe vazio para ficar até o fim</label>
+        <input type="text" id="l-fim" value="">
+
+        <p id="l-player-ajuda">
+          Para marcar ouvindo o áudio: toque, pause no ponto certo e use os
+          botões de marcar.
+        </p>
+        <audio id="l-audio" preload="auto"></audio>
+        <div class="controles">
+          <button type="button" id="l-voltar">Voltar 5 segundos</button>
+          <button type="button" id="l-tocar">Tocar ou pausar o áudio principal</button>
+          <button type="button" id="l-avancar">Avançar 5 segundos</button>
+        </div>
+        <div class="controles">
+          <button type="button" id="l-marcar-inicio">Marcar o início aqui</button>
+          <button type="button" id="l-marcar-fim">Marcar o fim aqui</button>
+        </div>
+        </div>
+
+        <button type="button" id="l-btn-add">Adicionar logo</button>
+
+        <h3 id="t-lista-logos">Logos adicionados</h3>
+        <ul id="lista-logos" aria-labelledby="t-lista-logos"></ul>
+      </section>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-6">Salvar e continuar</button>
+          <button type="button" id="g-voltar-6">Voltar</button>
+          <button type="button" id="g-fechar-6">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-7" hidden>
+      <h2 id="g-etapa-7-titulo" tabindex="-1">Etapa 7 de 8: Encerramento</h2>
+
+      <section aria-labelledby="t-fim">
+        <h3 id="t-fim">Texto de encerramento (opcional)</h3>
+        <p>
+          Aparece por cima da última imagem, enquanto ela escurece. Se quiser
+          que ele respire, deixe um segundinho de silêncio no fim do áudio.
+        </p>
+        <label for="texto-fim">Texto do fim</label>
+        <input type="text" id="texto-fim" aria-describedby="fim-contador">
+        <p id="fim-contador"></p>
+      </section>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-continuar-7">Salvar e continuar</button>
+          <button type="button" id="g-voltar-7">Voltar</button>
+          <button type="button" id="g-fechar-7">Fechar</button>
+        </div>
+    </div>
+    <div class="etapa" id="g-etapa-8" hidden>
+      <h2 id="g-etapa-8-titulo" tabindex="-1">Etapa 8 de 8: Atmosfera e qualidade</h2>
+
+      <section aria-labelledby="t-preset">
+        <h3 id="t-preset">Atmosfera</h3>
+        <!-- 1.9.2: no mesmo padrão dos fundos: nome, para que é bom, para que é menos indicado e a descrição. -->
+        <fieldset id="grupo-preset" class="escolha"><legend>Conjunto de efeitos</legend></fieldset>
+        <select id="preset" hidden aria-hidden="true" tabindex="-1"></select>
+        <p id="descricao-preset" hidden></p>
+      </section>
+
+      <section aria-labelledby="t-saida">
+        <h3 id="t-saida">Qualidade</h3>
+
+        <label for="qualidade">Qualidade</label>
+        <select id="qualidade" aria-describedby="descricao-qualidade"></select>
+        <p id="descricao-qualidade"></p>
+      </section>
+
+      <section aria-labelledby="t-gerar">
+        <h3 id="t-gerar">Montar o vídeo</h3>
+        <button type="button" id="btn-gerar">Montar vídeo</button>
+        <button type="button" id="btn-cancelar" disabled>Cancelar</button>
+        <button type="button" id="btn-abrir" hidden>Abrir a pasta do vídeo</button>
+
+        <label for="progresso">Progresso</label>
+        <progress id="progresso" value="0" max="100"></progress>
+      </section>
+
+        <div class="controles au-coluna etapa-botoes">
+          <button type="button" id="g-voltar-8">Voltar</button>
+          <button type="button" id="g-fechar-8">Fechar</button>
+        </div>
+    </div>
+
+    </main>
+  </div>
+
+  <!-- ================= TELA DE JUNTAR ================= -->
+  <div id="tela-juntar" hidden>
+    <h1>Juntar vídeos</h1>
+    <p>
+      Emenda vídeos prontos num só, na ordem da lista. Não mexe no conteúdo de
+      nenhum deles: só padroniza o formato, escurece as junções e põe os
+      títulos que você pedir.
+    </p>
+
+    <main>
+
+      <section aria-labelledby="j-videos">
+        <h2 id="j-videos">1. Vídeos</h2>
+        <button type="button" id="j-btn-add">Adicionar vídeos</button>
+        <button type="button" id="j-btn-limpar">Remover todos</button>
+        <p id="j-info">Nenhum vídeo adicionado.</p>
+
+        <h3 id="j-t-lista">Vídeos na ordem em que vão aparecer</h3>
+        <ul id="j-lista" aria-labelledby="j-t-lista"></ul>
+      </section>
+
+      <section aria-labelledby="j-estilo">
+        <h2 id="j-estilo">2. Estilo dos títulos</h2>
+        <label for="j-preset">Estilo</label>
+        <select id="j-preset" aria-describedby="j-desc-preset"></select>
+        <p id="j-desc-preset"></p>
+      </section>
+
+      <section aria-labelledby="j-saida">
+        <h2 id="j-saida">3. Formato e qualidade</h2>
+
+        <label for="j-formato">Formato da tela</label>
+        <select id="j-formato" aria-describedby="j-desc-formato"></select>
+        <p id="j-desc-formato"></p>
+
+        <label for="j-qualidade">Qualidade</label>
+        <select id="j-qualidade" aria-describedby="j-desc-qualidade"></select>
+        <p id="j-desc-qualidade"></p>
+      </section>
+
+      <section aria-labelledby="j-volume">
+        <h2 id="j-volume">4. Volume</h2>
+        <div class="opcao">
+          <input type="checkbox" id="j-nivelar" checked>
+          <label for="j-nivelar">
+            Nivelar o volume dos trechos que destoam dos outros. Não mexe nos
+            que já combinam, e nunca estoura o som. Exige uma passada a mais
+            pelos arquivos, então demora um pouco mais.
+          </label>
+        </div>
+      </section>
+
+      <section aria-labelledby="j-trilha">
+        <h2 id="j-trilha">5. Trilhas de fundo (opcional)</h2>
+        <p>
+          Cada trilha entra por baixo do som dos vídeos, com volume próprio.
+          Em loop, ela repete quantas voltas forem precisas até cobrir tudo —
+          quem manda no tamanho é o vídeo. Estática, ela toca uma vez só.
+          Qualquer dos dois tipos pode começar desde o começo do vídeo ou a
+          partir de um tempo determinado. Pode adicionar quantas quiser.
+        </p>
+
+        <button type="button" id="j-btn-trilha-arquivo">Escolher arquivo de trilha</button>
+        <p id="j-trilha-arquivo-info">Nenhum arquivo escolhido.</p>
+
+        <fieldset>
+          <legend>Tipo desta trilha</legend>
+          <div class="opcao">
+            <input type="radio" id="j-trilha-tipo-loop" name="j-trilha-tipo" value="loop" checked>
+            <label for="j-trilha-tipo-loop">Em loop: repete até cobrir o vídeo inteiro.</label>
+          </div>
+          <div class="opcao">
+            <input type="radio" id="j-trilha-tipo-estatico" name="j-trilha-tipo" value="estatico">
+            <label for="j-trilha-tipo-estatico">Estática: toca uma vez só.</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quando a trilha começa</legend>
+          <div class="opcao">
+            <input type="radio" id="j-trilha-inicio-comeco" name="j-trilha-inicio" value="comeco" checked>
+            <label for="j-trilha-inicio-comeco">Desde o começo do vídeo.</label>
+          </div>
+          <div class="opcao">
+            <input type="radio" id="j-trilha-inicio-tempo" name="j-trilha-inicio" value="tempo">
+            <label for="j-trilha-inicio-tempo">A partir de um tempo determinado.</label>
+          </div>
+        </fieldset>
+
+        <div id="j-trilha-bloco-tempo" hidden>
+          <p id="j-trilha-dica" class="nota" tabindex="0">Para tocar a partir de um tempo determinado, digite o tempo em que a trilha deve começar. Ele é contado a partir do começo da emenda de todos os vídeos. Aqui não há um player único para marcar o ponto: use a tela de cortar, ou abra um dos vídeos por fora, para achar o instante certo.</p>
+          <label for="j-trilha-tempo">Esta trilha começa em (hora:minuto:segundo)</label>
+          <input type="text" id="j-trilha-tempo" value="00:00:00">
+        </div>
+
+        <div id="j-trilha-bloco-fade">
+          <div class="opcao">
+            <input type="checkbox" id="j-trilha-fade-entrada" checked>
+            <label for="j-trilha-fade-entrada">
+              Entrar com fade suave (1,5 segundo). Desmarcado, a trilha
+              entra seca, como um efeito sonoro.
+            </label>
+          </div>
+          <div class="opcao">
+            <input type="checkbox" id="j-trilha-fade-saida" checked>
+            <label for="j-trilha-fade-saida">
+              Sair com fade suave (3 segundos). Desmarcado, ela corta seco
+              no fim.
+            </label>
+          </div>
+        </div>
+
+        <label for="j-trilha-volume">Volume desta trilha</label>
+        <select id="j-trilha-volume" aria-describedby="j-desc-vol"></select>
+        <p id="j-desc-vol">
+          Por baixo de fala, quanto mais baixa melhor: trilha alta engole a voz.
+        </p>
+
+        <button type="button" id="j-btn-add-trilha">Adicionar trilha</button>
+
+        <div id="j-trilha-conflito" hidden>
+          <p id="j-trilha-conflito-texto"></p>
+          <button type="button" id="j-trilha-conflito-encerrar">Encerrar a trilha anterior aqui</button>
+          <button type="button" id="j-trilha-conflito-sobrepor">Deixar as duas tocando</button>
+        </div>
+
+        <h3 id="j-t-lista-trilhas">Trilhas adicionadas</h3>
+        <ul id="j-lista-trilhas" aria-labelledby="j-t-lista-trilhas"></ul>
+      </section>
+
+      <section aria-labelledby="j-fim">
+        <h2 id="j-fim">6. Texto de encerramento (opcional)</h2>
+        <label for="j-texto-fim">Texto do fim</label>
+        <input type="text" id="j-texto-fim" aria-describedby="j-fim-contador">
+        <p id="j-fim-contador"></p>
+      </section>
+
+      <section aria-labelledby="j-gerar">
+        <h2 id="j-gerar">7. Juntar</h2>
+        <button type="button" id="j-btn-conferir">Conferir os vídeos</button>
+        <button type="button" id="j-btn-juntar">Juntar agora</button>
+        <button type="button" id="j-btn-cancelar" disabled>Cancelar</button>
+        <button type="button" id="j-btn-abrir" hidden>Abrir a pasta do vídeo</button>
+        <button type="button" id="j-btn-voltar">Voltar ao início</button>
+
+        <label for="j-progresso">Progresso</label>
+        <progress id="j-progresso" value="0" max="100"></progress>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= TELA DE CORTAR ================= -->
+  <div id="tela-cortar" hidden>
+    <h1>Editar vídeo</h1>
+    <p>
+      Toque o vídeo e marque os trechos pelo teclado: Alt I marca o início,
+      Alt F marca o fim. Repita Alt I e Alt F para marcar quantos trechos
+      quiser. Depois, Delete descarta todos os trechos marcados de uma vez,
+      e Alt S salva todos, cada um num arquivo. Alt Z desfaz o último
+      descarte. Os descartes vão para a lista e são aplicados no Salvar
+      vídeo. As setas para os lados andam meio segundo. Page Up avança e Page Down volta no tamanho do salto, que começa em
+      5 segundos. F2 muda só o tamanho do salto, em minutos e segundos:
+      por exemplo, 10 segundos ou 10 minutos. Alt H lista todos os atalhos.
+    </p>
+
+    <main>
+
+      <section aria-labelledby="c-t-video">
+        <h2 id="c-t-video">1. Vídeo</h2>
+        <button type="button" id="c-btn-video">Escolher vídeo</button>
+        <p id="c-info">Nenhum vídeo escolhido.</p>
+      </section>
+
+      <section aria-labelledby="c-t-ouvir">
+        <h2 id="c-t-ouvir">2. Ouvir e marcar</h2>
+
+        <!-- O tocador existe na tela, mas é controlado pelos botões abaixo: os
+             controles nativos dele não são confiáveis com leitor de tela. -->
+        <video id="c-player" preload="auto" tabindex="-1" aria-hidden="true"></video>
+
+        <div class="controles">
+          <button type="button" id="c-voltar">Voltar 5 segundos</button>
+          <button type="button" id="c-tocar" data-atalho="t">Tocar ou pausar</button>
+          <button type="button" id="c-avancar">Avançar 5 segundos</button>
+        </div>
+        <p id="c-atalhos">
+          No instante em que ouvir o ponto, Alt I marca o início e Alt F marca
+          o fim; repita para marcar vários trechos. Delete descarta todos,
+          Alt S salva todos. Page Up e Page Down pulam no tamanho do salto; F2 muda
+          esse tamanho.
+        </p>
+      </section>
+
+      <section aria-labelledby="c-t-lista">
+        <h2 id="c-t-lista">3. Descartes marcados</h2>
+
+        <p>
+          Dá pra marcar os descartes à mão, com Alt I, Alt F e Delete, ou pedir
+          pro programa encontrar os silêncios sozinho e já preencher a lista
+          abaixo com eles. Você revisa, ouve a emenda de cada um e remove o
+          que não quiser.
+        </p>
+        <button type="button" id="c-btn-detectar-silencio">Detectar silêncios</button>
+        <p id="c-silencio-status" role="status" aria-live="polite"></p>
+        <div class="opcao">
+          <input type="checkbox" id="c-fade" aria-describedby="c-fade-desc">
+          <label for="c-fade">Suavizar as emendas com um fade rápido, em vez de corte seco</label>
+        </div>
+        <p id="c-fade-desc">
+          Opcional. Em cada emenda, o som do pedaço de antes some suavemente e
+          o do pedaço seguinte entra suavemente, como as transições de áudio
+          comuns em vídeos curtos. Imagem e som continuam juntos. Vale para o
+          Salvar vídeo e para o Salvar áudio. Desmarcado, o corte é seco, como
+          sempre.
+        </p>
+
+        <p>Só os descartes marcados são aplicados. Ctrl A, dentro da lista, marca ou desmarca todos.</p>
+        <div class="opcao" id="c-todos-bloco" hidden>
+          <input type="checkbox" id="c-todos" checked>
+          <label for="c-todos">Selecionar todos os descartes</label>
+        </div>
+        <ul id="c-lista" aria-labelledby="c-t-lista"></ul>
+        <p id="c-resumo"></p>
+      </section>
+
+      <section aria-labelledby="c-t-ajuste">
+        <h2 id="c-t-ajuste">4. Ajuste do áudio (opcional)</h2>
+        <fieldset id="c-grupo-ajuste" class="audio" aria-describedby="c-ajuste-ajuda"><legend>Volume, equalização e velocidade do vídeo todo</legend>
+          <p id="c-ajuste-ajuda" class="nota">Vale para o vídeo inteiro. Control com seta para a direita ou para a esquerda muda o volume; Control com seta para cima ou para baixo muda a velocidade. A velocidade muda o vídeo junto: imagem e som continuam juntos. Ouvir o ajuste toca 6 segundos a partir de onde o vídeo está. O Salvar vídeo e o Salvar áudio já saem com o ajuste.</p>
+          <p id="c-ajuste-info" class="estado"></p>
+          <label for="c-eq-predefinicao">Predefinição da equalização</label>
+          <select id="c-eq-predefinicao"></select>
+          <label for="c-eq-volume">Volume</label>
+          <input type="range" id="c-eq-volume" min="10" max="300" step="10" value="100">
+          <label for="c-eq-graves">Graves</label>
+          <input type="range" id="c-eq-graves" min="-12" max="12" step="1" value="0">
+          <label for="c-eq-medios">Médios</label>
+          <input type="range" id="c-eq-medios" min="-12" max="12" step="1" value="0">
+          <label for="c-eq-agudos">Agudos</label>
+          <input type="range" id="c-eq-agudos" min="-12" max="12" step="1" value="0">
+          <label for="c-eq-velocidade">Velocidade</label>
+          <input type="range" id="c-eq-velocidade" min="50" max="250" step="5" value="100">
+          <div class="controles">
+            <button type="button" id="c-eq-ouvir">Ouvir o ajuste</button>
+            <button type="button" id="c-eq-zerar">Voltar o áudio ao original</button>
+          </div>
+          <audio id="c-ajuste-player" preload="none"></audio>
+        </fieldset>
+      </section>
+
+      <section aria-labelledby="c-t-trilha">
+        <h2 id="c-t-trilha">5. Trilhas de fundo (opcional)</h2>
+        <p>
+          Cada trilha entra por baixo do áudio do vídeo, com volume próprio.
+          Em loop, ela repete quantas voltas forem precisas até o fim do
+          vídeo já cortado. Estática, ela toca uma vez só. Qualquer dos dois
+          tipos pode começar desde o começo do vídeo ou a partir de um tempo
+          determinado. Pode adicionar quantas quiser.
+        </p>
+        <p>
+          O tempo é marcado ouvindo o vídeo pelos botões da seção 2, antes
+          deste corte. Se algum descarte cair antes do ponto marcado, o
+          programa ajusta sozinho pro lugar certo no vídeo já cortado.
+        </p>
+
+        <button type="button" id="c-btn-trilha-arquivo">Escolher arquivo de trilha</button>
+        <p id="c-trilha-arquivo-info">Nenhum arquivo escolhido.</p>
+
+        <fieldset>
+          <legend>Tipo desta trilha</legend>
+          <div class="opcao">
+            <input type="radio" id="c-trilha-tipo-loop" name="c-trilha-tipo" value="loop" checked>
+            <label for="c-trilha-tipo-loop">Em loop: repete até o fim do vídeo cortado.</label>
+          </div>
+          <div class="opcao">
+            <input type="radio" id="c-trilha-tipo-estatico" name="c-trilha-tipo" value="estatico">
+            <label for="c-trilha-tipo-estatico">Estática: toca uma vez só.</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Quando a trilha começa</legend>
+          <div class="opcao">
+            <input type="radio" id="c-trilha-inicio-comeco" name="c-trilha-inicio" value="comeco" checked>
+            <label for="c-trilha-inicio-comeco">Desde o começo do vídeo.</label>
+          </div>
+          <div class="opcao">
+            <input type="radio" id="c-trilha-inicio-tempo" name="c-trilha-inicio" value="tempo">
+            <label for="c-trilha-inicio-tempo">A partir de um tempo determinado.</label>
+          </div>
+        </fieldset>
+
+        <div id="c-trilha-bloco-tempo" hidden>
+          <p id="c-trilha-dica" class="nota" tabindex="0">Para tocar a partir de um tempo determinado, escolha o tempo em que a trilha deve começar, marcando o ponto desejado pelo player. A barra de espaço toca e pausa. Quando estiver no ponto certo, vá até o botão Marcar aqui e aperte Enter. Se preferir, digite o tempo no campo.</p>
+          <label for="c-trilha-tempo">Esta trilha começa em (hora:minuto:segundo)</label>
+          <input type="text" id="c-trilha-tempo" value="00:00:00">
+          <button type="button" id="c-trilha-marcar">Marcar aqui</button>
+        </div>
+
+        <div id="c-trilha-bloco-fade">
+          <div class="opcao">
+            <input type="checkbox" id="c-trilha-fade-entrada" checked>
+            <label for="c-trilha-fade-entrada">
+              Entrar com fade suave (1,5 segundo). Desmarcado, a trilha
+              entra seca, como um efeito sonoro.
+            </label>
+          </div>
+          <div class="opcao">
+            <input type="checkbox" id="c-trilha-fade-saida" checked>
+            <label for="c-trilha-fade-saida">
+              Sair com fade suave (3 segundos). Desmarcado, ela corta seco
+              no fim.
+            </label>
+          </div>
+        </div>
+
+        <button type="button" id="c-trilha-previa">Ouvir prévia da mistura aqui (6 segundos)</button>
+        <audio id="c-previa-audio" preload="none"></audio>
+        <p id="c-previa-status" role="status" aria-live="polite"></p>
+
+        <label for="c-trilha-volume">Volume desta trilha</label>
+        <select id="c-trilha-volume" aria-describedby="c-desc-vol"></select>
+        <p id="c-desc-vol">
+          Por baixo de fala, quanto mais baixa melhor: trilha alta engole a voz.
+        </p>
+
+        <button type="button" id="c-btn-add-trilha">Adicionar trilha</button>
+
+        <div id="c-trilha-conflito" hidden>
+          <p id="c-trilha-conflito-texto"></p>
+          <button type="button" id="c-trilha-conflito-encerrar">Encerrar a trilha anterior aqui</button>
+          <button type="button" id="c-trilha-conflito-sobrepor">Deixar as duas tocando</button>
+        </div>
+
+        <h3 id="c-t-lista-trilhas">Trilhas adicionadas</h3>
+        <ul id="c-lista-trilhas" aria-labelledby="c-t-lista-trilhas"></ul>
+      </section>
+
+      <section aria-labelledby="c-t-legenda">
+        <h2 id="c-t-legenda">6. Legenda (opcional)</h2>
+        <p>
+          Dá para gravar uma legenda neste vídeo mesmo sem marcar nenhum
+          corte — útil para um vídeo que já está pronto e só precisa da
+          legenda em cima.
+        </p>
+        <button type="button" id="c-btn-srt">Inserir srt</button>
+        <button type="button" id="c-btn-tirar-srt">Tirar a legenda</button>
+        <p id="c-info-srt">Nenhuma legenda escolhida.</p>
+      </section>
+
+      <section aria-labelledby="c-t-melhorar">
+        <h2 id="c-t-melhorar">7. Alterar plano de fundo (opcional)</h2>
+        <p>
+          Borra o fundo, ou troca o fundo por uma das imagens do programa, no
+          vídeo escolhido, do jeito que ele está no arquivo: os descartes, o
+          ajuste do áudio, as trilhas e a legenda desta tela não entram. Feito
+          para vídeos gravados no Olho da Cena; com outros vídeos, o resultado
+          pode variar. O vídeo com o novo fundo vai para a pasta Olho da Cena e pode
+          ser aberto aqui depois.
+        </p>
+        <button type="button" id="c-btn-melhorar">Alterar plano de fundo</button>
+      </section>
+
+      <section aria-labelledby="c-t-cortar">
+        <h2 id="c-t-cortar">8. Salvar</h2>
+        <button type="button" id="c-btn-salvar-audio">Salvar áudio</button>
+        <button type="button" id="c-btn-cortar">Salvar vídeo</button>
+        <button type="button" id="c-btn-cancelar" disabled>Cancelar</button>
+        <button type="button" id="c-btn-resultado" hidden>Ouvir o resultado</button>
+        <button type="button" id="c-btn-original" hidden>Voltar ao vídeo original</button>
+        <button type="button" id="c-btn-abrir" hidden>Abrir a pasta do vídeo</button>
+        <button type="button" id="c-btn-voltar">Voltar para a Edição de vídeo e áudio</button>
+
+        <label for="c-progresso">Progresso</label>
+        <progress id="c-progresso" value="0" max="100"></progress>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ================= TELA DE DIVIDIR ================= -->
+  <div id="tela-dividir" hidden>
+    <h1>Dividir vídeo</h1>
+
+    <!-- 1.9.2: em etapas. Por tempo (numérico) ou por cortes manuais (pela audição). -->
+    <section id="dv-video" aria-labelledby="dv-video-titulo">
+      <h2 id="dv-video-titulo" tabindex="-1">Etapa 1: Vídeo</h2>
+      <div class="controles au-coluna"><button type="button" id="d-btn-video">Escolher vídeo</button></div>
+      <p id="d-info" tabindex="-1">Nenhum vídeo escolhido.</p>
+      <div class="controles au-coluna">
+        <button type="button" id="dv-video-continuar">Salvar e continuar</button>
+        <button type="button" id="d-btn-voltar">Voltar ao início</button>
+        <button type="button" id="dv-video-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="dv-modo" aria-labelledby="dv-modo-titulo" hidden>
+      <h2 id="dv-modo-titulo" tabindex="-1">Etapa 2: Como dividir</h2>
+      <fieldset class="escolha"><legend>Como dividir</legend>
+        <div class="radio"><input type="radio" name="dv-modo" id="dv-modo-tempo" value="tempo"><label for="dv-modo-tempo">Por tempo</label>
+          <p class="desc">Partes iguais, do tamanho que você digitar. Com 0, não divide: só muda a orientação.</p></div>
+        <div class="radio"><input type="radio" name="dv-modo" id="dv-modo-manual" value="manual"><label for="dv-modo-manual">Cortes manuais</label>
+          <p class="desc">Você ouve o vídeo e marca os trechos com Alt I e Alt F. Alt S salva os cortes.</p></div>
+      </fieldset>
+      <div class="controles au-coluna">
+        <button type="button" id="dv-modo-continuar">Salvar e continuar</button>
+        <button type="button" id="dv-modo-voltar">Voltar</button>
+        <button type="button" id="dv-modo-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="dv-tempo" aria-labelledby="dv-tempo-titulo" hidden>
+      <h2 id="dv-tempo-titulo" tabindex="-1">Etapa 3: Tempo e orientação</h2>
+      <label for="d-tamanho">Tamanho de cada parte, em minutos e segundos, como 1:30. Com 0, não divide.</label>
+      <input type="text" id="d-tamanho" value="" autocomplete="off">
+      <fieldset id="grupo-dv-orientacao" class="escolha"><legend>Orientação das partes</legend></fieldset>
+      <p id="d-resumo" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="dv-tempo-continuar">Salvar e continuar</button>
+        <button type="button" id="dv-tempo-voltar">Voltar</button>
+        <button type="button" id="dv-tempo-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="dv-legenda" aria-labelledby="dv-legenda-titulo" hidden>
+      <h2 id="dv-legenda-titulo" tabindex="-1">Legenda</h2>
+      <p id="dv-legenda-info" tabindex="-1"></p>
+      <div class="controles au-coluna"><button type="button" id="dv-legenda-abrir">Adicionar legenda</button></div>
+      <div class="controles au-coluna">
+        <button type="button" id="dv-legenda-continuar">Salvar e continuar</button>
+        <button type="button" id="dv-legenda-voltar">Voltar</button>
+        <button type="button" id="dv-legenda-fechar">Fechar</button>
+      </div>
+    </section>
+
+    <section id="dv-gerar" aria-labelledby="dv-gerar-titulo" hidden>
+      <h2 id="dv-gerar-titulo" tabindex="-1">Dividir</h2>
+      <p id="dv-gerar-info" tabindex="-1"></p>
+      <div class="controles au-coluna">
+        <button type="button" id="d-btn-dividir">Dividir agora</button>
+        <button type="button" id="d-btn-cancelar" disabled>Cancelar</button>
+        <button type="button" id="d-btn-abrir" hidden>Abrir a pasta das partes</button>
+      </div>
+      <progress id="d-progresso" value="0" max="100" aria-hidden="true"></progress>
+      <div class="controles au-coluna">
+        <button type="button" id="dv-gerar-voltar">Voltar</button>
+        <button type="button" id="dv-gerar-fechar">Fechar</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 1.9.2: Alt S com "Perguntar a cada vez" nas Configurações. -->
+  <dialog id="altS-dlg" aria-labelledby="altS-dlg-titulo">
+    <h2 id="altS-dlg-titulo">Salvar em</h2>
+    <fieldset class="escolha"><legend>Formato</legend>
+      <div class="radio"><input type="radio" name="altS-saida" id="altS-saida-audio" value="audio"><label for="altS-saida-audio">Apenas áudio</label></div>
+      <div class="radio"><input type="radio" name="altS-saida" id="altS-saida-video" value="video"><label for="altS-saida-video">Apenas vídeo</label></div>
+      <div class="radio"><input type="radio" name="altS-saida" id="altS-saida-ambos" value="ambos"><label for="altS-saida-ambos">Ambos</label></div>
+    </fieldset>
+    <div class="controles au-coluna">
+      <button type="button" id="altS-dlg-salvar">Salvar</button>
+      <button type="button" id="altS-dlg-cancelar">Cancelar</button>
+    </div>
+  </dialog>
+
+  <!-- 1.9.2: Alt S nos cortes manuais do Dividir: formato e orientação de cada corte. -->
+  <dialog id="dv-dlg" aria-labelledby="dv-dlg-titulo">
+    <h2 id="dv-dlg-titulo">Salvar os cortes</h2>
+    <p id="dv-dlg-info"></p>
+    <fieldset class="escolha"><legend>Formato</legend>
+      <div class="radio"><input type="radio" name="dv-saida" id="dv-saida-audio" value="audio"><label for="dv-saida-audio">Apenas áudio</label></div>
+      <div class="radio"><input type="radio" name="dv-saida" id="dv-saida-video" value="video"><label for="dv-saida-video">Apenas vídeo</label></div>
+      <div class="radio"><input type="radio" name="dv-saida" id="dv-saida-ambos" value="ambos" checked><label for="dv-saida-ambos">Ambos</label></div>
+    </fieldset>
+    <div id="dv-dlg-cortes"></div>
+    <p id="dv-dlg-avisos"></p>
+    <div class="controles au-coluna">
+      <button type="button" id="dv-dlg-salvar">Salvar</button>
+      <button type="button" id="dv-dlg-cancelar">Cancelar</button>
+    </div>
+  </dialog>
+
+  <!-- 1.9.6: Alt L na lista de imagens do Montar -->
+  <dialog id="pos-dlg" aria-labelledby="pos-dlg-titulo">
+    <h2 id="pos-dlg-titulo">Posição da imagem</h2>
+    <p id="pos-dlg-info"></p>
+    <label for="pos-dlg-num" id="pos-dlg-rotulo">Número da posição</label>
+    <input type="number" id="pos-dlg-num" min="1" step="1" inputmode="numeric">
+    <div class="controles au-coluna">
+      <button type="button" id="pos-dlg-ok">Mover</button>
+      <button type="button" id="pos-dlg-cancelar">Cancelar</button>
+    </div>
+  </dialog>
+
+  <!-- ================= JANELAS (Editar vídeo) ================= -->
+  <dialog id="dlg-ajustes" aria-labelledby="dlg-ajustes-titulo">
+    <h2 id="dlg-ajustes-titulo">Tamanho do salto</h2>
+    <fieldset>
+      <legend>Tamanho do salto de voltar e avançar</legend>
+      <label for="dlg-salto-min">Minutos do salto</label>
+      <input type="text" id="dlg-salto-min" inputmode="numeric" value="00">
+      <label for="dlg-salto-seg">Segundos do salto</label>
+      <input type="text" id="dlg-salto-seg" inputmode="numeric" value="05">
+    </fieldset>
+    <p id="dlg-ajustes-erro"></p>
+    <div class="controles">
+      <button type="button" id="dlg-ajustes-ok">Confirmar</button>
+      <button type="button" id="dlg-ajustes-cancelar">Cancelar</button>
+    </div>
+  </dialog>
+
+  <dialog id="dlg-formato" aria-labelledby="dlg-formato-titulo">
+    <h2 id="dlg-formato-titulo">Salvar o trecho marcado</h2>
+    <p id="dlg-formato-info"></p>
+    <fieldset>
+      <legend>Formato do arquivo</legend>
+      <div class="opcao">
+        <input type="radio" name="dlg-formato" id="dlg-formato-horizontal" value="horizontal" checked>
+        <label for="dlg-formato-horizontal">Horizontal, como o vídeo está</label>
+      </div>
+      <div class="opcao">
+        <input type="radio" name="dlg-formato" id="dlg-formato-vertical" value="vertical">
+        <label for="dlg-formato-vertical">Vertical para short, com fundo desfocado</label>
+      </div>
+      <div class="opcao">
+        <input type="radio" name="dlg-formato" id="dlg-formato-audio" value="audio">
+        <label for="dlg-formato-audio">Só áudio</label>
+      </div>
+    </fieldset>
+    <div class="controles">
+      <button type="button" id="dlg-formato-ok">Salvar</button>
+      <button type="button" id="dlg-formato-cancelar">Cancelar</button>
+    </div>
+  </dialog>
+
+  <script src="../src/selecao.js"></script>
+  <script src="../src/marcas.js"></script>
+  <script src="../src/atalhos-audio.js"></script>
+  <script src="../src/legendas.js"></script>
+  <script src="../src/divisao.js"></script>
+  <script src="../src/descritor.js"></script>
+  <script src="../src/padrao.js"></script>
+  <script src="../src/fotos.js"></script>
+  <script src="renderer.js"></script>
+  <script type="module" src="gravar.js"></script>
+  <script type="module" src="foto.js"></script>
+  <script type="module" src="post.js"></script>
+  <script type="module" src="gaudio.js"></script>
+  <script type="module" src="menu.js"></script>
+</body>
+</html>
