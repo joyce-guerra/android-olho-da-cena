@@ -1,0 +1,87 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const { execFileSync } = require('child_process');
+const RAIZ = process.argv[2], MIDIA = process.argv[3];
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 300) : ''}`); if (!c) falhas++; };
+const sonda = (a) => { const j = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'stream=codec_type,width,height:format=duration', '-of', 'json', a]).toString()); const v = j.streams.find((s) => s.codec_type === 'video'); return { d: Number(j.format.duration), w: v && v.width, h: v && v.height }; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-dv-'));
+  const pasta = path.join(tmp, 'meus'); fs.mkdirSync(pasta);
+  fs.copyFileSync(path.join(MIDIA, 'pessoa-leg-som.mp4'), path.join(pasta, 'aula.mp4'));
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos') } });
+  const w = await app.firstWindow();
+  const erros = []; w.on('pageerror', (e) => erros.push(e.message + ' @ ' + (e.stack || '').split('\n').slice(1, 3).join(' ')));
+  await app.evaluate(({ dialog }, f) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [f] }); }, path.join(pasta, 'aula.mp4'));
+  const ate = async (f, arg, ms = 60000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(200); } return false; };
+  const clicar = async (id) => { await ate((i) => { const e = document.getElementById(i); return e && !e.disabled && e.offsetParent !== null; }, id); await w.click('#' + id); };
+  const status = () => w.evaluate(() => document.getElementById('status').textContent);
+  const pv = path.join(tmp, 'Documentos', 'Olho da Cena');
+  const arquivos = () => (fs.existsSync(pv) ? fs.readdirSync(pv).sort() : []);
+  await ate(() => window.gravarTela && window.olho); await espera(1000);
+  await clicar('ir-dividir');
+  ok('Dividir abre na Etapa 1', await ate(() => !document.getElementById('dv-video').hidden, null, 5000));
+  await clicar('d-btn-video');
+  ok('vídeo escolhido, e a legenda da imagem percebida', await ate(() => /Parece ter legenda gravada na imagem/.test(document.getElementById('d-info').textContent), null, 60000), await w.textContent('#d-info'));
+  await w.keyboard.press('Alt+KeyA');
+  await ate(() => !document.getElementById('dv-modo').hidden);
+  await w.check('#dv-modo-tempo'); await w.keyboard.press('Alt+KeyA');
+  ok('por tempo: Etapa 3', await ate(() => !document.getElementById('dv-tempo').hidden));
+  await w.fill('#d-tamanho', '0:05'); await w.check('#dv-orientacao-vertical-cheio');
+  ok('resumo: 2 partes, a última maior, e o aviso da legenda cortada', /^2 partes de 5 segundos, a última com 7 segundos\. Orientação: vertical, preenchendo a tela, cortando as laterais\. Atenção: .*pode ficar cortada no formato vertical/.test(await w.textContent('#d-resumo')), await w.textContent('#d-resumo'));
+  await clicar('dv-tempo-continuar');
+  ok('com aviso, o primeiro Salvar e continuar só avisa', !(await w.evaluate(() => document.getElementById('dv-tempo').hidden)) && /Salvar e continuar de novo/.test(await status()), await status());
+  await clicar('dv-tempo-continuar');
+  ok('o segundo segue para a legenda', await ate(() => !document.getElementById('dv-legenda').hidden, null, 5000));
+  ok('a legenda avisa que o vídeo parece ter legenda', /Parece ter legenda gravada na imagem/.test(await w.textContent('#dv-legenda-info')));
+  await clicar('dv-legenda-continuar');
+  await ate(() => !document.getElementById('dv-gerar').hidden);
+  await clicar('d-btn-dividir');
+  ok('partes prontas', await ate(() => /^Pronto: 2 partes salvas em vídeo/.test(document.getElementById('dv-gerar-info').textContent), null, 300000), await w.textContent('#dv-gerar-info'));
+  let fs1 = arquivos(); console.log('ARQUIVOS:', fs1.join(' | '));
+  const p1 = fs1.find((f) => /parte 1\.mp4$/.test(f)), p2 = fs1.find((f) => /parte 2\.mp4$/.test(f));
+  if (p1 && p2) { const a = sonda(path.join(pv, p1)), b = sonda(path.join(pv, p2)); ok('parte 1: 5 s, vertical 1080x1920; parte 2: 7 s', Math.abs(a.d - 5) < 0.3 && Math.abs(b.d - 7) < 0.3 && a.w === 1080 && a.h === 1920, JSON.stringify([a, b])); }
+  // Só mudar a orientação: 0
+  await clicar('dv-gerar-voltar'); await clicar('dv-legenda-voltar');
+  await w.fill('#d-tamanho', '0'); await w.check('#dv-orientacao-quadrado');
+  ok('com 0: não divide', /^O vídeo não é dividido: sai inteiro, quadrado/.test(await w.textContent('#d-resumo')), await w.textContent('#d-resumo'));
+  await clicar('dv-tempo-continuar'); await clicar('dv-tempo-continuar');
+  await ate(() => !document.getElementById('dv-legenda').hidden); await clicar('dv-legenda-continuar');
+  await ate(() => !document.getElementById('dv-gerar').hidden); await clicar('d-btn-dividir');
+  ok('um vídeo só, quadrado, inteiro', await ate(() => /^Pronto: 1 parte salva/.test(document.getElementById('dv-gerar-info').textContent), null, 300000), await w.textContent('#dv-gerar-info'));
+  const q = arquivos().filter((f) => !fs1.includes(f)); const sq = q[0] && sonda(path.join(pv, q[0]));
+  ok('quadrado 1080x1080, 12 s', sq && sq.w === 1080 && sq.h === 1080 && Math.abs(sq.d - 12) < 0.3, JSON.stringify(sq) + q.join());
+  // Cortes manuais
+  fs1 = arquivos();
+  await clicar('dv-gerar-voltar'); await clicar('dv-legenda-voltar'); await clicar('dv-tempo-voltar');
+  await w.check('#dv-modo-manual'); await w.keyboard.press('Alt+KeyA');
+  await ate(() => !document.getElementById('dv-legenda').hidden); await w.keyboard.press('Alt+KeyA');
+  ok('cortes manuais: a tela de Cortes, sem as outras etapas', await ate(() => window.olho.telaAtual() === 'audio' && window.__audioCortes.video && document.getElementById('au-telas').hidden && document.getElementById('au-cortes-titulo').textContent === 'Cortes manuais', null, 60000));
+  const marcar = async (a, b) => {
+    await w.evaluate((t) => { document.getElementById('au-player').currentTime = t; }, a); await ate((t) => Math.abs(document.getElementById('au-player').currentTime - t) < 0.05, a);
+    await clicar('au-inicio');
+    await w.evaluate((t) => { document.getElementById('au-player').currentTime = t; }, b); await ate((t) => Math.abs(document.getElementById('au-player').currentTime - t) < 0.05, b);
+    await clicar('au-fim');
+  };
+  await ate(() => document.getElementById('au-player').readyState >= 1);
+  await marcar(1, 3); await marcar(6, 9);
+  await w.keyboard.press('Alt+KeyS');
+  ok('Alt S abre a janela de salvar, com os dois cortes', await ate(() => document.getElementById('dv-dlg').open && document.querySelectorAll('#dv-dlg-cortes select').length === 2, null, 5000));
+  ok('a janela pergunta Apenas áudio, Apenas vídeo ou Ambos', await w.evaluate(() => document.querySelectorAll('input[name="dv-saida"]').length === 3));
+  await w.selectOption('#dv-corte-1', 'vertical');
+  await w.check('#dv-saida-ambos');
+  await clicar('dv-dlg-salvar');
+  ok('cortes salvos', await ate(() => /Pronto: 2 cortes salvos em vídeo e em áudio/.test(document.getElementById('status').textContent), null, 300000), await status());
+  const novos = arquivos().filter((f) => !fs1.includes(f)); console.log('CORTES:', novos.join(' | '));
+  const c1 = novos.find((f) => /corte 1\.mp4$/.test(f)), c2 = novos.find((f) => /corte 2\.mp4$/.test(f));
+  ok('um MP4 e um MP3 de cada corte', novos.filter((f) => /\.mp3$/.test(f)).length === 2 && c1 && c2, novos.join());
+  if (c1 && c2) { const a = sonda(path.join(pv, c1)), b = sonda(path.join(pv, c2)); ok('corte 1 mantém 1280x720 com 2 s; corte 2 vertical com 3 s', a.w === 1280 && Math.abs(a.d - 2) < 0.3 && b.w === 1080 && b.h === 1920 && Math.abs(b.d - 3) < 0.3, JSON.stringify([a, b])); }
+  await w.keyboard.press('Alt+KeyV');
+  ok('Voltar dos cortes volta para o Dividir', await ate(() => window.olho.telaAtual() === 'dividir', null, 5000));
+  ok('sem erros na página', erros.length === 0, erros.join(' | '));
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

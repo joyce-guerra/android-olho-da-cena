@@ -1,0 +1,53 @@
+ok     lista as câmeras com nome — /tmp/gravador-teste-midia/centrado.y4m
+ok     lista os microfones com nome (e o padrão do Windows) — Padrão do Windows,Fake Audio Input 1,Fake Audio Input 2
+ok     anuncia que está pronto e pede as escolhas — Gravador pronto. Alt R grava, Alt E fala o enquadramento. Antes da primeira gravação, escolha a proporção e a qualidade.
+ok     foco começa na primeira opção de proporção
+ok     proporção: horizontal, vertical e quadrado, cada uma com descrição — [{"v":"horizontal","rotulo":"Horizontal, 16 por 9 (YouTube)","desc":"Para o YouTube e para ver no computador ou na TV. Usa a imagem inteira da câmera.","marcado":false,"legenda":"Proporção do vídeo (obrigatório)"},{"v":"vertical","rotulo":"Vertical, 9 por 16 (shorts, Reels e stories)","desc":"Para s
+ok     qualidade: alta, padrão e leve, com tamanho por hora na descrição — [{"v":"alta","rotulo":"Alta","desc":"1080p, 30 quadros por segundo, quase sem compressão. A melhor imagem, mas arquivos grandes: cerca de 3 a 5 GB por hora, conforme o movimento.","marcado":false,"legenda":"Qualidade (obrigatório)"},{"v":"padrao","rotulo":"Padrão","desc":"1080p, 30 quadros por segun
+ok     proporção e qualidade começam sem escolha
+ok     uso do texto: "só no leitor de tela" já vem marcado — [{"v":"leitor","rotulo":"Só no leitor de tela","desc":"A frase atual é falada pelo leitor de tela e aparece só nesta janela. Não entra no vídeo.","marcado":true,"legenda":"Como usar o texto"},{"v":"legenda","rotulo":"Mostrar na tela do vídeo, como legenda","desc":"A frase atual também fica escrita n
+ok     a nota da qualidade fala do som AAC 48 kHz
+ok     Alt R sem proporção: avisa e leva o foco para a proporção — ALERTA: Antes de gravar, escolha a proporção do vídeo: horizontal, vertical ou quadrado.
+ok     Alt R sem qualidade: avisa e leva o foco para a qualidade — ALERTA: Antes de gravar, escolha a qualidade: alta, padrão ou leve.
+ok     Alt E antes de gravar: rosto centralizado, até o peito — Um rosto, centralizado. Mostrando até o peito.
+ok     enquadramento não é falado sozinho — 1
+ok     cartão da frase aparece só com a frase
+ok     seta para baixo avança e fala a frase — O Sr. Lima chegou cedo!
+ok     no começo avisa "Começo do texto."
+ok     End vai para a última; no fim avisa "Fim do texto."
+ok     Home volta para a primeira
+ok     abre texto do Word e avisa — Texto aberto: texto.docx.
+ok     frase do Word sem cortar em "Dra." — A Dra. Ana abriu a porta.
+ok     Alt T sem gravação avisa
+ok     Alt R anuncia "Gravando." e leva o foco para a frase
+ok     durante a gravação, proporção, qualidade, câmera e microfone ficam bloqueados
+ok     Alt T pausa e anuncia
+ok     Alt T continua e anuncia
+ok     setas andam pelas frases durante a gravação
+ok     Alt R para e avisa que está salvando
+ok     depois de parar: "Gravação pronta", nome, duração, e as duas opções — Gravação pronta, com o nome Vídeo 2026-10-27 14h29m52s (horizontal). Duração: 4 segundos. Escolha Salvar e finalizar, ou Melhorar.
+ok     foco em "Salvar e finalizar"; "Melhorar" ao lado
+ok     Salvar e finalizar: anuncia onde salvou — Vídeo salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h29m52s (horizontal). Duração: 4 segundos.
+ok     arquivo na pasta Documentos/Gravador de Vídeo — /tmp/gravador-e2e-NZT3dP/Documentos/Gravador de Vídeo/Vídeo 2026-10-27 14h29m52s (horizontal).mp4
+ok     MP4 horizontal alta: H.264 1920x1080, 30 qps, yuv420p — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     MP4 com áudio AAC 48 kHz — {"codec_name":"aac","codec_type":"audio","sample_rate":"48000","avg_frame_rate":"0/0"}
+ok     duração sem o tempo pausado (~3,5 s) — 3.555
+ok     o áudio do microfone foi gravado (sem silêncio) — -27.1 dB
+ok     não sobra arquivo temporário
+ok     tela de pronto com foco em "Voltar ao início"
+ok     Voltar ao início volta para a gravação
+ok     Alt E durante a gravação funciona — "Um rosto, centralizado. Mostrando até o peito."
+ok     o som fica mudo só enquanto o leitor fala o enquadramento — janela 2.5–7.0 s; dentro máx -200 dB (38); fora média -27 dB
+ok     a imagem continua durante o silêncio (vídeo inteiro, ~11 s) — 10.997
+ok     vídeo com legenda salvo — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     legenda queimada embaixo só quando "mostrar na tela" — embaixo 42.4, em cima 0.0
+ok     MP4 quadrado 1080x1080 com áudio e nome "(quadrado)" — {"codec_name":"h264","codec_type":"video","width":1080,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}Vídeo 2026-10-27 14h30m14s (quadrado).mp4
+ok     legenda também cabe no quadrado — linha clara da legenda embaixo
+ok     MP4 vertical 1080x1920 com áudio — {"codec_name":"h264","codec_type":"video","width":1080,"height":1920,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     Alt R na tela de pronto já grava outro
+ok     Alt R na tela "Gravação pronta" também grava outro (o anterior fica salvo)
+ok     guarda proporção, qualidade e uso do texto para a próxima vez — {"formato":"vertical","qualidade":"alta","camera":"","microfone":"","legenda":false,"texto":"O conto de teste\n\nA Dra. Ana abriu a porta. Lá fora chovia muito!
+ok     sem erros na página
+ok     ao abrir de novo, proporção e qualidade já vêm escolhidas — formato-vertical,qualidade-alta,uso-leitor,efeito-borrar,fundo-consultorio
+
+51 de 51 ok

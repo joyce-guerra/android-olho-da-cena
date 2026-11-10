@@ -1,0 +1,12 @@
+ok     antes: Gerador e Gravador instalados, com atalhos
+ok     Olho da Cena instalado (no lugar do Gerador)
+ok     atalho Olho da Cena na área de trabalho e no menu Iniciar
+ok     atalho Gerador de Vídeo sumiu
+ok     atalho Gravador de Vídeo (teste) sumiu
+ok     programa Gravador removido (exe, recursos, desinstalador)
+ok     Gravador fora da lista de programas instalados
+ok     Olho da Cena 1.0.0 na lista de programas instalados
+ok     Gerador fora da lista de programas instalados
+ok     vídeos e configurações intocados (mesmo conteúdo, mesmos nomes)
+arquivos conferidos: 7
+TUDO OK

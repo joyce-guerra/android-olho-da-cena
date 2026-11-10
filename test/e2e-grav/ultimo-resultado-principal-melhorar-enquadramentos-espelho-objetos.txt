@@ -1,0 +1,175 @@
+ok     lista as câmeras com nome — /tmp/gravador-teste-midia/centrado.y4m
+ok     lista os microfones com nome (e o padrão do Windows) — Padrão do Windows,Fake Audio Input 1,Fake Audio Input 2
+ok     anuncia que está pronto e pede as escolhas — Gravador pronto. Alt R grava, Alt E fala o enquadramento. Antes da primeira gravação, escolha a proporção e a qualidade.
+ok     foco começa na primeira opção de proporção
+ok     proporção: horizontal, vertical e quadrado, cada uma com descrição — [{"v":"horizontal","rotulo":"Horizontal, 16 por 9 (YouTube)","desc":"Para o YouTube e para ver no computador ou na TV. Usa a imagem inteira da câmera.","marcado":false,"legenda":"Proporção do vídeo (obrigatório)"},{"v":"vertical","rotulo":"Vertical, 9 por 16 (shorts, Reels e stories)","desc":"Para s
+ok     qualidade: alta, padrão e leve, com tamanho por hora na descrição — [{"v":"alta","rotulo":"Alta","desc":"1080p, 30 quadros por segundo, quase sem compressão. A melhor imagem, mas arquivos grandes: cerca de 3 a 5 GB por hora, conforme o movimento.","marcado":false,"legenda":"Qualidade (obrigatório)"},{"v":"padrao","rotulo":"Padrão","desc":"1080p, 30 quadros por segun
+ok     proporção e qualidade começam sem escolha
+ok     uso do texto: "só no leitor de tela" já vem marcado — [{"v":"leitor","rotulo":"Só no leitor de tela","desc":"A frase atual é falada pelo leitor de tela e aparece só nesta janela. Não entra no vídeo.","marcado":true,"legenda":"Como usar o texto"},{"v":"legenda","rotulo":"Mostrar na tela do vídeo, como legenda","desc":"A frase atual também fica escrita n
+ok     a nota da qualidade fala do som AAC 48 kHz
+ok     Alt R sem proporção: avisa e leva o foco para a proporção — ALERTA: Antes de gravar, escolha a proporção do vídeo: horizontal, vertical ou quadrado.
+ok     Alt R sem qualidade: avisa e leva o foco para a qualidade — ALERTA: Antes de gravar, escolha a qualidade: alta, padrão ou leve.
+ok     Alt E antes de gravar: rosto centralizado, até o peito — Um rosto, centralizado. Mostrando até o peito.
+ok     enquadramento não é falado sozinho — 1
+ok     cartão da frase aparece só com a frase
+FALHOU seta para baixo avança e fala a frase — Um rosto, centralizado. Mostrando até o peito.
+FALHOU no começo avisa "Começo do texto."
+FALHOU End vai para a última; no fim avisa "Fim do texto."
+ok     Home volta para a primeira
+ok     abre texto do Word e avisa — Texto aberto: texto.docx.
+FALHOU frase do Word sem cortar em "Dra." — O conto de teste
+ok     Alt T sem gravação avisa
+ok     Alt R anuncia "Gravando." e leva o foco para a frase
+ok     durante a gravação, proporção, qualidade, câmera e microfone ficam bloqueados
+ok     Alt T pausa e anuncia
+ok     Alt T continua e anuncia
+FALHOU setas andam pelas frases durante a gravação
+ok     Alt R para e avisa que está salvando
+ok     depois de parar: "Tudo pronto", nome, duração, e as duas opções — Tudo pronto. Vídeo gravado com o nome Vídeo 2026-10-27 16h15m49s (horizontal). Duração: 4 segundos. Escolha Salvar e finalizar, ou Melhorar.
+ok     foco em "Salvar e finalizar"; "Melhorar" ao lado
+ok     Salvar e finalizar: anuncia onde salvou — Vídeo salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 16h15m49s (horizontal). Duração: 4 segundos.
+ok     arquivo na pasta Documentos/Gravador de Vídeo — /tmp/gravador-e2e-8erWxY/Documentos/Gravador de Vídeo/Vídeo 2026-10-27 16h15m49s (horizontal).mp4
+ok     MP4 horizontal alta: H.264 1920x1080, 30 qps, yuv420p — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     MP4 com áudio AAC 48 kHz — {"codec_name":"aac","codec_type":"audio","sample_rate":"48000","avg_frame_rate":"0/0"}
+ok     duração sem o tempo pausado (~3,5 s) — 3.5
+ok     o áudio do microfone foi gravado (sem silêncio) — -27.1 dB
+ok     bipes: gravar, pausar, retomar e parar, na ordem — gravar,pausar,retomar,parar
+FALHOU os bipes não entram na gravação (nada em 990 Hz; o tom do microfone em 440 Hz está lá) — 440 Hz -24.1 dB, 990 Hz -61.7 dB
+ok     não sobra arquivo temporário
+ok     tela de pronto com foco em "Voltar ao início"
+ok     Voltar ao início volta para a gravação
+ok     Alt E durante a gravação funciona — "Um rosto, centralizado. Mostrando até o peito."
+ok     0.3: o som NÃO fica mudo no Alt E (nenhum trecho em silêncio) — mínimo -28 dB em 97 trechos
+ok     vídeo inteiro (~11 s) — 11
+ok     vídeo com legenda salvo — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     legenda queimada embaixo só quando "mostrar na tela" — embaixo 42.4, em cima 0.0
+ok     MP4 quadrado 1080x1080 com áudio e nome "(quadrado)" — {"codec_name":"h264","codec_type":"video","width":1080,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}Vídeo 2026-10-27 16h16m10s (quadrado).mp4
+ok     legenda também cabe no quadrado — linha clara da legenda embaixo
+ok     MP4 vertical 1080x1920 com áudio — {"codec_name":"h264","codec_type":"video","width":1080,"height":1920,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     Alt R na tela de pronto já grava outro
+ok     Alt R na tela "Gravação pronta" também grava outro (o anterior fica salvo)
+ok     guarda proporção, qualidade e uso do texto para a próxima vez — {"formato":"vertical","qualidade":"alta","camera":"","microfone":"","legenda":false,"texto":"O conto de teste\n\nA Dra. Ana abriu a porta. Lá fora chovia muito!
+ok     sem erros na página
+ok     ao abrir de novo, proporção e qualidade já vêm escolhidas — formato-vertical,qualidade-alta,espelhada,uso-leitor,efeito-borrar,fundo-consultorio
+ok     Melhorar: só "borrar" e "substituir" o fundo, com descrições; borrar já marcado — [{"v":"borrar","marcado":true,"desc":"Desfoca o que está atrás de você, como uma câmera profissional. É o mais natural e o que menos erra: bom para quase todo vídeo, inclusive com movimento de mãos. Não esconde totalmente o ambiente: ainda dá para perceber cores e formas."},{"v":"substituir","marcad
+ok     os fundos só aparecem ao escolher "substituir"
+ok     quatro fundos (ambiente neutro, praia, sala de estar, carro com crochê), com descrições — {"visivel":true,"f":[{"v":"consultorio","marcado":true,"nome":"Ambiente neutro e calmo","desc":"Parede clara em tom bege, estante de madeira clara com livros e uma plantinha, luminária de chão acesa e janela com cortina branca, tudo levemente desfocado. Bom para conversas sérias ou informativas: exp
+ok     0.3: Melhorar não mostra "Melhorar áudio"
+ok     Melhorar borrar (amostra): termina — Processando a amostra de 5 segundos com fundo borrado. Leva alguns segundos. Aguarde. | Processando: 40 por cento. | Amostra com fundo borrado salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo borrado amostra. O vídeo original continua guardado.
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo borrado amostra.mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo borrado (menos detalhe) e rosto igual — detalhe do fundo 33.7 → 11.5; rosto 2.6
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo borrado. Leva alguns segundos. Aguarde. | Processando: 40 por cento. | Amostra com fundo borrado salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo borrado amostra. O vídeo original continua guardado.
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo borrado salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo borrado amostra. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir consultorio (amostra): termina — Processando a amostra de 5 segundos com fundo neutro. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo neutro salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo neutro amostra. O vídeo original continua guardado.
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo neutro amostra.mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "consultorio" e rosto igual — igual ao fundo 0.9; diferença do original 46.6; rosto 7.3
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo neutro. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo neutro salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo neutro amostra. O vídeo original continua guardado.
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo neutro salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo neutro amostra. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir praia (amostra): termina — Processando a amostra de 5 segundos com fundo praia. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo praia salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo praia amostra. O vídeo original continua guardado.
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo praia amostra.mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "praia" e rosto igual — igual ao fundo 0.8; diferença do original 90.0; rosto 7.2
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo praia. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo praia salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo praia amostra. O vídeo original continua guardado.
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo praia salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo praia amostra. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir sala (amostra): termina — Processando a amostra de 5 segundos com fundo sala de estar. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo sala de estar salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo sala de estar amostra. O vídeo original continua guard
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo sala de estar amostra.mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "sala" e rosto igual — igual ao fundo 0.9; diferença do original 54.7; rosto 4.9
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo sala de estar. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo sala de estar salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo sala de estar amostra. O vídeo original continua guard
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo sala de estar salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo sala de estar amostra. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir carro (amostra): termina — Processando a amostra de 5 segundos com fundo carro. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo carro salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo carro amostra. O vídeo original continua guardado.
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo carro amostra.mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "carro" e rosto igual — igual ao fundo 0.7; diferença do original 50.2; rosto 5.2
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo carro. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo carro salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo carro amostra. O vídeo original continua guardado.
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo carro salva na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo carro amostra. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar borrar (vídeo todo): termina — Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo borrado salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 qu
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo borrado.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.01
+ok       fundo borrado (menos detalhe) e rosto igual — detalhe do fundo 33.7 → 11.5; rosto 2.6
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo borrado salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 qu
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo borrado salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo borrado. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir consultorio (vídeo todo): termina — Processando o vídeo todo com fundo neutro. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo neutro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quad
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo neutro.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.033333
+ok       fundo trocado pela imagem "consultorio" e rosto igual — igual ao fundo 0.9; diferença do original 46.7; rosto 7.4
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo neutro. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo neutro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quad
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo neutro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo neutro. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir praia (vídeo todo): termina — Processando o vídeo todo com fundo praia. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo praia salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadro
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo praia.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.033333
+ok       fundo trocado pela imagem "praia" e rosto igual — igual ao fundo 0.8; diferença do original 90.1; rosto 7.3
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo praia. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo praia salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadro
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo praia salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo praia. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir sala (vídeo todo): termina — Processando o vídeo todo com fundo sala de estar. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 hori
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo sala de estar.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.033333
+ok       fundo trocado pela imagem "sala" e rosto igual — igual ao fundo 0.9; diferença do original 55.0; rosto 5.0
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo sala de estar. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 hori
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo sala de estar. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir carro (vídeo todo): termina — Processando o vídeo todo com fundo carro. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo carro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadro
+ok       nome com o sufixo, na mesma pasta — 27-10 horizontal 30 quadros fundo carro.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.033333
+ok       fundo trocado pela imagem "carro" e rosto igual — igual ao fundo 0.7; diferença do original 50.4; rosto 5.3
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo carro. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo carro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadro
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo carro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo carro. O vídeo original continua guardado.
+ok       original intacto
+ok     Alt R durante o processamento pede para aguardar — Aguarde, estou processando o vídeo. Para parar, use o botão Cancelar.
+ok     Cancelar: avisa, volta às opções e não deixa arquivo pela metade — Processando: 80 por cento. | Vídeo com fundo carro salvo na pasta Documentos, Gravador de Vídeo, com o nome 27-10 horizontal 30 quadros fundo carro. O vídeo original continua guardado. | Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Agu
+ok     original intacto depois de tudo
+ok     nome repetido ganha " 2" e não apaga o anterior — 27-10 horizontal 30 quadros fundo borrado amostra 2.mp4
+ok     Melhorar vertical leve, sala de estar: 720x1280 e fundo no formato vertical — 720x1280, canto 0.3
+ok     Melhorar quadrado leve, sala de estar: 720x720 e fundo no formato quadrado — 720x720, canto 0.3
+ok     sem erros na página (melhorar)
+ok     Alt E (deslocado, horizontal): rosto à esquerda da imagem: "vá para a sua esquerda" — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Alt E (deslocado, vertical): no recorte vertical o rosto da borda fica fora do quadro — Nenhum rosto.
+ok     sem erros na página (deslocado)
+ok     Alt E (deslocado2, horizontal): rosto um pouco à esquerda no horizontal — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Alt E (deslocado2, vertical): no recorte vertical o mesmo rosto fica bem deslocado e cortado — Um rosto, bem deslocado para a sua direita. Vá para a sua esquerda. Rosto cortado à sua direita. Mostrando até os ombros.
+ok     Alt E (deslocado2, quadrado): no recorte quadrado o rosto também fica deslocado — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     sem erros na página (deslocado2)
+ok     Alt E (centrado, vertical): vertical centralizado — Um rosto, centralizado. Mostrando até o peito.
+ok     Alt E (centrado, quadrado): quadrado centralizado — Um rosto, centralizado. Mostrando até o peito. Na imagem: garrafa.
+ok     sem erros na página (centrado)
+ok     Alt E (vazio, horizontal): sem ninguém: "Nenhum rosto." — Nenhum rosto.
+ok     sem erros na página (vazio)
+ok     Alt E (escuro, horizontal): ambiente escuro — Um rosto, centralizado. Mostrando até o peito. Ambiente escuro.
+ok     sem erros na página (escuro)
+ok     Alt E (perto, horizontal): muito perto e cortado em cima — Um rosto, centralizado. Rosto cortado em cima e embaixo. Muito perto da câmera: afaste-se um pouco.
+ok     sem erros na página (perto)
+ok     Alt E (corpo, horizontal): corpo inteiro — Um rosto, centralizado. Mostrando o corpo inteiro.
+ok     Alt E (corpo, vertical): corpo inteiro no vertical — Um rosto, centralizado. Mostrando o corpo inteiro.
+ok     sem erros na página (corpo)
+ok     Alt E (grupo, horizontal): seis pessoas, fundo escuro mas rostos iluminados — Seis rostos. O mais perto está centralizado. Mostrando até a cintura.
+ok     sem erros na página (grupo)
+ok     Alt E (jemison, horizontal): pele escura não vira "ambiente escuro" — Um rosto, centralizado. Mostrando até a cintura.
+ok     sem erros na página (jemison)
+ok     "Minha câmera espelha a imagem" vem marcado, com descrição — {"c":true,"d":"Marque se a sua câmera mostra a imagem como um espelho. Assim o Alt E acerta os lados quando diz para ir para a sua direita ou para a sua esquerda. Na versão 0.2 os lados saíam trocados na sua câmera; por isso vem marcado. Se não souber, use o botão Testar o espelho.","desc":"espelhad
+ok     espelhada: rosto à esquerda da imagem = "vá para a sua direita" (contrário da 0.2) — Um rosto, um pouco deslocado para a sua esquerda. Vá um pouco para a sua direita. Mostrando até o peito.
+ok     desmarcar anuncia e fica salvo — Câmera espelhada: desmarcado.
+ok     sem espelho: volta a "vá para a sua esquerda" — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Testar o espelho sem mão levantada: avisa e não muda a opção — Não consegui ver uma mão levantada. Deixe a mão direita acima do ombro, dentro da imagem, e tente de novo. Nada mudou.
+ok     opção salva "não espelha" vale ao abrir
+ok     sem erros na página (espelho)
+ok     Alt E objetos (obj5): mesa com notebook, caneca e teclado — Nenhum rosto. Na imagem: teclado, notebook e xícara.
+ok       sem erros (obj5)
+ok     Alt E objetos (obj3): pessoa com celular (e notebook pouco visível): fala o celular, não "pessoa" — Um rosto, bem deslocado para a sua esquerda. Vá para a sua direita. Rosto cortado em cima. Incline a câmera um pouco para cima ou se afaste um pouco. Na imagem: celular.
+ok       "Na imagem" vem no fim da frase do enquadramento — Um rosto, bem deslocado para a sua esquerda. Vá para a sua direita. Rosto cortado em cima. Incline a câmera um pouco para cima ou se afaste um pouco. Na imagem: celular.
+ok       sem erros (obj3)
+ok     Alt E objetos (obj4): escritório: notebook, cadeira, planta — Um rosto, centralizado. Mostrando até a cintura. Na imagem: mesa, notebook e vaso de planta.
+ok       sem erros (obj4)
+ok     Alt E objetos (vazio): sem objetos: não fala "Na imagem" — Nenhum rosto.
+ok       sem erros (vazio)
+
+167 de 173 ok

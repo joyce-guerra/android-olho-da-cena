@@ -1,0 +1,18 @@
+ok     "Minha câmera espelha a imagem" vem marcado, com descrição — {"c":true,"d":"Marque se a sua câmera mostra a imagem como um espelho. Assim o Alt E acerta os lados quando diz para ir para a sua direita ou para a sua esquerda. Na versão 0.2 os lados saíam trocados na sua câmera; por isso vem marcado. Se não souber, use o botão Testar o espelho.","desc":"espelhad
+ok     espelhada: rosto à esquerda da imagem = "vá para a sua direita" (contrário da 0.2) — Um rosto, um pouco deslocado para a sua esquerda. Vá um pouco para a sua direita. Mostrando até o peito.
+ok     desmarcar anuncia e fica salvo — Câmera espelhada: desmarcado.
+ok     sem espelho: volta a "vá para a sua esquerda" — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Testar o espelho sem mão levantada: avisa e não muda a opção — Não consegui ver uma mão levantada. Deixe a mão direita acima do ombro, dentro da imagem, e tente de novo. Nada mudou.
+ok     opção salva "não espelha" vale ao abrir
+ok     sem erros na página (espelho)
+ok     Alt E objetos (obj5): mesa com notebook, caneca e teclado — Nenhum rosto. Na imagem: teclado, notebook e xícara.
+ok       sem erros (obj5)
+FALHOU Alt E objetos (obj3): pessoa com celular e notebook: fala os objetos, não "pessoa" — Um rosto, bem deslocado para a sua esquerda. Vá para a sua direita. Rosto cortado em cima. Incline a câmera um pouco para cima ou se afaste um pouco. Na imagem: celular.
+ok       "Na imagem" vem no fim da frase do enquadramento — Um rosto, bem deslocado para a sua esquerda. Vá para a sua direita. Rosto cortado em cima. Incline a câmera um pouco para cima ou se afaste um pouco. Na imagem: celular.
+ok       sem erros (obj3)
+ok     Alt E objetos (obj4): escritório: notebook, cadeira, planta — Um rosto, centralizado. Mostrando até a cintura. Na imagem: mesa, notebook e vaso de planta.
+ok       sem erros (obj4)
+ok     Alt E objetos (vazio): sem objetos: não fala "Na imagem" — Nenhum rosto.
+ok       sem erros (vazio)
+
+15 de 16 ok

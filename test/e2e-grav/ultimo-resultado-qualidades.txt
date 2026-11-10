@@ -1,0 +1,12 @@
+ok     alta horizontal: 1920x1080, 30 qps, AAC 48 kHz; 3.25 GB por hora (muito movimento) — 1920x1080, 7223 kbit/s, 16.0 s
+ok     alta vertical: 1080x1920, 30 qps, AAC 48 kHz; 4.27 GB por hora (muito movimento) — 1080x1920, 9496 kbit/s, 16.0 s
+ok     alta quadrado: 1080x1080, 30 qps, AAC 48 kHz; 2.65 GB por hora (muito movimento) — 1080x1080, 5899 kbit/s, 16.0 s
+ok     padrao horizontal: 1920x1080, 30 qps, AAC 48 kHz; 1.69 GB por hora (muito movimento) — 1920x1080, 3765 kbit/s, 16.0 s
+ok     padrao vertical: 1080x1920, 30 qps, AAC 48 kHz; 1.70 GB por hora (muito movimento) — 1080x1920, 3778 kbit/s, 16.0 s
+ok     padrao quadrado: 1080x1080, 30 qps, AAC 48 kHz; 1.70 GB por hora (muito movimento) — 1080x1080, 3772 kbit/s, 16.0 s
+ok     leve horizontal: 1280x720, 30 qps, AAC 48 kHz; 0.87 GB por hora (muito movimento) — 1280x720, 1942 kbit/s, 16.0 s
+ok     leve vertical: 720x1280, 30 qps, AAC 48 kHz; 0.87 GB por hora (muito movimento) — 720x1280, 1939 kbit/s, 16.0 s
+ok     leve quadrado: 720x720, 30 qps, AAC 48 kHz; 0.87 GB por hora (muito movimento) — 720x720, 1925 kbit/s, 16.0 s
+ok     sem erros na página (qualidades)
+
+10 de 10 ok

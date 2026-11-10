@@ -1,0 +1,35 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const RAIZ = process.argv[2], MIDIA = process.argv[3];
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 300) : ''}`); if (!c) falhas++; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-sd-'));
+  const pasta = path.join(tmp, 'meus'); fs.mkdirSync(pasta);
+  fs.copyFileSync(path.join(MIDIA, 'fala.mp3'), path.join(pasta, 'fala.mp3'));
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos') } });
+  const w = await app.firstWindow();
+  await app.evaluate(({ dialog }) => { global.__abrir = []; dialog.showOpenDialog = async () => { const p = global.__abrir.shift(); return p ? { canceled: false, filePaths: [].concat(p) } : { canceled: true, filePaths: [] }; }; });
+  const abrir = (p) => app.evaluate((_e, x) => { global.__abrir.push(x); }, p);
+  const ate = async (f, arg, ms = 60000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(150); } return false; };
+  const clicar = async (id) => { await ate((i) => { const e = document.getElementById(i); return e && !e.disabled && e.offsetParent !== null; }, id); await w.click('#' + id); };
+  await ate(() => window.gravarTela && window.olho); await espera(1000);
+  await clicar('ir-cortar'); await abrir(path.join(pasta, 'fala.mp3')); await clicar('ed-adicionar');
+  await ate(() => /fala/.test(document.getElementById('ed-info').textContent)); await clicar('ed-audio');
+  await ate(() => window.__audioCortes.video && !window.__audioCortes.salvando && /fala/.test(document.getElementById('au-info').textContent));
+  await clicar('au-continuar'); await ate(() => !document.getElementById('au-silencios').hidden);
+  await w.check('#aus-leve');
+  await clicar('aus-verificar');
+  await ate(() => document.getElementById('aus-dlg').open, null, 30000);
+  const dlg = await w.textContent('#aus-dlg-qtd');
+  ok('Verificar silêncios diz quanto o áudio deve ficar', /O áudio tem 10 segundos e deve ficar com cerca de \d+ segundos\./.test(dlg), dlg);
+  await clicar('aus-dlg-continuar');
+  ok('na Etapa 3, a fala diz quanto tinha e quanto ficou', await ate(() => /Efeitos e trilhas\. Silêncios cortados: o áudio tinha 10 segundos e ficou com \d+ segundos\./.test(document.getElementById('status').textContent), null, 60000), await w.textContent('#status'));
+  await clicar('aut-continuar');
+  ok('na Etapa 4, sem repetir o aviso', await ate(() => document.getElementById('status').textContent.trim() === 'Equalização e ajustes.', null, 20000), await w.textContent('#status'));
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

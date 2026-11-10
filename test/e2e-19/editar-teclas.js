@@ -1,0 +1,33 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const RAIZ = process.argv[2], MIDIA = process.argv[3];
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 200) : ''}`); if (!c) falhas++; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-et-'));
+  fs.copyFileSync(path.join(MIDIA, 'clipe.mp4'), path.join(tmp, 'clipe.mp4'));
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos') } });
+  const w = await app.firstWindow();
+  await app.evaluate(({ dialog }, f) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [f] }); }, path.join(tmp, 'clipe.mp4'));
+  const ate = async (f, arg, ms = 30000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(150); } return false; };
+  await ate(() => window.gravarTela && window.olho); await espera(800);
+  await w.evaluate(() => document.getElementById('ir-cortar').click()); await w.click('#ed-adicionar'); await ate(() => !document.getElementById('ed-opcoes').hidden);
+  await w.click('#ed-video'); await ate(() => window.olho.telaAtual() === 'cortar' && document.querySelector('#tela-cortar video').readyState >= 1);
+  await w.focus('#c-tocar');
+  const t = () => w.evaluate(() => document.querySelector('#tela-cortar video').currentTime);
+  await w.keyboard.press('ArrowRight'); await espera(300);
+  ok('seta para a direita: meio segundo', Math.abs((await t()) - 0.5) < 0.05, await t());
+  await w.keyboard.press('PageUp'); await espera(300);
+  ok('Page Up: avança o salto de 5 segundos', Math.abs((await t()) - 5.5) < 0.05, await t());
+  await w.keyboard.press('PageDown'); await espera(300);
+  ok('Page Down: volta o salto', Math.abs((await t()) - 0.5) < 0.05, await t());
+  await w.keyboard.press('ArrowLeft'); await espera(300);
+  ok('seta para a esquerda: volta meio segundo', Math.abs(await t()) < 0.05, await t());
+  await w.keyboard.press('a'); await espera(300);
+  ok('a letra A não pula mais', Math.abs(await t()) < 0.05, await t());
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

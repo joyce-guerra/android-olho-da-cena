@@ -1,0 +1,46 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const RAIZ = process.argv[2], MIDIA = process.argv[3];
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 300) : ''}`); if (!c) falhas++; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-rv-'));
+  const srt = path.join(tmp, 'conto.srt');
+  fs.writeFileSync(srt, '1\n00:00:01,000 --> 00:00:03,500\nEra uma vez uma menina que mudava perto do rio.\n\n2\n00:00:04,000 --> 00:00:06,000\nTodas as manhãs ela descia.\n');
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos') } });
+  const w = await app.firstWindow();
+  const erros = []; w.on('pageerror', (e) => erros.push(e.message));
+  await app.evaluate(({ dialog }) => { global.__abrir = []; dialog.showOpenDialog = async () => { const p = global.__abrir.shift(); return p ? { canceled: false, filePaths: [].concat(p) } : { canceled: true, filePaths: [] }; }; });
+  const abrir = (p) => app.evaluate((_e, x) => { global.__abrir.push(x); }, p);
+  const ate = async (f, arg, ms = 20000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(100); } return false; };
+  const status = () => w.evaluate(() => document.getElementById('status').textContent);
+  await ate(() => window.gravarTela && window.olho); await espera(800);
+  await w.evaluate(() => { window.__fim = null; window.gravarTela.abrirLegenda({ audio: 'x', nome: 'conto', aoTerminar: (r) => { window.__fim = r; }, aoVoltar: () => {} }); });
+  await abrir(srt); await w.click('#lg-inserir-srt');
+  ok('depois de inserir: a pergunta de revisar', await ate(() => !document.getElementById('lg-revisar').hidden) && await ate(() => /Quer editar o texto da legenda\?$/.test(document.getElementById('status').textContent), null, 2000), await status());
+  ok('a pergunta diz quantas falas', /^2 falas\. Quer editar o texto da legenda\?/.test(await w.textContent('#lg-revisar-info')), await w.textContent('#lg-revisar-info'));
+  await w.click('#lg-revisar-sim');
+  ok('Sim: um campo por fala, foco no primeiro', await w.evaluate(() => document.querySelectorAll('#lg-revisar-lista textarea').length === 2 && document.activeElement.id === 'lg-fala-0'));
+  ok('o rótulo do campo diz a fala e o tempo', (await w.evaluate(() => document.querySelector('label[for="lg-fala-0"]').textContent)) === 'Fala 1 de 2, de 0:01 a 0:04');
+  await w.fill('#lg-fala-0', 'Era uma vez uma menina que morava perto do rio.');
+  await w.keyboard.press('Alt+KeyA');
+  ok('Salvar e continuar: Passo 4, avisando o que mudou', await ate(() => !document.getElementById('lg-estilo').hidden) && await ate(() => /^Texto revisado: 1 fala alterada, com os mesmos tempos\. Passo 4 de 4/.test(document.getElementById('status').textContent), null, 2000), await status());
+  await w.check('#lg-estilo-youtube'); await w.keyboard.press('Alt+KeyA');
+  await ate(() => !!window.__fim);
+  const r = await w.evaluate(() => window.__fim);
+  const conteudo = r ? fs.readFileSync(r.srt, 'utf8') : '';
+  ok('SRT salvo com a palavra corrigida e os mesmos tempos', /00:00:01,000 --> 00:00:03,500\nEra uma vez uma menina\nque morava perto do rio\./.test(conteudo) && /00:00:04,000 --> 00:00:06,000\nTodas as manhãs ela descia\./.test(conteudo), conteudo);
+  // Voltar do Passo 4 volta para a revisão.
+  await w.evaluate(() => { window.__fim = null; window.gravarTela.abrirLegenda({ audio: 'x', nome: 'conto', aoTerminar: (r) => { window.__fim = r; }, aoVoltar: () => {} }); });
+  await abrir(srt); await w.click('#lg-inserir-srt'); await ate(() => !document.getElementById('lg-revisar').hidden);
+  await w.click('#lg-revisar-nao');
+  ok('Não: vai direto para o Passo 4', await ate(() => !document.getElementById('lg-estilo').hidden));
+  await w.click('#lg-estilo-voltar');
+  ok('Voltar do Passo 4 volta para a revisão', await ate(() => !document.getElementById('lg-revisar').hidden));
+  ok('sem erros na página', erros.length === 0, erros.join(' | '));
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

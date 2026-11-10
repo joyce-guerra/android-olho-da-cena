@@ -1,0 +1,60 @@
+ok     lista as câmeras com nome — /tmp/gravador-teste-midia/centrado.y4m
+ok     lista os microfones com nome (e o padrão do Windows) — Padrão do Windows,Fake Audio Input 1,Fake Audio Input 2
+ok     legenda começa desligada
+ok     anuncia que está pronto
+ok     foco começa no formato
+ok     Alt E: rosto centralizado, até o peito — Um rosto, centralizado. Mostrando até o peito.
+ok     enquadramento não é falado sozinho — 1
+ok     cartão da frase aparece só com a frase
+ok     seta para baixo avança e fala a frase — O Sr. Lima chegou cedo!
+ok     no começo avisa "Começo do texto."
+ok     End vai para a última; no fim avisa "Fim do texto."
+ok     Home volta para a primeira
+ok     abre texto do Word e avisa — Texto aberto: texto.docx.
+ok     frase do Word sem cortar em "Dra." — A Dra. Ana abriu a porta.
+ok     Alt T sem gravação avisa
+ok     Alt R anuncia "Gravando." e leva o foco para a frase
+ok     durante a gravação, formato, câmera e microfone ficam bloqueados
+ok     Alt T pausa e anuncia
+ok     Alt T continua e anuncia
+ok     setas andam pelas frases durante a gravação
+ok     Alt R para e avisa que está salvando
+ok     anuncia onde salvou — Vídeo salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 12h37m51s (horizontal). Duração: 4 segundos.
+ok     arquivo na pasta Documentos/Gravador de Vídeo — /tmp/gravador-e2e-67mFkB/Documentos/Gravador de Vídeo/Vídeo 2026-10-27 12h37m51s (horizontal).mp4
+ok     MP4 horizontal: H.264 1920x1080, 30 qps, yuv420p — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     MP4 com áudio AAC 48 kHz — {"codec_name":"aac","codec_type":"audio","sample_rate":"48000","avg_frame_rate":"0/0"}
+ok     duração sem o tempo pausado (~3,5 s) — 3.54
+ok     o áudio do microfone foi gravado (sem silêncio) — -27.1 dB (silêncio daria cerca de -91 dB)
+ok     não sobra arquivo temporário
+ok     tela de pronto com foco em "Voltar ao início"
+ok     Voltar ao início volta para a gravação
+ok     segundo vídeo com legenda salvo — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     legenda queimada embaixo só quando ligada — embaixo 42.4, em cima 0.0
+ok     MP4 vertical 1080x1920 com áudio — {"codec_name":"h264","codec_type":"video","width":1080,"height":1920,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     nome do vertical — Vídeo 2026-10-27 12h37m58s (vertical).mp4
+ok     Alt R na tela de pronto já grava outro
+ok     guarda formato e legenda para a próxima vez — {"formato":"vertical","camera":"","microfone":"","legenda":true,"texto":"O conto de teste\n\nA Dra. Ana abriu a porta. L
+ok     sem erros na página
+ok     Alt E (deslocado, horizontal): rosto à esquerda da imagem: "vá para a sua esquerda" — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Alt E (deslocado, vertical): no recorte vertical o rosto da borda fica fora do quadro — Nenhum rosto.
+ok     sem erros na página (deslocado)
+ok     Alt E (deslocado2, horizontal): rosto um pouco à esquerda no horizontal — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Alt E (deslocado2, vertical): no recorte vertical o mesmo rosto fica bem deslocado e cortado — Um rosto, bem deslocado para a sua direita. Vá para a sua esquerda. Rosto cortado à sua direita. Mostrando até os ombros.
+ok     sem erros na página (deslocado2)
+ok     Alt E (centrado, vertical): vertical centralizado — Um rosto, centralizado. Mostrando até o peito.
+ok     sem erros na página (centrado)
+ok     Alt E (vazio, horizontal): sem ninguém: "Nenhum rosto." — Nenhum rosto.
+ok     sem erros na página (vazio)
+ok     Alt E (escuro, horizontal): ambiente escuro — Um rosto, centralizado. Mostrando até o peito. Ambiente escuro.
+ok     sem erros na página (escuro)
+ok     Alt E (perto, horizontal): muito perto e cortado em cima — Um rosto, centralizado. Rosto cortado em cima e embaixo. Muito perto da câmera: afaste-se um pouco.
+ok     sem erros na página (perto)
+ok     Alt E (corpo, horizontal): corpo inteiro — Um rosto, centralizado. Mostrando o corpo inteiro.
+ok     Alt E (corpo, vertical): corpo inteiro no vertical — Um rosto, centralizado. Mostrando o corpo inteiro.
+ok     sem erros na página (corpo)
+ok     Alt E (grupo, horizontal): seis pessoas, fundo escuro mas rostos iluminados — Seis rostos. O mais perto está centralizado. Mostrando até a cintura.
+ok     sem erros na página (grupo)
+ok     Alt E (jemison, horizontal): pele escura não vira "ambiente escuro" — Um rosto, centralizado. Mostrando até a cintura.
+ok     sem erros na página (jemison)
+
+58 de 58 ok

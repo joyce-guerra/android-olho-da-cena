@@ -1,0 +1,155 @@
+ok     título da janela e da página: Olho da Cena — Olho da Cena
+ok     menu inicial na ordem: Gravar (R), Montar (G), Editar (C), Juntar (J), Dividir (D); sem Melhorar — Gravar vídeo|r,Montar vídeo|g,Editar vídeo|c,Juntar vídeos|j,Dividir vídeo|d,Abrir a pasta Olho da Cena|
+ok     na abertura: avisa (uma vez) que as gravações antigas continuam na pasta Gravador de Vídeo — Olho da Cena pronto para começar. As gravações antigas continuam na pasta Gravador de Vídeo, em Documentos; nada foi movido nem apagado. As novas vão para a pasta Olho da Cena. FFmpeg encontrado fora do PATH, mas funcionando.
+ok     pasta Documentos/Olho da Cena criada e anunciada na tela inicial
+ok     Alt G no início abre a tela gerar — gerar
+ok     Alt H abre a ajuda na tela gerar — Ctrl 1: etapa Áudio. Ctrl 2: etapa Imagens. Ctrl 3: etapa Extras. Ctrl 4: etapa Ajustes finais.
+ok     Alt C no início abre a tela cortar — cortar
+ok     Alt H abre a ajuda na tela cortar — Control com seta para a direita ou para a esquerda: aumenta ou diminui o volume do vídeo todo (fora de campo de texto e de controle deslizante)
+ok     Alt J no início abre a tela juntar — juntar
+ok     Alt H abre a ajuda na tela juntar — Alt H: fecha esta lista. Escape também fecha.
+ok     Alt D no início abre a tela dividir — dividir
+ok     Alt H abre a ajuda na tela dividir — Alt H: fecha esta lista. Escape também fecha.
+ok     Alt H no início lista os cinco atalhos do menu — Alt R: Gravar vídeo
+ok     Alt R no início abre Gravar vídeo
+ok     Alt H não abre ajuda na tela Gravar
+ok     só a tela à vista tem teclas de acesso
+ok     sem erros de página na abertura
+ok     o aviso da pasta antiga não se repete — Olho da Cena pronto para começar. FFmpeg encontrado fora do PATH, mas funcionando.
+ok     a pasta antiga e o vídeo antigo continuam lá, intactos
+ok     entrar em Gravar: anuncia as teclas e pede proporção e qualidade — Gravar vídeo. Alt R grava, Alt T pausa, Alt E fala o enquadramento. Antes da primeira gravação, escolha a proporção e a qualidade.
+ok     câmera aberta só com a tela Gravar à vista
+ok     sem o botão Testar o espelho; caixa "câmera espelhada" marcada, com descrição nova
+ok     fundos: Escritório (no lugar de "Ambiente neutro e calmo") e Grafite com neon — Escritório, Estúdio de gravação musical, Biblioteca, Sala de aula, Cantinho indiano com mandala, Grafite com neon, Capelinha ecumênica com vitral, Dentro de um carro popular com crochê, Carro executivo, Estação espacial, Quarto rosa, Quarto sóbrio, Sala de estar simples e aconchegante, Sala dos gatos, Banco no jardim com jasmim, Praia ao pôr do sol, Céu estrelado no campo, Café rústico com tijolos
+ok     Grafite com neon tem descrição — Bom para vídeos jovens, urbanos e criativos: música, arte, cultura de rua, tecnologia e conversas descontraídas. Menos indicado para assuntos sérios ou formais. Muro de rua à noite, pintado com grafite colorido de manchas e pinceladas em roxo, verde-água e laranja, sem letras nem desenhos de pessoas, com tubos de luz neon rosa e azul-claro fazendo curvas na parede e o chão de cimento escuro reflet
+ok     Alt E: rosto centralizado, sem aviso falso de mão ou braço — Um rosto, centralizado. Cabelo curto. Mostrando até o peito.
+ok     Alt E: dados de mão e braço calculados a partir da pose de 33 pontos — {"rostos":1,"faixa":"peito","horizontal":"centro","cortado":[],"distancia":null,"escuro":false,"maoNoRosto":false,"cabelo":{"noRosto":false,"emCima":false,"comprimento":"curto","abaixoDoQueixo":-0.01},"bracoCortado":[],"estourada":false,"contraLuz":false,"desfocada":false,"tremendo":false,"espelhada":true}
+ok     Alt E: "Mão na frente do rosto" e "Braço cortado na lateral", com o lado trocando conforme o espelho — Um rosto, centralizado. Mão na frente do rosto. Braço cortado na lateral, à sua direita: aproxime o braço do corpo ou se afaste um pouco. Mostrando até o peito. || Um rosto, centralizado. Mão na frente do rosto. Braço cortado na lateral, à sua esquerda: aproxime o braço do corpo ou se afaste um pouco. Mostrando até o peito.
+ok     frases: seta para a direita avança, para a esquerda volta, End e Home — A Dra. Ana abriu a porta. | O conto de teste | Quem estaria ali?
+ok     Alt T pausa a gravação — Gravação pausada. Alt T continua, Alt R para e salva.
+ok     Alt T retoma a gravação — Gravação retomada.
+ok     durante a gravação não sai da tela Gravar — Pare a gravação antes de sair (Alt R). 
+ok     1.3.1: depois de parar: Descartar vídeo, Salvar e fechar, Salvar e continuar, Voltar (sem Editar vídeo; foco em Salvar e fechar) — Tudo pronto. Vídeo gravado, ainda não salvo. Duração: 7 segundos. Escolha Descartar vídeo, Salvar e fechar, Salvar e continuar, ou Voltar.
+ok     1.1: cada botão numa linha (um embaixo do outro)
+ok     1.3.1: a gravação fica temporária (fora da pasta Olho da Cena) até salvar — /tmp/olho-e2e-NjCx5I/dados/gravando/provisorio-1793499530558.mp4
+ok     original: H.264 1920x1080 com áudio AAC, sem o tempo pausado — {"d":6.566667,"w":1920}
+ok     1.3.1: Salvar e continuar salva o original na pasta Olho da Cena, nome de sempre, e apaga o temporário — /tmp/olho-e2e-NjCx5I/Documentos/Olho da Cena/Vídeo 2026-10-31 23h18m50s (horizontal).mp4
+ok     1.3.1: Salvar e continuar abre Ajustes de áudio, Cortes, sem botão Enviar áudio
+ok     1.3: nivelamento para a internet automático (ganho calculado)
+ok     1.4: Cortes tem os botões do tocador, na ordem
+ok     1.4: a fala de entrada dos Cortes diz Espaço toca e pausa
+ok     1.4: Espaço toca e pausa; Control Espaço não faz nada — {"pausadoCtrl":true,"tocandoEsp":true}
+ok     1.3.2: os botões do tocador funcionam (tocar, final, começo, avançar e voltar 1 s) — {"tocBotao":true,"fimT":6.566667,"umT":1}
+ok     1.4: Alt H nos Cortes diz Barra de espaço — Alt I: início da seleção. Alt F: fim da seleção. Pode marcar em qualquer ordem
+ok     1.3: Alt D sem descartes fala a mensagem — Nenhum descarte encontrado. Use Alt I e Alt F para marcar os descartes desejados antes de selecionar. Del e Alt S descartam ou salvam todos.
+ok     1.3: Alt F confirma a seleção — Seleção 1 marcada, de 00:04 a 00:05.
+ok     1.3: Alt D lista "Descarte 1, de 00:04 a 00:05" com Ouvir, Descartar e Salvar
+ok     1.3: Del descarta a seleção — 1 seleção descartada. O vídeo fica com 00:05.
+ok     1.6: Alt F antes do Alt I é aceito; Alt S e Del avisam que falta o início; fim antes do início troca sem aviso — Fim da seleção 1 em 00:03. || Falta o início da seleção: aperte Alt I. || Falta o início da seleção: aperte Alt I. || Seleção 1 marcada, de 00:02 a 00:03. || [{"inicio":2,"fim":3}]
+ok     1.6: Control com setas (teclas de verdade) nos Cortes: cima/baixo velocidade, direita/esquerda volume — [{"r":1,"v":1},{"r":1.05,"v":1.1},{"r":1,"v":1}]
+ok     1.4: tela Silêncios e crossfade, com os links no começo marcando onde está — Cortes | Silêncios e crossfade* | Efeitos e trilhas | Equalização e ajustes
+ok     1.4: opções leve, equilibrado, agressivo e Crossfade (desligado sem o agressivo) — {"nav":"Cortes | Silêncios e crossfade* | Efeitos e trilhas | Equalização e ajustes","opcoes":"Corte leve de silêncio | Corte equilibrado de silêncio | Corte agressivo de silêncio | Crossfade","cross":true,"fim":"Salvar e continuar | Voltar | Fechar"}
+ok     1.4: termina com Salvar e continuar, Voltar, Fechar — Salvar e continuar | Voltar | Fechar
+ok     1.4: só um corte de silêncio marcado; o agressivo libera o Crossfade — {"l":false,"a":true,"c":false}
+ok     1.4: desmarcar todos é possível; Crossfade volta a ficar desligado
+ok     1.5: tela Efeitos e trilhas, com os links no começo marcando onde está — Cortes | Silêncios e crossfade | Efeitos e trilhas* | Equalização e ajustes
+ok     1.5: botões do Montar (sem o tocador de 5 segundos), tocador (cortar à mão só na Cortes), e no fim Salvar e continuar, Voltar, Fechar — Escolher arquivo de trilha | Marcar este ponto | Ouvir prévia da mistura aqui (6 segundos) | Adicionar trilha | Encerrar a trilha anterior aqui | Deixar as duas tocando | Tocar ou pausar, Espaço | Voltar 1 segundo, seta para a esquerda | Avançar 1 segundo, seta para a direita | Começo do áudio, Home | Final do áudio, End | Salvar e continuar | Voltar | Fechar
+ok     1.5: volumes da trilha iguais aos do Montar, Baixa marcada — Bem baixa, 6 por cento | Baixa, 10 por cento* | Média, 18 por cento | Alta, 30 por cento
+ok     1.5: Alt H nos Efeitos e trilhas fala do Alt G da mistura e da barra de espaço — Alt G: prévia da mistura de 6 segundos, com as trilhas adicionadas e a que está sendo preparadaBarra de espaço: tocar ou pausar. Setas para a esquerda e para a direita: volta ou avança 1 segundoF2: salto programado. Page Up: próximo salto. Page Down: salto anteriorHome: começo do áudio. End: final do áudioControl com seta para cima ou para baixo: velocidade. Control com seta para a direita ou para
+ok     1.6: tela Equalização e ajustes, com os links no começo marcando onde está — Cortes | Silêncios e crossfade | Efeitos e trilhas | Equalização e ajustes*
+ok     1.6: predefinições em botões (Neutro marcada), Ouvir prévia, tocador (cortar à mão só na Cortes), e no fim Salvar e continuar, Voltar, Fechar — Neutro* | Voz mais clara | Menos abafada | Voz mais encorpada | Menos chiado | Ouvir prévia, Alt P | Tocar ou pausar, Espaço | Voltar 1 segundo, seta para a esquerda | Avançar 1 segundo, seta para a direita | Começo do áudio, Home | Final do áudio, End | Salvar e continuar | Voltar | Fechar
+ok     1.6: Estéreo e Limitador marcados; bandas Graves, Médios, Agudos — aue-estereo* aue-mono aue-limitador* aue-graves aue-medios aue-agudos
+ok     1.6: escolher Voz mais clara fala as bandas como no Editar — Voz mais clara: graves menos 2 decibéis, médios mais 2 decibéis, agudos mais 3 decibéis.
+ok     1.6: Alt H na Equalização fala do Alt P, com bipe como o Alt E — Alt P: toca e pausa a prévia de 6 segundos, a partir de onde o áudio está, com a equalização, o mono ou estéreo e o limitador escolhidosAlt G: prévia de 10 segundosBarra de espaço: tocar ou pausar. Setas para a esquerda e para a direita: volta ou avança 1 segundoF2: salto programado. Page Up: próximo salto. Page Down: salto anteriorHome: começo do áudio. End: final do áudioControl com seta para ci
+ok     1.6: Alt P toca e pausa a prévia da equalização
+ok     1.6: Espaço toca e pausa o tocador na Equalização
+ok     1.6: Control com setas (teclas de verdade) mudam velocidade e volume, com foco no botão Tocar — [{"r":1,"v":1},{"r":1.05,"v":1.1},{"r":1,"v":1}]
+ok     1.6: Voltar da Equalização volta para Efeitos e trilhas
+ok     1.6: até aqui nada foi salvo
+ok     1.3.1: Salvar e continuar dos Cortes salva o vídeo cortado (1 s a menos) e vai para a imagem — 5.549 x 6.566667
+ok     1.3.1: a explicação do fundo é lida uma vez, no topo, e não em cada opção — Silêncios e crossfade. || Efeitos e trilhas. || Equalização e ajustes. || Voz mais clara: graves menos 2 decibéis, médios mais 2 decibéis, agudos mais 3 decibéis. || Preparando a prévia. || Pausado. || Tocando, em 00:02. || Pausado em 00:02. || Velocidade 105%. || Volume 110%. || Velocidade 100%. || Volume 100%. || Efeitos e trilhas. || Equalização e ajustes. || Neutro: graves zero, médios zero, a
+ok     1.3.1: miniatura decorativa ao lado de cada fundo (alt vazio, aria-hidden, fora do rótulo) — {"n":18,"r":18,"d":true,"c":true,"f":[]}
+ok     1.5: fundos alinhados: miniatura, nome e descrição na mesma coluna em todas as linhas, mesma largura; ordem do leitor igual — {"ok":true,"ordem":"IMG,INPUT,LABEL,P"}
+ok     1.3.1: sem "fundo novo" na tela do fundo — Fundo
+ok     1.3.1: Céu estrelado no campo logo depois da Praia — escritorio,estudio,biblioteca,sala-de-aula,indiano,grafite,capela,carro,carro-masculino,estacao-espacial,quarto-feminino,quarto-masculino,sala,sala-dos-gatos,jardim,praia,ceu-estrelado,cafe
+ok     1.3.1: Céu estrelado lido como aplicação e descrição — Bom para leitura de contos, histórias para dormir, reflexões e conversas tranquilas. Noite no campo, no interior de Minas Gerais. Ao fundo, montanhas em camadas, uma atrás da outra, como as serras de Minas, cada vez mais azuladas ao longe. De um lado, uma cerca de madeira, com uma fileira de mourões que vai sumindo na distância. No meio do campo, uma árvore sozinha, como um ipê. Na frente, capim b
+ok     1.3.1: "Fundo original" aparece no caminho da gravação
+ok     1.3.1: tela "Alterar plano de fundo" termina com Salvar e continuar, Salvar e fechar, Voltar — Salvar e continuar|Salvar e fechar|Voltar
+ok     1.3.1: Salvar e continuar salva com fundo escritório (nome "fundo escritório") — 31-10 horizontal 30 quadros fundo escritório.mp4
+ok     processamento acompanha o andamento em por cento — 0,1,2,3,4,5,6,7,8,9,10,11
+ok     vídeo com fundo: 1920x1080 — {"d":5.566667,"w":1920,"h":1080}
+ok     1.3.1: depois de Salvar e continuar vem "Vídeo salvo", sem Editar vídeo, Concluir ou Melhorar de novo — Gravar outro vídeo|Abrir a pasta|Voltar ao início
+ok     1.3.1: nenhuma fala cita Concluir, Melhorar de novo ou Editar o vídeo melhorado — Processando o vídeo todo com fundo escritório. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. / Processando: 60 por cento. / Vídeo com fundo escritório salvo na pasta Documentos, Olho da Cena, com o nome 31-10 horizontal 30 quadros fundo escritório. O vídeo original continua guardado.
+ok     1.3.1: grafite + título salvo, com imagem e som, nome "fundo grafite" — 31-10 horizontal 30 quadros fundo grafite 2.mp4
+ok     1.3.1: o corte está no vídeo final (1 s a menos que o original) — 5.566667 x 6.566667
+ok     1.3.1: o título aparece no começo do vídeo final (e some depois) — 7.3 x 0.8
+ok     1.1: o último fundo e efeito ficam guardados
+ok     1.5: estática mostra o tempo, Marcar este ponto e a prévia
+ok     1.5: Marcar este ponto usa o tocador universal — 00:00:08
+ok     1.5: Alt G toca a prévia da mistura ali mesmo, sem tela própria, com a trilha ainda não adicionada — Gerando prévia... | Prévia de 6.0 segundos, começando em 0:05.
+ok     1.5: trilha adicionada e lida como no Montar — Trilha 1 de 1: olho-tom-440.wav, estática, começa em 00:00:08, toca uma vez só, com fade na entrada e na saída, volume Alta, 30 por cento.Remover
+ok     1.3.1: Fundo original salva o vídeo final com 10,8 s (12 s menos 1,2 s) — 10.816 31-10 horizontal 30 quadros áudio melhorado.mp4
+ok     1.3: o trecho cortado sumiu mesmo do arquivo final (o bipe não está mais lá) — -1.9 x -42.4
+ok     1.3.1: Fundo original: título no começo, aplicado depois dos cortes; o resto igual — 13.3 x 0.3
+ok     1.5: a trilha entrou no vídeo salvo, no tempo traduzido para depois do corte (6,8 s) — -34.418514 x -83.612786 dB
+ok     1.3: Alt S salvou o trecho em vídeo e em áudio — 31-10 horizontal 30 quadros fundo escritório.mp4 | 31-10 horizontal 30 quadros fundo grafite 2.mp4 | 31-10 horizontal 30 quadros fundo grafite.mp4 | 31-10 horizontal 30 quadros áudio melhorado.mp4 | Vídeo 2026-10-31 23h18m50s (horizontal) editado.mp4 | Vídeo 2026-10-31 23h18m50s (horizontal).mp4 | teste editar - trecho 1.mp3 | teste editar - trecho 1.mp4 | teste editar editado.mp4 | teste editar.m
+ok     1.3: vídeo final com o volume nivelado para a internet (perto de -16 LUFS) — -16.7
+ok     1.6: Mono salvo de verdade (a voz igual nos dois ouvidos, ou um canal só) — 1 canais, diferença -18.295291
+ok     1.6: Voz mais clara foi salva junto (graves -2, médios +2, agudos +3) — {"graves":-2,"medios":2,"agudos":3}
+ok     1.4: Verificar silêncios sem marcar nenhum corte só avisa
+ok     1.4: equilibrado acha exatamente os mesmos silêncios do Gerador 2.0.3 — 41 silêncios encontrados. / Gerador: 41
+ok     1.4: o pop-up tem a quantidade, Ouvir prévia, Tentar de novo e Salvar e continuar — Ouvir prévia | Tentar de novo | Salvar e continuar
+ok     1.4: Alt P toca a prévia inteira, já sem os silêncios, e pausa — 85.953 x Gerador 85.953
+ok     1.4: Tentar de novo fecha o pop-up e volta para Silêncios e crossfade
+ok     1.5: Salvar e continuar do pop-up leva para Efeitos e trilhas, sem salvar ainda
+ok     1.4: Salvar e continuar do pop-up salva o vídeo com o corte equilibrado (mesma duração do Gerador 2.0.3) e vai para a imagem — 85.969 x 85.953
+ok     1.4: agressivo com crossfade salva vídeo mais curto que o equilibrado, imagem e som juntos — 71.266667; agressivo: 41 silêncios
+ok     1.4: depois dos silêncios, Alterar plano de fundo salva o vídeo final — 31-10 horizontal 30 quadros áudio melhorado 2.mp4
+ok     Gravar outro vídeo volta para Gravar, pronto para gravar outro
+ok     de volta ao Gravar, a câmera é aberta de novo
+ok     1.3.1: Descartar vídeo apaga o temporário, nada vai para a pasta, fica no Gravar — /tmp/olho-e2e-NjCx5I/dados/gravando/provisorio-1793499601185.mp4
+ok     1.3.1: o primeiro Voltar só avisa que o vídeo não foi salvo — O vídeo ainda não foi salvo. Aperte Voltar de novo para descartar e voltar, ou escolha Salvar e fechar ou Salvar e continuar.
+ok     1.3.1: o segundo Voltar descarta o temporário e vai para a tela inicial — /tmp/olho-e2e-NjCx5I/dados/gravando/provisorio-1793499604765.mp4
+ok     gravação vertical com nome de sempre — Vídeo 2026-10-31 23h20m08s (vertical).mp4
+ok     1.3.1: Voltar dos Cortes volta para a escolha, com o vídeo já salvo — /tmp/olho-e2e-NjCx5I/Documentos/Olho da Cena/Vídeo 2026-10-31 23h20m08s (vertical).mp4
+ok     1.3.1: Voltar com o vídeo já salvo não apaga nada
+ok     o vídeo gravado abre no Editar vídeo — Vídeo 2026-10-31 23h20m08s (vertical).mp4, 00:00:02,1.
+ok     saindo do Gravar, a câmera é fechada
+ok     1.3.2: no Editar, a parte 7 e o botão se chamam Alterar plano de fundo
+ok     Melhorar no Editar abre a tela Melhorar com o vídeo carregado
+ok     1.1: o último fundo volta marcado (o último efeito foi Fundo original, que só existe depois de gravar: aqui vem Borrar)
+ok     sem erros de página no Gravar e no Alterar plano de fundo
+ok     Alterar plano de fundo do Editar: vertical continua 1080x1920, nome "fundo borrado" — {"n":"31-10 vertical 30 quadros fundo borrado.mp4","w":1080,"h":1920}
+ok     1.3.1: Salvar e fechar salva e fecha o programa — Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. / Vídeo com fundo borrado salvo na pasta Documentos, Olho da Cena, com o nome 31-10 vertical 30 quadros fundo borrado. O vídeo original continua guardado. Fechando o Olho da Cena.
+ok     ajuste começa neutro e diz a duração — Volume 100%, equalização Neutro, velocidade 100%. Vídeo de 12 segundos.
+ok     Control + seta para a direita: volume 120%, anunciado — Volume 120%.
+ok     Control + seta para a esquerda: volume 110% — Volume 110%.
+ok     Control + seta para cima: velocidade 120%, com a nova duração — Velocidade 120%. Vídeo de 10 segundos.
+ok     predefinição da equalização anunciada — Voz mais clara: graves menos 2 decibéis, médios mais 2 decibéis, agudos mais 3 decibéis.
+ok     controles deslizantes com valor falado (aria-valuetext) — 120%|menos 2 decibéis|120%
+ok     Ouvir o ajuste: prepara e toca 6 segundos (já com a velocidade) — /tmp/olho_ouvir_ajuste_1793499616405.wav 5.984
+ok     Ouvir o ajuste: arquivo de 6 s — 5.984
+ok     removedor de silêncio acha os dois silêncios — [[2.149979,4.850041999999999],[8.149979,9.850042]]
+ok     suavizar fades anunciado
+ok     salvar vídeo: a janela sugere a pasta Olho da Cena —  | /tmp/olho-e2e-TLZwT7/Documentos/Olho da Cena/teste editar-cortado.mp4
+ok     salvar vídeo: anuncia o andamento em por cento — Mantendo 3 trecho(s). O vídeo vai de 0:12 para 0:08. Aplicando o ajuste do áudio. | Salvando o vídeo: 31 por cento.
+ok     vídeo salvo com cortes e velocidade 120%: duração certa — 6.348 x 6.333228333333334
+ok     imagem e som do mesmo tamanho (sincronia das trilhas) — 6.305554 x 6.348000
+ok     clarão e bipe continuam juntos depois da velocidade (diferença < 40 ms) — imagem 2.749999 s, som 2.76 s
+ok     o clarão caiu no tempo esperado (cortes e velocidade) — 2.749999 x 2.7499475000000007
+ok     volume 120% e silêncios removidos: som mais alto que o original — -15.1 → -11.6 dB
+ok     salvar áudio com o mesmo ajuste: MP3 da mesma duração do vídeo — 6.36 x 6.348
+ok     Voltar o áudio ao original anunciado — Áudio original: volume 100%, equalização Neutro, velocidade 100%.
+ok     velocidade tem mínimo 50%, avisado — Velocidade 50%. Vídeo de 24 segundos.
+ok     só com o ajuste (velocidade 80%, sem descartes): salva um vídeo de 15 s — 14.995 (descartes selecionados: 0) Pronto. O vídeo ficou com 15 segundos, salvo em so-ajuste.mp4. Use Ouvir o resultado para conferir.
+ok     Ctrl + setas: descritas na ajuda do Editar
+ok     sem erros de página no Editar
+ok     Juntar: junta o vídeo gravado e o melhorado — Pronto. 2 trechos, 0:12, salvo em juntado.mp4. 12.137
+ok     Juntar: andamento em por cento — Analisando... | Analisando os vídeos: 0 por cento. | Medindo o volume: 1 de 2. | Medindo o volume: 2 de 2. | Vídeo 2: volume ajustado em -4.4 decibéis. | Preparando trecho 1 de 2. | Emendando os trechos: 88 por cento.
+FALHOU Dividir: divide a gravação em partes, na pasta Olho da Cena — Pronto. 4 partes na pasta Vídeo 2026-10-31 23h18m50s (horizontal) (partes), dentro da pasta Olho da Cena. Use Abrir a pasta das partes. Vídeo 2026-10-31 23h18m50s (horizontal) (partes) Vídeo 2026-10-31 23h18m50s (horizontal) - parte 01 de 04.mp4,Vídeo 2026-10-31 23h18m50s (horizontal) - parte 02 de 04.mp4,Vídeo 2026-10-31 23h18m50s (horizontal) - parte 03 de 04.mp4,Vídeo 2026-10-31 23h18m50s (hori
+ok     sem erros de página no Juntar e no Dividir
+ok     Montar: orientação, atmosfera e qualidade ficam guardadas — vertical,balada,normal
+ok     Montar pelo Olho da Cena: vídeo pronto — {"ok":true,"saida":"/tmp/olho-e2e-7o9DOY/montado-olho.mp4","duracao":8,"segmentos":3,"formato":"horizontal"}
+ok     Montar: mesmas medidas e duração do Gerador 2.0.3 — 1920x1080 8 x 1920x1080 8
+ok     Montar: imagem e som quadro a quadro iguais aos do Gerador 2.0.3 — imagem true, som true
+1 FALHA(S) — 154 conferências

@@ -1,0 +1,71 @@
+ok     lista as câmeras com nome — /tmp/gravador-teste-midia/centrado.y4m
+ok     lista os microfones com nome (e o padrão do Windows) — Padrão do Windows,Fake Audio Input 1,Fake Audio Input 2
+ok     anuncia que está pronto e pede as escolhas — Gravador pronto. Alt R grava, Alt E fala o enquadramento. Antes da primeira gravação, escolha a proporção e a qualidade.
+ok     foco começa na primeira opção de proporção
+ok     proporção: horizontal, vertical e quadrado, cada uma com descrição — [{"v":"horizontal","rotulo":"Horizontal, 16 por 9 (YouTube)","desc":"Para o YouTube e para ver no computador ou na TV. Usa a imagem inteira da câmera.","marcado":false,"legenda":"Proporção do vídeo (obrigatório)"},{"v":"vertical","rotulo":"Vertical, 9 por 16 (shorts, Reels e stories)","desc":"Para s
+ok     qualidade: alta, padrão e leve, com tamanho por hora na descrição — [{"v":"alta","rotulo":"Alta","desc":"1080p, 30 quadros por segundo, quase sem compressão. A melhor imagem, mas arquivos grandes: cerca de 3 a 5 GB por hora, conforme o movimento.","marcado":false,"legenda":"Qualidade (obrigatório)"},{"v":"padrao","rotulo":"Padrão","desc":"1080p, 30 quadros por segun
+ok     proporção e qualidade começam sem escolha
+ok     uso do texto: "só no leitor de tela" já vem marcado — [{"v":"leitor","rotulo":"Só no leitor de tela","desc":"A frase atual é falada pelo leitor de tela e aparece só nesta janela. Não entra no vídeo.","marcado":true,"legenda":"Como usar o texto"},{"v":"legenda","rotulo":"Mostrar na tela do vídeo, como legenda","desc":"A frase atual também fica escrita n
+ok     a nota da qualidade fala do som AAC 48 kHz
+ok     Alt R sem proporção: avisa e leva o foco para a proporção — ALERTA: Antes de gravar, escolha a proporção do vídeo: horizontal, vertical ou quadrado.
+ok     Alt R sem qualidade: avisa e leva o foco para a qualidade — ALERTA: Antes de gravar, escolha a qualidade: alta, padrão ou leve.
+ok     Alt E antes de gravar: rosto centralizado, até o peito — Um rosto, centralizado. Mostrando até o peito.
+ok     enquadramento não é falado sozinho — 1
+ok     cartão da frase aparece só com a frase
+ok     seta para baixo avança e fala a frase — O Sr. Lima chegou cedo!
+ok     no começo avisa "Começo do texto."
+ok     End vai para a última; no fim avisa "Fim do texto."
+ok     Home volta para a primeira
+ok     abre texto do Word e avisa — Texto aberto: texto.docx.
+ok     frase do Word sem cortar em "Dra." — A Dra. Ana abriu a porta.
+ok     Alt T sem gravação avisa
+ok     Alt R anuncia "Gravando." e leva o foco para a frase
+ok     durante a gravação, proporção, qualidade, câmera e microfone ficam bloqueados
+ok     Alt T pausa e anuncia
+ok     Alt T continua e anuncia
+ok     setas andam pelas frases durante a gravação
+ok     Alt R para e avisa que está salvando
+ok     depois de parar: "Tudo pronto", nome, duração, e as duas opções — Tudo pronto. Vídeo gravado com o nome Vídeo 2026-10-27 16h30m58s (horizontal). Duração: 4 segundos. Escolha Salvar e finalizar, ou Melhorar.
+ok     foco em "Salvar e finalizar"; "Melhorar" ao lado
+ok     Salvar e finalizar: anuncia onde salvou — Vídeo salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 16h30m58s (horizontal). Duração: 4 segundos.
+ok     arquivo na pasta Documentos/Gravador de Vídeo — /tmp/gravador-e2e-8iJ7nH/Documentos/Gravador de Vídeo/Vídeo 2026-10-27 16h30m58s (horizontal).mp4
+ok     MP4 horizontal alta: H.264 1920x1080, 30 qps, yuv420p — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     MP4 com áudio AAC 48 kHz — {"codec_name":"aac","codec_type":"audio","sample_rate":"48000","avg_frame_rate":"0/0"}
+ok     duração sem o tempo pausado (~3,5 s) — 3.54
+ok     o áudio do microfone foi gravado (sem silêncio) — -27.1 dB
+ok     bipes: gravar, pausar, retomar e parar, na ordem — gravar,pausar,retomar,parar
+ok     os bipes não entram na gravação (nada em 990 Hz; o tom do microfone em 440 Hz está lá) — 440 Hz -24.1 dB, 990 Hz -60.2 dB
+ok     não sobra arquivo temporário
+ok     tela de pronto com foco em "Voltar ao início"
+ok     Voltar ao início volta para a gravação
+ok     Alt E durante a gravação funciona — "Um rosto, centralizado. Mostrando até o peito."
+ok     0.3: o som NÃO fica mudo no Alt E (nenhum trecho em silêncio) — mínimo -28 dB em 97 trechos
+ok     vídeo inteiro (~11 s) — 11
+ok     vídeo com legenda salvo — {"codec_name":"h264","codec_type":"video","width":1920,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     legenda queimada embaixo só quando "mostrar na tela" — embaixo 42.4, em cima 0.1
+ok     MP4 quadrado 1080x1080 com áudio e nome "(quadrado)" — {"codec_name":"h264","codec_type":"video","width":1080,"height":1080,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}Vídeo 2026-10-27 16h31m22s (quadrado).mp4
+ok     legenda também cabe no quadrado — linha clara da legenda embaixo
+ok     MP4 vertical 1080x1920 com áudio — {"codec_name":"h264","codec_type":"video","width":1080,"height":1920,"pix_fmt":"yuv420p","avg_frame_rate":"30/1"}
+ok     Alt R na tela de pronto já grava outro
+ok     Alt R na tela "Gravação pronta" também grava outro (o anterior fica salvo)
+ok     guarda proporção, qualidade e uso do texto para a próxima vez — {"formato":"vertical","qualidade":"alta","camera":"","microfone":"","legenda":false,"texto":"O conto de teste\n\nA Dra. Ana abriu a porta. Lá fora chovia muito!
+ok     sem erros na página
+ok     ao abrir de novo, proporção e qualidade já vêm escolhidas — formato-vertical,qualidade-alta,espelhada,uso-leitor,efeito-borrar,fundo-consultorio
+ok     alta horizontal: 1920x1080, 30 qps, AAC 48 kHz; 3.20 GB por hora (muito movimento) — 1920x1080, 7107 kbit/s, 16.0 s
+ok     alta vertical: 1080x1920, 30 qps, AAC 48 kHz; 4.03 GB por hora (muito movimento) — 1080x1920, 8964 kbit/s, 16.0 s
+ok     alta quadrado: 1080x1080, 30 qps, AAC 48 kHz; 2.61 GB por hora (muito movimento) — 1080x1080, 5804 kbit/s, 16.1 s
+ok     padrao horizontal: 1920x1080, 30 qps, AAC 48 kHz; 1.69 GB por hora (muito movimento) — 1920x1080, 3758 kbit/s, 16.0 s
+ok     padrao vertical: 1080x1920, 30 qps, AAC 48 kHz; 1.65 GB por hora (muito movimento) — 1080x1920, 3670 kbit/s, 16.0 s
+ok     padrao quadrado: 1080x1080, 30 qps, AAC 48 kHz; 1.71 GB por hora (muito movimento) — 1080x1080, 3797 kbit/s, 16.0 s
+ok     leve horizontal: 1280x720, 30 qps, AAC 48 kHz; 0.87 GB por hora (muito movimento) — 1280x720, 1937 kbit/s, 16.0 s
+ok     leve vertical: 720x1280, 30 qps, AAC 48 kHz; 0.87 GB por hora (muito movimento) — 720x1280, 1932 kbit/s, 16.0 s
+ok     leve quadrado: 720x720, 30 qps, AAC 48 kHz; 0.87 GB por hora (muito movimento) — 720x720, 1939 kbit/s, 16.0 s
+ok     sem erros na página (qualidades)
+ok     gravação de 4 minutos: memória estável (de 1 min até o fim) — 1313 → 1378 MB (mín 1302, máx 1408)
+ok     o vídeo vai para o disco durante a gravação (arquivo temporário cresce) — 5, 10, 15, 20, 25, 30, 36, 41, 46, 51, 56, 62, 67, 72, 77, 82, 87, 93, 98, 103, 108, 113, 118, 123 MB
+ok     vídeo longo salvo inteiro (~240 s) — 240.1
+ok     padrão no vídeo longo: entre 1,3 e 2,1 GB por hora — 1.70
+ok     a conversão anuncia a porcentagem — Salvando: 10 por cento. | Salvando: 20 por cento. | Salvando: 30 por cento. | Salvando: 40 por cento. | Salvando: 50 por cento. | Salvando: 60 por cento. | Salvando: 70 por cento. | Salvando: 80 por cento. | Salvando: 90 por cento.
+ok     sem erros na página (longa)
+
+69 de 69 ok

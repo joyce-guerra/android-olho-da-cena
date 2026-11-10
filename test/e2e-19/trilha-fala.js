@@ -1,0 +1,38 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const RAIZ = process.argv[2], MIDIA = process.argv[3];
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 300) : ''}`); if (!c) falhas++; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-tf-'));
+  const pasta = path.join(tmp, 'meus'); fs.mkdirSync(pasta);
+  for (const f of ['fala.mp3', 'clipe.mp4']) fs.copyFileSync(path.join(MIDIA, f), path.join(pasta, f));
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos') } });
+  const w = await app.firstWindow();
+  await app.evaluate(({ dialog }) => { global.__abrir = []; dialog.showOpenDialog = async () => { const p = global.__abrir.shift(); return p ? { canceled: false, filePaths: [].concat(p) } : { canceled: true, filePaths: [] }; }; });
+  const abrir = (p) => app.evaluate((_e, x) => { global.__abrir.push(x); }, p);
+  const ate = async (f, arg, ms = 60000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(100); } return false; };
+  const clicar = async (id) => { await ate((i) => { const e = document.getElementById(i); return e && !e.disabled && e.offsetParent !== null; }, id); await w.click('#' + id); };
+  await ate(() => window.gravarTela && window.olho); await espera(1000);
+  await clicar('ir-cortar'); await abrir(path.join(pasta, 'clipe.mp4')); await clicar('ed-adicionar');
+  await ate(() => /clipe/.test(document.getElementById('ed-info').textContent)); await clicar('ed-audio');
+  await ate(() => window.__audioCortes.video && !window.__audioCortes.salvando && /clipe/.test(document.getElementById('au-info').textContent));
+  await clicar('au-continuar'); await ate(() => !document.getElementById('au-silencios').hidden);
+  await clicar('aus-continuar'); await ate(() => !document.getElementById('au-trilhas').hidden && !window.__audioCortes.salvando);
+  await w.focus('#e-btn-add-trilha'); await w.keyboard.press('Enter');
+  ok('sem arquivo: avisa um instante depois', await ate(() => /Escolha um arquivo de trilha/.test(document.getElementById('status').textContent), null, 2000));
+  await abrir(path.join(pasta, 'fala.mp3')); await clicar('e-btn-trilha-arquivo');
+  await ate(() => /fala/.test(document.getElementById('e-trilha-arquivo-info').textContent));
+  await w.focus('#e-btn-add-trilha');
+  await w.keyboard.press('Enter');
+  const logo = await w.evaluate(() => document.getElementById('status').textContent);
+  await espera(700);
+  const depois = await w.evaluate(() => document.getElementById('status').textContent);
+  ok('Enter em Adicionar trilha: a confirmação chega um instante depois', !/adicionada/.test(logo) && /Trilha em loop adicionada: fala\.mp3\. Total: 1\./.test(depois), `${logo} / ${depois}`);
+  ok('a trilha aparece na lista', /Trilha 1 de 1: fala\.mp3, em loop/.test(await w.textContent('#e-lista-trilhas')));
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

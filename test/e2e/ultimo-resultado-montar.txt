@@ -1,0 +1,6 @@
+ok     Montar: orientação, atmosfera e qualidade ficam guardadas — vertical,balada,normal
+ok     Montar pelo Olho da Cena: vídeo pronto — {"ok":true,"saida":"/tmp/olho-e2e-oKyG0m/montado-olho.mp4","duracao":8,"segmentos":3,"formato":"horizontal"}
+ok     Montar: mesmas medidas e duração do Gerador 2.0.3 — 1920x1080 8 x 1920x1080 8
+ok     Montar: imagem e som quadro a quadro iguais aos do Gerador 2.0.3 — imagem true, som true
+
+TUDO OK

@@ -1,0 +1,13 @@
+Testes de ponta a ponta da 1.9 (Edição de vídeo e áudio, Gravar em etapas, Montar em etapas).
+Uso, na pasta do projeto:
+  xvfb-run -a node test/e2e-19/edicao.js "$PWD" <pasta com fala.mp3, clipe.mp4, img1.png e img2.png>
+  xvfb-run -a node test/e2e-19/gravacao.js "$PWD"
+  xvfb-run -a node test/e2e-19/montar.js "$PWD" <mesma pasta>
+  xvfb-run -a node test/e2e-19/cruzado.js "$PWD" <mesma pasta>
+gravacao.js e cruzado.js usam a câmera e o microfone falsos de /tmp/gravador-teste-midia (test/e2e/preparar.sh).
+
+Legendas (1.9):
+  xvfb-run -a node test/e2e-19/legenda-gravar.js "$PWD" <pasta com teste.srt>
+  Com o Wine: WINEPREFIX=... xvfb-run -a node test/e2e-19/legenda-montar.js "$PWD" <pasta com conto.mp3, img1.png, img2.png> <pasta com whisper-bin-x64.zip e ggml-small-q5_1.bin>
+  legenda-montar.js sobe um servidor local com esses dois arquivos (OLHO_TESTE_WHISPER_BASE) e roda o whisper-cli.exe pelo Wine (OLHO_TESTE_WHISPER_WINE=1).
+  trilhas-etapa.js: xvfb-run -a node test/e2e-19/trilhas-etapa.js "$PWD" nova nenhum leve agressivo

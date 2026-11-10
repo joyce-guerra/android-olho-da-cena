@@ -1,0 +1,333 @@
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  font-family: Segoe UI, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3rem;
+  max-width: 60rem;
+}
+
+h1 { font-size: 1.5rem; }
+h2 { font-size: 1.15rem; margin-bottom: .4rem; }
+h3 { font-size: 1rem; margin-bottom: .3rem; }
+
+section {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(128, 128, 128, .4);
+}
+
+#status {
+  padding: .6rem .8rem;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+button, select {
+  font: inherit;
+  padding: .4rem .8rem;
+  margin: .2rem .3rem .2rem 0;
+}
+
+button:disabled { opacity: .55; }
+
+/* Foco sempre visível e grosso: quem enxerga pouco também precisa achar. */
+:focus-visible {
+  outline: 3px solid Highlight;
+  outline-offset: 2px;
+}
+
+fieldset {
+  border: 1px solid rgba(128, 128, 128, .5);
+  padding: .8rem;
+}
+
+.opcao {
+  display: flex;
+  gap: .5rem;
+  align-items: flex-start;
+  margin-bottom: .6rem;
+}
+
+.opcao label { flex: 1; }
+
+#lista-imagens {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#lista-imagens li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: .45rem .6rem;
+  border: 1px solid rgba(128, 128, 128, .4);
+  margin-bottom: .35rem;
+}
+
+.acoes button { padding: .25rem .6rem; }
+
+progress {
+  width: 100%;
+  height: 1.4rem;
+  display: block;
+  margin-top: .3rem;
+}
+
+/* Tela inicial */
+.creditos {
+  margin: .2rem 0 1.5rem;
+  opacity: .85;
+}
+
+#tela-inicial button {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  padding: .8rem;
+  margin-bottom: .6rem;
+  text-align: left;
+}
+
+/* O h1 recebe foco na troca de tela, mas sem desenhar contorno de campo. */
+h1:focus { outline: none; }
+h1:focus-visible { outline: 3px solid Highlight; outline-offset: 2px; }
+
+input[type="text"] {
+  font: inherit;
+  padding: .4rem .6rem;
+  width: 100%;
+  max-width: 32rem;
+  display: block;
+  margin: .2rem 0 .1rem;
+}
+
+label { display: block; margin-top: .6rem; }
+
+#titulo-contador,
+#fim-contador,
+#titulo-tempo-ajuda {
+  margin: .1rem 0 .4rem;
+  font-size: .92rem;
+  opacity: .85;
+}
+
+[role="alert"] { font-weight: 700; opacity: 1; }
+
+#lista-titulos,
+#g-lista-trilhas,
+#j-lista-trilhas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#lista-titulos li,
+#g-lista-trilhas li,
+#j-lista-trilhas li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: .45rem .6rem;
+  border: 1px solid rgba(128, 128, 128, .4);
+  margin-bottom: .35rem;
+}
+
+/* Lista de vídeos: nome, campo de título e botões na mesma linha */
+#j-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#j-lista li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  padding: .5rem .6rem;
+  border: 1px solid rgba(128, 128, 128, .4);
+  margin-bottom: .35rem;
+}
+
+#j-lista li > span:first-child { flex: 1 1 14rem; }
+#j-lista input[type="text"] { flex: 1 1 12rem; width: auto; margin: 0; }
+
+/* Tocador da tela de corte: pequeno, porque quem manda são os botões. */
+#c-player {
+  display: block;
+  width: 100%;
+  max-width: 24rem;
+  margin: .4rem 0 .8rem;
+  background: #000;
+}
+
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin-bottom: .4rem;
+}
+
+#c-atalhos {
+  font-size: .92rem;
+  opacity: .85;
+}
+
+#c-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#c-lista li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: .45rem .6rem;
+  border: 1px solid rgba(128, 128, 128, .4);
+  margin-bottom: .35rem;
+}
+
+#tela-cortar input[type="text"] { max-width: 14rem; display: inline-block; }
+
+#bloco-manual { margin-top: 1rem; padding-top: .8rem; border-top: 1px dashed rgba(128,128,128,.5); }
+#m-lista { list-style: none; padding: 0; margin: 0; }
+#m-lista li {
+  display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+  justify-content: space-between; padding: .45rem .6rem;
+  border: 1px solid rgba(128, 128, 128, .4); margin-bottom: .35rem;
+}
+#ajuda {
+  position: fixed; top: 1rem; right: 1rem; max-width: 26rem;
+  background: Canvas; color: CanvasText; border: 2px solid currentColor;
+  padding: 1rem; z-index: 10;
+}
+#ajuda-titulo:focus { outline: none; }
+#ajuda ul { padding-left: 1.2rem; margin: .4rem 0 0; }
+
+/* Etapas da tela de gerar */
+#g-etapas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin: .6rem 0 1rem;
+}
+
+#g-etapas button[aria-current="step"] {
+  font-weight: bold;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.etapa-botoes {
+  margin-top: 1rem;
+}
+
+/* Janelas (F2 e Alt S em Editar vídeo). */
+dialog {
+  max-width: 34rem;
+  width: calc(100% - 3rem);
+  padding: 1rem 1.25rem;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+}
+dialog::backdrop { background: rgba(0, 0, 0, .55); }
+dialog label { display: block; margin-top: .5rem; }
+dialog .opcao label { margin-top: 0; }
+dialog input[type="text"] { font: inherit; padding: .3rem .5rem; }
+
+/* "hidden" sempre esconde, mesmo em elementos com display próprio (como .opcao). */
+[hidden] { display: none !important; }
+
+/* ---------- Olho da Cena: Gravar, Melhorar e ajuste do áudio ---------- */
+.so-leitor { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
+#tela-gravar label, #tela-melhorar label, #c-grupo-ajuste label { display: block; margin-top: .6rem; }
+#tela-gravar select { max-width: 40rem; display: block; }
+#tela-gravar textarea { font: inherit; padding: .4rem .8rem; width: 100%; max-width: 40rem; box-sizing: border-box; }
+#tela-gravar .controles, #tela-melhorar .controles, #c-grupo-ajuste .controles { margin: .8rem 0; display: flex; flex-wrap: wrap; gap: .3rem; }
+#frase { border: 2px solid #444; border-radius: 6px; padding: 1rem 1.5rem; margin: 1rem 0; min-height: 5rem; }
+#frase:focus { outline: 3px solid #0b57d0; outline-offset: 2px; }
+#frase-texto { font-size: 1.8rem; line-height: 1.5; margin: 0; }
+.estado { font-weight: 600; min-height: 1.5em; }
+.estado.gravando { color: #b00020; }
+@media (prefers-color-scheme: dark) { .estado.gravando { color: #ff8a80; } }
+#previa { display: block; max-width: 100%; max-height: 42vh; background: #000; margin: .5rem 0 .8rem; }
+#previa[hidden] { display: none; }
+fieldset.escolha, fieldset.audio { border: 1px solid #888; border-radius: 6px; margin: .8rem 0; padding: .4rem 1rem .6rem; max-width: 44rem; }
+fieldset.escolha legend, fieldset.audio legend { font-weight: 600; padding: 0 .3rem; }
+.radio { display: grid; grid-template-columns: auto 1fr; column-gap: .5rem; margin: .45rem 0; }
+.radio input { margin-top: .35rem; }
+#tela-gravar .radio label, #tela-melhorar .radio label { margin-top: 0; font-weight: 600; }
+.radio .desc { grid-column: 2; margin: 0; font-size: .95rem; opacity: .85; }
+.nota { margin: .2rem 0 .4rem; font-size: .95rem; }
+#tela-melhorar progress { width: 100%; max-width: 30rem; }
+fieldset.audio input[type="range"] { display: block; width: 100%; max-width: 28rem; }
+.check { display: grid; grid-template-columns: auto 1fr; column-gap: .5rem; margin: .8rem 0 .2rem; max-width: 44rem; }
+.check input { margin-top: .35rem; }
+#tela-gravar .check label { margin-top: 0; font-weight: 600; }
+.check .desc { grid-column: 2; margin: 0; font-size: .95rem; opacity: .85; }
+
+/* 1.1: botões depois de gravar, um por linha */
+#tela-gravar .controles.empilhados { flex-direction: column; align-items: flex-start; }
+
+/* 1.3: ajustes de áudio, um botão por linha */
+.au-coluna { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; }
+#au-lista li { list-style: none; margin-bottom: .8rem; }
+#au-lista li button { display: block; margin: .2rem 0; }
+#au-telas button[aria-current="page"] { font-weight: bold; text-decoration: underline; }
+
+/* 1.3.1: miniatura decorativa ao lado de cada fundo */
+/* 1.5: grade fixa de 3 colunas (miniatura | botão | nome e textos), todas as linhas iguais:
+   mesma largura, mesma margem, texto alinhado à esquerda. Só visual; a ordem de leitura não muda. */
+#grupo-fundo .radio { grid-template-columns: 96px auto minmax(0, 1fr); column-gap: .6rem; row-gap: .15rem; align-items: start; margin: .6rem 0; max-width: 42rem; }
+#grupo-fundo .miniatura { grid-column: 1; grid-row: 1 / span 2; width: 96px; height: 54px; object-fit: cover; border-radius: 4px; margin: 0; }
+#grupo-fundo .radio input { grid-column: 2; grid-row: 1; }
+#grupo-fundo .radio label { grid-column: 3; grid-row: 1; text-align: left; }
+#grupo-fundo .radio .desc { grid-column: 3; grid-row: 2; text-align: left; }
+
+/* 2.0.7: Tirar fotos */
+#ft-previa, #ft-resultado, #ft-final, #po-final { display: block; max-width: 100%; max-height: 42vh; width: auto; height: auto; background: #000; margin: .5rem 0 .8rem; }
+#ft-previa[hidden] { display: none; }
+#tela-foto label, #tela-post label { display: block; margin-top: .6rem; }
+#tela-post textarea { display: block; width: 100%; max-width: 40rem; box-sizing: border-box; font: inherit; padding: .4rem .6rem; }
+#tela-foto select, #tela-post input[type="text"], #tela-foto input[type="text"] { max-width: 40rem; display: block; font: inherit; padding: .3rem .5rem; }
+#tela-foto .radio label, #tela-foto .check label, #tela-post .radio label { margin-top: 0; font-weight: 600; }
+#ft-resultado, #ft-final, #po-final { position: sticky; top: 0; z-index: 2; }
+#tela-foto details.secao, #tela-post details.secao { margin: .5rem 0; border: 1px solid #888; border-radius: 6px; padding: .2rem .8rem .4rem; }
+#tela-foto details.secao > summary, #tela-post details.secao > summary { font-weight: 700; cursor: pointer; padding: .3rem 0; }
+
+details.detalhes { margin: .1rem 0 .5rem 1.8rem; }
+details.detalhes > summary { cursor: pointer; font-size: .92em; padding: .15rem 0; }
+details.detalhes > p.desc { margin: .2rem 0; }
+
+/* 3.0: menu da tela inicial, em árvore */
+#menu-inicial, #menu-inicial ul { list-style: none; margin: .4rem 0; padding: 0; }
+#menu-inicial ul[role="group"] { margin-left: 1.6rem; }
+#menu-inicial [role="treeitem"] { margin: .25rem 0; padding: .45rem .8rem; border: 1px solid #888; border-radius: 6px; cursor: pointer; font-weight: 600; background: transparent; }
+#menu-inicial [role="treeitem"][aria-expanded] { font-size: 1.05em; }
+#menu-inicial [role="treeitem"]:focus { outline: 3px solid #1a73e8; outline-offset: 2px; }
+#menu-inicial [role="treeitem"][aria-expanded]::before { content: "\25B8  "; }
+#menu-inicial [role="treeitem"][aria-expanded="true"]::before { content: "\25BE  "; }
+#menu-inicial [role="group"] [role="treeitem"] { font-weight: 500; }
+.detalhe-aberto { margin: .2rem 0 .6rem 1.8rem; padding: .5rem .7rem; border-left: 4px solid currentColor; font-size: .95em; }
+
+/* 3.0.4: Editar fotos, listas com marcação */
+.ed-lista { margin: .6rem 0; }
+.ed-opcao { padding: .45rem .7rem; border: 2px solid transparent; border-radius: 6px; }
+.ed-opcao:focus { outline: 3px solid currentColor; outline-offset: 2px; }
+.ed-opcao[aria-selected="true"] { font-weight: 700; border-color: currentColor; }
+.ed-opcao[aria-selected="true"]::before { content: "\2713  "; }
+.detalhe-item:focus { outline: 3px solid currentColor; outline-offset: 2px; }

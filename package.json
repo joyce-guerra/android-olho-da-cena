@@ -1,0 +1,103 @@
+{
+  "name": "olho-da-cena",
+  "productName": "Olho da Cena",
+  "version": "3.0.4",
+  "description": "Grava, monta, edita, junta e divide vídeos, com tudo falado para leitor de tela",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.js test/unit-grav/",
+    "e2e": "xvfb-run -a node test/e2e/rodar.js",
+    "dist:win": "electron-builder --win nsis --x64"
+  },
+  "author": "Joyce Guerra",
+  "license": "CC-BY-NC-ND-4.0",
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3",
+    "playwright": "^1.48.2"
+  },
+  "build": {
+    "appId": "br.joyceguerra.geradordevideo",
+    "productName": "Olho da Cena",
+    "artifactName": "Olho-da-Cena-Setup-${version}.${ext}",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "src/**/*",
+      "ui/**/*",
+      "!node_modules/@mediapipe/**",
+      "LICENSE"
+    ],
+    "extraResources": [
+      {
+        "from": "vendor/ffmpeg",
+        "to": "ffmpeg",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "vendor/visao",
+        "to": "visao",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "vendor/fundos",
+        "to": "fundos"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE.txt"
+      },
+      {
+        "from": "helper",
+        "to": "helper"
+      }
+    ],
+    "compression": "maximum",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "Olho da Cena",
+      "menuCategory": false,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "language": "1046",
+      "installerLanguages": [
+        "pt_BR"
+      ],
+      "multiLanguageInstaller": false,
+      "include": "build/installer.nsh",
+      "allowToChangeInstallationDirectory": false,
+      "license": "build/LICENSE.txt"
+    },
+    "electronLanguages": [
+      "pt-BR",
+      "en-US"
+    ]
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "0.10.21",
+    "mammoth": "1.13.0"
+  }
+}

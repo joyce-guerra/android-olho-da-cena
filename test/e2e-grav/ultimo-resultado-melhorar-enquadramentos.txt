@@ -1,0 +1,90 @@
+ok     Melhorar: só "borrar" e "substituir" o fundo, com descrições; borrar já marcado — [{"v":"borrar","marcado":true,"desc":"Desfoca o que está atrás de você, como uma câmera profissional. É o mais natural e o que menos erra: bom para quase todo vídeo, inclusive com movimento de mãos. Não esconde totalmente o ambiente: ainda dá para perceber cores e formas."},{"v":"substituir","marcad
+ok     os fundos só aparecem ao escolher "substituir"
+ok     três fundos (consultório, praia, sala de estar), com descrições — {"visivel":true,"f":[{"v":"consultorio","marcado":true,"nome":"Consultório (neutro)","desc":"Parede clara em tom bege, estante de madeira clara com livros e uma plantinha, luminária de chão acesa e janela com cortina branca, tudo levemente desfocado. Bom para vídeos profissionais: orientações de psi
+ok     Melhorar borrar (amostra): termina — Processando a amostra de 5 segundos com fundo borrado. Leva alguns segundos. Aguarde. | Processando: 40 por cento. | Amostra com fundo borrado salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo borrado (amostra de 5 segundos). O vídeo original co
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo borrado (amostra de 5 segundos).mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo borrado (menos detalhe) e rosto igual — detalhe do fundo 33.8 → 11.5; rosto 2.5
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo borrado. Leva alguns segundos. Aguarde. | Processando: 40 por cento. | Amostra com fundo borrado salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo borrado (amostra de 5 segundos). O vídeo original co
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo borrado salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo borrado (amostra de 5 segundos). O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir consultorio (amostra): termina — Processando a amostra de 5 segundos com fundo consultório. Leva alguns segundos. Aguarde. | Processando: 50 por cento. | Amostra com fundo consultório salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo consultório (amostra de 5 segundos). O vídeo
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo consultório (amostra de 5 segundos).mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "consultorio" e rosto igual — igual ao fundo 0.9; diferença do original 46.8; rosto 7.4
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo consultório. Leva alguns segundos. Aguarde. | Processando: 50 por cento. | Amostra com fundo consultório salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo consultório (amostra de 5 segundos). O vídeo
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo consultório salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo consultório (amostra de 5 segundos). O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir praia (amostra): termina — Processando a amostra de 5 segundos com fundo praia. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo praia salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo praia (amostra de 5 segundos). O vídeo original continua
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo praia (amostra de 5 segundos).mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "praia" e rosto igual — igual ao fundo 0.8; diferença do original 90.3; rosto 7.3
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo praia. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo praia salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo praia (amostra de 5 segundos). O vídeo original continua
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo praia salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo praia (amostra de 5 segundos). O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir sala (amostra): termina — Processando a amostra de 5 segundos com fundo sala de estar. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo sala de estar salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar (amostra de 5 segundos). O
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar (amostra de 5 segundos).mp4
+ok       1920x1080, 30 qps, com som; duração 5.0 s — 1920x1080 5
+ok       fundo trocado pela imagem "sala" e rosto igual — igual ao fundo 0.9; diferença do original 55.4; rosto 5.0
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando a amostra de 5 segundos com fundo sala de estar. Leva alguns segundos. Aguarde. | Processando: 60 por cento. | Amostra com fundo sala de estar salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar (amostra de 5 segundos). O
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Amostra com fundo sala de estar salva na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar (amostra de 5 segundos). O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar borrar (vídeo todo): termina — Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo borrado salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo borrado.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.009
+ok       fundo borrado (menos detalhe) e rosto igual — detalhe do fundo 33.8 → 11.5; rosto 2.5
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 50 por cento. | Processando: 80 por cento. | Vídeo com fundo borrado salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo borrado salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo borrado. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir consultorio (vídeo todo): termina — Processando o vídeo todo com fundo consultório. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 30 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo consultório salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo consultório.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.009
+ok       fundo trocado pela imagem "consultorio" e rosto igual — igual ao fundo 0.9; diferença do original 46.8; rosto 7.4
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo consultório. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 30 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo consultório salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo consultório salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo consultório. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir praia (vídeo todo): termina — Processando o vídeo todo com fundo praia. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo praia salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo praia.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.009
+ok       fundo trocado pela imagem "praia" e rosto igual — igual ao fundo 0.8; diferença do original 89.8; rosto 7.3
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo praia. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 20 por cento. | Processando: 60 por cento. | Processando: 90 por cento. | Vídeo com fundo praia salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo praia salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo praia. O vídeo original continua guardado.
+ok       original intacto
+ok     Melhorar substituir sala (vídeo todo): termina — Processando o vídeo todo com fundo sala de estar. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 30 por cento. | Processando: 60 por cento. | Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal)
+ok       nome com o sufixo, na mesma pasta — Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar.mp4
+ok       1920x1080, 30 qps, com som; duração 12.0 s — 1920x1080 12.009
+ok       fundo trocado pela imagem "sala" e rosto igual — igual ao fundo 0.9; diferença do original 54.6; rosto 5.0
+ok       anuncia "Processando…" e a porcentagem (em ordem, de 10 em 10) — Processando o vídeo todo com fundo sala de estar. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. | Processando: 30 por cento. | Processando: 60 por cento. | Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal)
+ok       no fim: nome, pasta, "o original continua guardado", foco em "Voltar ao início" — Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar. O vídeo original continua guardado.
+ok       original intacto
+ok     Alt R durante o processamento pede para aguardar — Aguarde, estou processando o vídeo. Para parar, use o botão Cancelar.
+ok     Cancelar: avisa, volta às opções e não deixa arquivo pela metade — Processando: 60 por cento. | Vídeo com fundo sala de estar salvo na pasta Documentos, Gravador de Vídeo, com o nome Vídeo 2026-10-27 14h46m52s (horizontal) - fundo sala de estar. O vídeo original continua guardado. | Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do 
+ok     original intacto depois de tudo
+ok     Melhorar vertical leve, sala de estar: 720x1280 e fundo no formato vertical — 720x1280, canto 0.3
+ok     Melhorar quadrado leve, sala de estar: 720x720 e fundo no formato quadrado — 720x720, canto 0.3
+ok     sem erros na página (melhorar)
+ok     Alt E (deslocado, horizontal): rosto à esquerda da imagem: "vá para a sua esquerda" — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Alt E (deslocado, vertical): no recorte vertical o rosto da borda fica fora do quadro — Nenhum rosto.
+ok     sem erros na página (deslocado)
+ok     Alt E (deslocado2, horizontal): rosto um pouco à esquerda no horizontal — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     Alt E (deslocado2, vertical): no recorte vertical o mesmo rosto fica bem deslocado e cortado — Um rosto, bem deslocado para a sua direita. Vá para a sua esquerda. Rosto cortado à sua direita. Mostrando até os ombros.
+ok     Alt E (deslocado2, quadrado): no recorte quadrado o rosto também fica deslocado — Um rosto, um pouco deslocado para a sua direita. Vá um pouco para a sua esquerda. Mostrando até o peito.
+ok     sem erros na página (deslocado2)
+ok     Alt E (centrado, vertical): vertical centralizado — Um rosto, centralizado. Mostrando até o peito.
+ok     Alt E (centrado, quadrado): quadrado centralizado — Um rosto, centralizado. Mostrando até o peito.
+ok     sem erros na página (centrado)
+ok     Alt E (vazio, horizontal): sem ninguém: "Nenhum rosto." — Nenhum rosto.
+ok     sem erros na página (vazio)
+ok     Alt E (escuro, horizontal): ambiente escuro — Um rosto, centralizado. Mostrando até o peito. Ambiente escuro.
+ok     sem erros na página (escuro)
+ok     Alt E (perto, horizontal): muito perto e cortado em cima — Um rosto, centralizado. Rosto cortado em cima e embaixo. Muito perto da câmera: afaste-se um pouco.
+ok     sem erros na página (perto)
+ok     Alt E (corpo, horizontal): corpo inteiro — Um rosto, centralizado. Mostrando o corpo inteiro.
+ok     Alt E (corpo, vertical): corpo inteiro no vertical — Um rosto, centralizado. Mostrando o corpo inteiro.
+ok     sem erros na página (corpo)
+ok     Alt E (grupo, horizontal): seis pessoas, fundo escuro mas rostos iluminados — Seis rostos. O mais perto está centralizado. Mostrando até a cintura.
+ok     sem erros na página (grupo)
+ok     Alt E (jemison, horizontal): pele escura não vira "ambiente escuro" — Um rosto, centralizado. Mostrando até a cintura.
+ok     sem erros na página (jemison)
+
+88 de 88 ok

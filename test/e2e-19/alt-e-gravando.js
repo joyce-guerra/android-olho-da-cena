@@ -1,0 +1,37 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const RAIZ = process.argv[2], CAM = '/tmp/gravador-teste-midia';
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 300) : ''}`); if (!c) falhas++; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-ae-'));
+  fs.mkdirSync(path.join(tmp, 'dados'), { recursive: true });
+  fs.writeFileSync(path.join(tmp, 'dados', 'configuracoes.json'), JSON.stringify({ formato: 'horizontal', qualidade: 'leve' }));
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos'), OLHO_TESTE_VIDEO: path.join(CAM, 'centrado.y4m'), OLHO_TESTE_MIC: path.join(CAM, 'mic.wav') } });
+  const w = await app.firstWindow();
+  const erros = []; w.on('pageerror', (e) => erros.push(e.message));
+  const ate = async (f, arg, ms = 60000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(200); } return false; };
+  const clicar = async (id) => { await ate((i) => { const e = document.getElementById(i); return e && !e.disabled && e.offsetParent !== null; }, id); await w.click('#' + id); };
+  const anuncios = () => w.evaluate(() => window.__gravador.anuncios.slice());
+  await ate(() => window.gravarTela && window.olho); await espera(800);
+  await clicar('ir-gravar'); await ate(() => window.gravarTela.estado.pronto, null, 30000);
+  for (const n of [1, 2, 3]) await clicar(`grav-e${n}-continuar`);
+  const n0 = (await anuncios()).length;
+  await w.keyboard.press('Alt+KeyE');
+  ok('Alt E na Etapa 4, antes de gravar', await ate((n) => window.__gravador.anuncios.length > n && /rosto|Luz|enquadr/i.test(window.__gravador.anuncios.slice(n).join(' ')), n0, 60000));
+  await w.keyboard.press('Alt+KeyR'); await ate(() => window.__gravador.gravador && window.__gravador.gravador.state === 'recording');
+  await espera(1500);
+  const n1 = (await anuncios()).length;
+  await w.keyboard.press('Alt+KeyE');
+  const falou = await ate((n) => window.__gravador.anuncios.length > n && /rosto|Luz|enquadr|centraliz/i.test(window.__gravador.anuncios.slice(n).join(' ')), n1, 60000);
+  ok('Alt E com a gravação rolando', falou, (await anuncios()).slice(n1).join(' | '));
+  ok('a gravação continua depois do Alt E', await w.evaluate(() => window.__gravador.gravador.state === 'recording'));
+  console.log('DURANTE:', await w.evaluate(() => JSON.stringify({ d: window.__gravador.ultimoEnquadramento && window.__gravador.ultimoEnquadramento.durante, estado: window.__gravador.gravador && window.__gravador.gravador.state })));
+  await w.keyboard.press('Alt+KeyR'); await ate(() => !document.getElementById('grav-decidir').hidden, null, 120000);
+  ok('sem erros na página', erros.length === 0, erros.join(' | '));
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

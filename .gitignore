@@ -1,0 +1,4 @@
+
+# Binários locais de desktop maiores que 100 MB
+vendor/ffmpeg/*.exe
+

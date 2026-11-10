@@ -1,0 +1,92 @@
+ok     título da janela e da página: Olho da Cena — Olho da Cena
+ok     menu inicial na ordem: Gravar (R), Montar (G), Editar (C), Juntar (J), Dividir (D); sem Melhorar — Gravar vídeo|r,Montar vídeo|g,Editar vídeo|c,Juntar vídeos|j,Dividir vídeo|d,Abrir a pasta Olho da Cena|
+ok     na abertura: avisa (uma vez) que as gravações antigas continuam na pasta Gravador de Vídeo — Olho da Cena pronto para começar. As gravações antigas continuam na pasta Gravador de Vídeo, em Documentos; nada foi movido nem apagado. As novas vão para a pasta Olho da Cena. FFmpeg encontrado fora do PATH, mas funcionando.
+ok     pasta Documentos/Olho da Cena criada e anunciada na tela inicial
+ok     Alt G no início abre a tela gerar — gerar
+ok     Alt H abre a ajuda na tela gerar — Ctrl 1: etapa Áudio. Ctrl 2: etapa Imagens. Ctrl 3: etapa Extras. Ctrl 4: etapa Ajustes finais.
+Alt A: Escolher áudio
+Alt H: fecha esta lista. Escape também fecha.
+ok     Alt C no início abre a tela cortar — cortar
+ok     Alt H abre a ajuda na tela cortar — Control com seta para a direita ou para a esquerda: aumenta ou diminui o volume do vídeo todo (fora de campo de texto e de controle deslizante)
+Control com seta para cima ou para baixo: aumenta ou diminui a velocidade do vídeo todo; imagem e som continuam juntos
+Alt I: marca o início de um trecho onde o vídeo está
+Alt F: marca o fim do trecho. Repita Alt I e Alt F para marcar vários trechos
+Delete
+ok     Alt J no início abre a tela juntar — juntar
+ok     Alt H abre a ajuda na tela juntar — Alt H: fecha esta lista. Escape também fecha.
+ok     Alt D no início abre a tela dividir — dividir
+ok     Alt H abre a ajuda na tela dividir — Alt H: fecha esta lista. Escape também fecha.
+ok     Alt H no início lista os cinco atalhos do menu — Alt R: Gravar vídeo
+Alt G: Montar vídeo
+Alt C: Editar vídeo
+Alt J: Juntar vídeos
+Alt D: Dividir vídeo
+Alt H: fecha esta lista. Escape também fecha.
+ok     Alt R no início abre Gravar vídeo
+ok     Alt H não abre ajuda na tela Gravar
+ok     só a tela à vista tem teclas de acesso
+ok     sem erros de página na abertura
+ok     o aviso da pasta antiga não se repete — Olho da Cena pronto para começar. FFmpeg encontrado fora do PATH, mas funcionando.
+ok     a pasta antiga e o vídeo antigo continuam lá, intactos
+ok     entrar em Gravar: anuncia as teclas e pede proporção e qualidade — Gravar vídeo. Alt R grava, Alt T pausa, Alt E fala o enquadramento. Antes da primeira gravação, escolha a proporção e a qualidade.
+ok     câmera aberta só com a tela Gravar à vista
+ok     sem o botão Testar o espelho; caixa "câmera espelhada" marcada, com descrição nova
+ok     fundos: Escritório (no lugar de "Ambiente neutro e calmo") e Grafite com neon — Escritório, Estúdio de gravação musical, Biblioteca, Sala de aula, Cantinho indiano com mandala, Grafite com neon, Capelinha ecumênica com vitral, Dentro de um carro popular com crochê, Carro masculino, Estação espacial, Quarto feminino delicado, Quarto masculino sóbrio, Sala de estar simples e aconchegante, Banco no jardim com jasmim, Praia ao pôr do sol, Céu estrelado no campo, Café rústico com 
+ok     Grafite com neon tem descrição — Bom para vídeos jovens, urbanos e criativos: música, arte, cultura de rua, tecnologia e conversas descontraídas. Menos indicado para assuntos sérios ou formais. Muro de rua à noite, pintado com grafite colorido de manchas e pinceladas em roxo, verde-água e laranja, sem letras nem desenhos de pessoas, com tubos de luz neon rosa e azul-claro fazendo curvas na parede e o chão de cimento escuro reflet
+ok     Alt E: rosto centralizado, sem aviso falso de mão ou braço — Um rosto, centralizado. Mostrando até o peito.
+ok     Alt E: dados de mão e braço calculados a partir da pose de 33 pontos — {"rostos":1,"faixa":"peito","horizontal":"centro","cortado":[],"distancia":null,"escuro":false,"maoNoRosto":false,"bracoCortado":[],"estourada":false,"contraLuz":false,"desfocada":false,"tremendo":false,"espelhada":true}
+ok     Alt E: "Mão na frente do rosto" e "Braço cortado na lateral", com o lado trocando conforme o espelho — Um rosto, centralizado. Mão na frente do rosto. Braço cortado na lateral, à sua direita: aproxime o braço do corpo ou se afaste um pouco. Mostrando até o peito. || Um rosto, centralizado. Mão na frente do rosto. Braço cortado na lateral, à sua esquerda: aproxime o braço do corpo ou se afaste um pouco. Mostrando até o peito.
+ok     frases: seta para a direita avança, para a esquerda volta, End e Home — A Dra. Ana abriu a porta. | O conto de teste | Quem estaria ali?
+ok     Alt T pausa a gravação — Gravação pausada. Alt T continua, Alt R para e salva.
+ok     Alt T retoma a gravação — Gravação retomada.
+ok     durante a gravação não sai da tela Gravar — Pare a gravação antes de sair (Alt R). 
+ok     1.3.1: depois de parar: Descartar vídeo, Salvar e fechar, Salvar e continuar, Voltar (sem Editar vídeo; foco em Salvar e fechar) — Tudo pronto. Vídeo gravado, ainda não salvo. Duração: 7 segundos. Escolha Descartar vídeo, Salvar e fechar, Salvar e continuar, ou Voltar.
+ok     1.1: cada botão numa linha (um embaixo do outro)
+ok     1.3.1: a gravação fica temporária (fora da pasta Olho da Cena) até salvar — /tmp/olho-e2e-AnCdVl/dados/gravando/provisorio-1793488902605.mp4
+ok     original: H.264 1920x1080 com áudio AAC, sem o tempo pausado — {"d":6.6,"w":1920}
+ok     1.3.1: Salvar e continuar salva o original na pasta Olho da Cena, nome de sempre, e apaga o temporário — /tmp/olho-e2e-AnCdVl/Documentos/Olho da Cena/Vídeo 2026-10-31 20h21m42s (horizontal).mp4
+ok     1.3.1: Salvar e continuar abre Ajustes de áudio, Cortes, sem botão Enviar áudio
+ok     1.3: nivelamento para a internet automático (ganho calculado)
+ok     1.3: Alt D sem descartes fala a mensagem — Nenhum descarte encontrado. Use Alt I e Alt F para marcar os descartes desejados antes de selecionar. Del e Alt S descartam ou salvam todos.
+ok     1.3: Alt F confirma a seleção — Seleção 1 marcada, de 00:04 a 00:05.
+ok     1.3: Alt D lista "Descarte 1, de 00:04 a 00:05" com Ouvir, Descartar e Salvar
+ok     1.3: Del descarta a seleção — 1 seleção descartada. O vídeo fica com 00:05.
+ok     1.3.1: Salvar e continuar dos Cortes salva o vídeo cortado (1 s a menos) e vai para a imagem — 5.6 x 6.6
+ok     1.3.1: a explicação do fundo é lida uma vez, no topo, e não em cada opção — Salvando o vídeo com os cortes. Aguarde. || Cortes salvos. 00:05. || Imagem, última etapa. O fundo substitui tudo o que aparece atrás de você por uma imagem, como um cenário. Você continua aparecendo como foi gravada, só o que está atrás muda. O resultado parece um cenário de estúdio: convence à primeira vista, mas quem presta atenção percebe que é montagem, principalmente nas bordas do corpo. Mov
+ok     1.3.1: miniatura decorativa ao lado de cada fundo (alt vazio, aria-hidden, fora do rótulo) — {"n":17,"r":17,"d":true,"c":true,"f":[]}
+ok     1.3.1: sem "fundo novo" na tela do fundo — Fundo
+ok     1.3.1: Céu estrelado no campo logo depois da Praia — escritorio,estudio,biblioteca,sala-de-aula,indiano,grafite,capela,carro,carro-masculino,estacao-espacial,quarto-feminino,quarto-masculino,sala,jardim,praia,ceu-estrelado,cafe
+ok     1.3.1: Céu estrelado lido como aplicação e descrição — Bom para leitura de contos, histórias para dormir, reflexões e conversas tranquilas. Noite no campo, no interior de Minas Gerais. Ao fundo, montanhas em camadas, uma atrás da outra, como as serras de Minas, cada vez mais azuladas ao longe. De um lado, uma cerca de madeira, com uma fileira de mourões que vai sumindo na distância. No meio do campo, uma árvore sozinha, como um ipê. Na frente, capim b
+ok     1.3.1: "Sem fundo" aparece no caminho da gravação
+ok     1.3.1: tela "Alterar plano de fundo" termina com Salvar e continuar, Salvar e fechar, Voltar — Salvar e continuar|Salvar e fechar|Voltar
+ok     1.3.1: Salvar e continuar salva com fundo escritório (nome "fundo escritório") — 31-10 horizontal 30 quadros fundo escritório.mp4
+ok     processamento acompanha o andamento em por cento — 0,1,2,3,4,5,6,7,8,9,10,11
+ok     vídeo com fundo: 1920x1080 — {"d":5.6,"w":1920,"h":1080}
+ok     1.3.1: depois de Salvar e continuar vem "Vídeo salvo", sem Editar vídeo, Concluir ou Melhorar de novo — Gravar outro vídeo|Abrir a pasta|Voltar ao início
+ok     1.3.1: nenhuma fala cita Concluir, Melhorar de novo ou Editar o vídeo melhorado — Processando o vídeo todo com fundo escritório. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. / Processando: 50 por cento. / Vídeo com fundo escritório salvo na pasta Documentos, Olho da Cena, com o nome 31-10 horizontal 30 quadros fundo escritório. O vídeo original continua guardado.
+ok     1.3.1: grafite + título salvo, com imagem e som, nome "fundo grafite" — 31-10 horizontal 30 quadros fundo grafite 2.mp4
+ok     1.3.1: o corte está no vídeo final (1 s a menos que o original) — 5.6 x 6.6
+ok     1.3.1: o título aparece no começo do vídeo final (e some depois) — 7.3 x 0.7
+ok     1.1: o último fundo e efeito ficam guardados
+ok     1.3.1: Sem fundo salva o vídeo final com 10,8 s (12 s menos 1,2 s) — 10.8 31-10 horizontal 30 quadros áudio melhorado.mp4
+ok     1.3: o trecho cortado sumiu mesmo do arquivo final (o bipe não está mais lá) — -1.9 x -43.5
+ok     1.3.1: Sem fundo: título no começo, aplicado depois dos cortes; o resto igual — 13.3 x 0.3
+ok     1.3: Alt S salvou o trecho em vídeo e em áudio — 31-10 horizontal 30 quadros fundo escritório.mp4 | 31-10 horizontal 30 quadros fundo grafite 2.mp4 | 31-10 horizontal 30 quadros fundo grafite.mp4 | 31-10 horizontal 30 quadros áudio melhorado.mp4 | Vídeo 2026-10-31 20h21m42s (horizontal) editado.mp4 | Vídeo 2026-10-31 20h21m42s (horizontal).mp4 | teste editar - trecho 1.mp3 | teste editar - trecho 1.mp4 | teste editar editado.mp4 | teste editar.m
+ok     1.3: vídeo final com o volume nivelado para a internet (perto de -16 LUFS) — -16.9
+ok     Gravar outro vídeo volta para Gravar, pronto para gravar outro
+ok     de volta ao Gravar, a câmera é aberta de novo
+ok     1.3.1: Descartar vídeo apaga o temporário, nada vai para a pasta, fica no Gravar — /tmp/olho-e2e-AnCdVl/dados/gravando/provisorio-1793488932869.mp4
+ok     1.3.1: o primeiro Voltar só avisa que o vídeo não foi salvo — O vídeo ainda não foi salvo. Aperte Voltar de novo para descartar e voltar, ou escolha Salvar e fechar ou Salvar e continuar.
+ok     1.3.1: o segundo Voltar descarta o temporário e vai para a tela inicial — /tmp/olho-e2e-AnCdVl/dados/gravando/provisorio-1793488936493.mp4
+ok     gravação vertical com nome de sempre — Vídeo 2026-10-31 20h22m20s (vertical).mp4
+ok     1.3.1: Voltar dos Cortes volta para a escolha, com o vídeo já salvo — /tmp/olho-e2e-AnCdVl/Documentos/Olho da Cena/Vídeo 2026-10-31 20h22m20s (vertical).mp4
+ok     1.3.1: Voltar com o vídeo já salvo não apaga nada
+ok     o vídeo gravado abre no Editar vídeo — Vídeo 2026-10-31 20h22m20s (vertical).mp4, 00:00:02,0.
+ok     saindo do Gravar, a câmera é fechada
+ok     Melhorar no Editar abre a tela Melhorar com o vídeo carregado
+ok     1.1: o último fundo volta marcado (o último efeito foi Sem fundo, que só existe depois de gravar: aqui vem Borrar)
+ok     sem erros de página no Gravar e no Alterar plano de fundo
+ok     Alterar plano de fundo do Editar: vertical continua 1080x1920, nome "fundo borrado" — {"n":"31-10 vertical 30 quadros fundo borrado.mp4","w":1080,"h":1920}
+ok     1.3.1: Salvar e fechar salva e fecha o programa — Processando o vídeo todo com fundo borrado. Pode demorar: mais ou menos o tempo do vídeo, ou mais. Aguarde. / Vídeo com fundo borrado salvo na pasta Documentos, Olho da Cena, com o nome 31-10 vertical 30 quadros fundo borrado. O vídeo original continua guardado. Fechando o Olho da Cena.
+
+TUDO OK

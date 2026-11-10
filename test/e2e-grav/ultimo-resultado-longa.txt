@@ -1,0 +1,8 @@
+ok     gravação de 4 minutos: memória estável (de 1 min até o fim) — 1270 → 1338 MB (mín 1264, máx 1355)
+ok     o vídeo vai para o disco durante a gravação (arquivo temporário cresce) — 5, 10, 15, 20, 26, 31, 36, 41, 46, 52, 56, 61, 66, 72, 77, 82, 87, 92, 97, 102, 107, 113, 118, 123 MB
+ok     vídeo longo salvo inteiro (~240 s) — 240.133333
+ok     padrão no vídeo longo: entre 1,3 e 2,1 GB por hora — 1.70
+ok     a conversão anuncia a porcentagem — Salvando: 10 por cento. | Salvando: 20 por cento. | Salvando: 30 por cento. | Salvando: 40 por cento. | Salvando: 50 por cento. | Salvando: 60 por cento. | Salvando: 70 por cento. | Salvando: 80 por cento. | Salvando: 90 por cento.
+ok     sem erros na página (longa)
+
+6 de 6 ok

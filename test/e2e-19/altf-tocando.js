@@ -1,0 +1,30 @@
+'use strict';
+const { _electron } = require('playwright');
+const fs = require('fs'), path = require('path'), os = require('os');
+const RAIZ = process.argv[2], MIDIA = process.argv[3];
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+let falhas = 0;
+const ok = (n, c, x = '') => { console.log(`${c ? 'ok    ' : 'FALHOU'} ${n}${x !== '' ? ' — ' + String(x).slice(0, 300) : ''}`); if (!c) falhas++; };
+(async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'olho-af-'));
+  fs.copyFileSync(path.join(MIDIA, 'clipe.mp4'), path.join(tmp, 'clipe.mp4'));
+  const app = await _electron.launch({ executablePath: require(path.join(RAIZ, 'node_modules', 'electron')), args: ['--no-sandbox', RAIZ], cwd: RAIZ,
+    env: { ...process.env, OLHO_TESTE_DADOS: path.join(tmp, 'dados'), OLHO_TESTE_DOCUMENTOS: path.join(tmp, 'Documentos') } });
+  const w = await app.firstWindow();
+  await app.evaluate(({ dialog }, f) => { dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [f] }); }, path.join(tmp, 'clipe.mp4'));
+  const ate = async (f, arg, ms = 30000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await w.evaluate(f, arg)) return true; await espera(150); } return false; };
+  const clicar = async (id) => { await ate((i) => { const e = document.getElementById(i); return e && !e.disabled && e.offsetParent !== null; }, id); await w.click('#' + id); };
+  await ate(() => window.gravarTela && window.olho); await espera(800);
+  await clicar('ir-cortar'); await clicar('ed-adicionar'); await ate(() => !document.getElementById('ed-opcoes').hidden);
+  await clicar('ed-audio');
+  await ate(() => window.__audioCortes.video && !window.__audioCortes.salvando && /clipe/.test(document.getElementById('au-info').textContent));
+  await ate(() => document.getElementById('au-player').readyState >= 1);
+  await w.focus('#au-tocar'); await w.keyboard.press('Space');
+  ok('o vídeo está tocando', await ate(() => !document.getElementById('au-player').paused, null, 8000));
+  await espera(1500);
+  await w.keyboard.press('Alt+KeyI'); await espera(1200);
+  await w.keyboard.press('Alt+KeyF'); await espera(500);
+  ok('Alt F marca o fim com o vídeo tocando', await w.evaluate(() => window.__audioCortes.marcas.trechos.length === 1 && !document.getElementById('au-player').paused), await w.evaluate(() => JSON.stringify(window.__audioCortes.marcas.trechos)));
+  await app.close();
+  console.log(falhas ? `${falhas} falha(s)` : 'tudo certo'); process.exit(falhas ? 1 : 0);
+})().catch((e) => { console.error(e); process.exit(2); });

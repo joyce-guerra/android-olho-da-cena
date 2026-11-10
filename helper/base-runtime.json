@@ -1,0 +1,1 @@
+{ "baseRuntime": "windows-x64-runtime-A", "observacao": "Mude este valor sempre que mudar o Electron, módulos nativos, FFmpeg, DLLs, o ajudante ou qualquer recurso fora do app.asar." }

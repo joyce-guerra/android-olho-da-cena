@@ -1,0 +1,6 @@
+Fotos de teste (Wikimedia Commons), só para testes automáticos:
+obj1 Laptop and coffee on a desk.jpg - CC0, Lauren Mancke
+obj2 Woman sitting in cafe enjoying coffee and using smartphone while laptop rests on table.jpg - CC BY 2.0, Shixart1985
+obj3 Person works on laptop while holding smartphone in living room.jpg - CC BY 2.0, Shixart1985
+obj4 Woman sits at desk working on laptop in home office.jpg - CC BY 2.0, Shixart1985
+obj5 Laptop and a mug (Unsplash).jpg - CC0, Ryan Riggins
